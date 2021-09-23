@@ -8,4 +8,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
     }
+
+    fun BtnLogin_OnClick(view: android.view.View) {
+
+    }
 }
