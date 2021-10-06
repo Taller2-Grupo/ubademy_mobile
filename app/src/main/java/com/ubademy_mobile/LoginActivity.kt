@@ -10,6 +10,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun BtnLogin_OnClick(view: android.view.View) {
-
+        setContentView(R.layout.activity_home)
     }
 }
