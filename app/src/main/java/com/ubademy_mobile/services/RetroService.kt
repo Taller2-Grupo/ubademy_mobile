@@ -7,7 +7,7 @@ interface RetroService {
 
     @GET("cursos")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    fun obtenerCursos(): Call<Cursos>
+    fun obtenerCursos(): Call<List<Curso>>
 
     @GET("cursos/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
