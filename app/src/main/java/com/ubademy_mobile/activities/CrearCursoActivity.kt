@@ -35,11 +35,14 @@ class CrearCursoActivity : AppCompatActivity() {
     }
 
     private fun crearCursoObservable(){
-        viewModel.getCrearNuevoCursoObservable().observe(this, Observer <CursoResponse?>{
+        viewModel.getCrearNuevoCursoObservable().observe(this, Observer <Curso?>{
             if(it == null){
                 Toast.makeText(this@CrearCursoActivity, "Error al crear el curso", Toast.LENGTH_LONG).show()
             } else{
-                Toast.makeText(this@CrearCursoActivity, "Curso creado correctamente", Toast.LENGTH_LONG).show()
+
+                Toast.makeText(this@CrearCursoActivity, "Curso creado correctamente (ID: ${it.id})", Toast.LENGTH_LONG).show()
+
+
                 finish()
             }
         })
