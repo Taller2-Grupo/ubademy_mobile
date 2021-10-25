@@ -1,7 +1,9 @@
 package com.ubademy_mobile.view_models
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.CursoResponse
 import com.ubademy_mobile.services.RetroInstance
@@ -11,30 +13,43 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CrearCursoActivityViewModel: ViewModel() {
-    lateinit var crearNuevoCursoLiveData: MutableLiveData<CursoResponse?>
-    lateinit var loadCursoData: MutableLiveData<CursoResponse?>
+
+    lateinit var crearNuevoCursoLiveData: MutableLiveData<Curso?>
+    lateinit var loadCursoData: MutableLiveData<Curso?>
     init{
         crearNuevoCursoLiveData = MutableLiveData()
         loadCursoData = MutableLiveData()
     }
 
-    fun getCrearNuevoCursoObservable(): MutableLiveData<CursoResponse?>{
+    fun getCrearNuevoCursoObservable(): MutableLiveData<Curso?>{
         return crearNuevoCursoLiveData
     }
 
-    fun getLoadCursoDataObservable(): MutableLiveData<CursoResponse?>{
+    fun getLoadCursoDataObservable(): MutableLiveData<Curso?>{
         return loadCursoData
     }
 
     fun crearCurso(curso: Curso){
         val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
         val call = retroInstance.crearCurso(curso)
-        call.enqueue(object: Callback<CursoResponse?> {
-            override fun onFailure(call: Call<CursoResponse?>, t: Throwable){
+
+        call.enqueue(object: Callback<Curso> {
+            override fun onFailure(call: Call<Curso>, t: Throwable){
                 crearNuevoCursoLiveData.postValue(null)
+                Log.d(
+                    "crearCurso onFailure",
+                    "Localized message: ${t.localizedMessage!!}\n"+
+                            "Cause:             ${t.cause!!}"
+                )
             }
 
-            override fun onResponse(call: Call<CursoResponse?>, response: Response<CursoResponse?>){
+            override fun onResponse(call: Call<Curso>, response: Response<Curso>){
+
+                Log.d("crearCurso onResponse",
+                    "Message:       ${Gson().toJson(response.message())}) \n" +
+                         "Successful: ${response.isSuccessful}\n" +
+                         "Body:          ${response.body()}")
+
                 if(response.isSuccessful){
                     crearNuevoCursoLiveData.postValue(response.body())
                 } else{
@@ -43,15 +58,16 @@ class CrearCursoActivityViewModel: ViewModel() {
             }
         })
     }
+
     fun actualizarCurso(curso_id: String, curso: Curso){
         val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
         val call = retroInstance.actualizarCurso(curso_id, curso)
-        call.enqueue(object: Callback<CursoResponse?> {
-            override fun onFailure(call: Call<CursoResponse?>, t: Throwable){
+        call.enqueue(object: Callback<Curso> {
+            override fun onFailure(call: Call<Curso>, t: Throwable){
                 crearNuevoCursoLiveData.postValue(null)
             }
 
-            override fun onResponse(call: Call<CursoResponse?>, response: Response<CursoResponse?>){
+            override fun onResponse(call: Call<Curso>, response: Response<Curso>){
                 if(response.isSuccessful){
                     crearNuevoCursoLiveData.postValue(response.body())
                 } else{
@@ -64,12 +80,12 @@ class CrearCursoActivityViewModel: ViewModel() {
     fun getCursoData(curso_id: String?){
         val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
         val call = retroInstance.obtenerCurso(curso_id!!)
-        call.enqueue(object: Callback<CursoResponse?> {
-            override fun onFailure(call: Call<CursoResponse?>, t: Throwable){
+        call.enqueue(object: Callback<Curso?> {
+            override fun onFailure(call: Call<Curso?>, t: Throwable){
                 loadCursoData.postValue(null)
             }
 
-            override fun onResponse(call: Call<CursoResponse?>, response: Response<CursoResponse?>){
+            override fun onResponse(call: Call<Curso?>, response: Response<Curso?>){
                 if(response.isSuccessful){
                     loadCursoData.postValue(response.body())
                 } else{

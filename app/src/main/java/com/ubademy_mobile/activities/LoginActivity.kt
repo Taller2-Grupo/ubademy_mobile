@@ -14,6 +14,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun BtnLogin_OnClick(view: android.view.View) {
-        startActivity(Intent(this@LoginActivity, CrearCursoActivity::class.java))
+        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
     }
+
 }

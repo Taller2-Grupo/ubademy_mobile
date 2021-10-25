@@ -21,11 +21,15 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
     lateinit var recyclerViewAdapter: RecyclerViewAdapter
     lateinit var viewModel: ListadoCursosActivityViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listado_cursos)
 
+
         initRecyclerView()
+
+        initViewModel()
+        viewModel.getCursos()
 
         BtnNuevoCurso.setOnClickListener {
             startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
@@ -45,11 +49,11 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
 
     fun initViewModel(){
         viewModel = ViewModelProvider(this).get(ListadoCursosActivityViewModel::class.java)
-        viewModel.getCursosObservable().observe(this, Observer<Cursos>{
+        viewModel.getCursosObservable().observe(this, Observer<List<Curso>>{
             if(it == null){
                 Toast.makeText(this@ListadoCursosActivity, "No hay datos...", Toast.LENGTH_LONG).show()
             } else{
-                recyclerViewAdapter.cursos = it.data.toMutableList()
+                recyclerViewAdapter.cursos = it.toMutableList()
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         })
