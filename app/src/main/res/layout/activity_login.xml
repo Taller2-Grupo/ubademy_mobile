@@ -61,8 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TxtPassword"
-        android:onClick="BtnLogin_OnClick"/>
+        app:layout_constraintTop_toBottomOf="@+id/TxtPassword" />
 
     <Button
         android:id="@+id/BtnRegister"
@@ -76,6 +75,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnLogin"
-        android:background="@drawable/button_rounded_border"/>
+        android:background="@drawable/button_rounded_border"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

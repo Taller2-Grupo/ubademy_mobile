@@ -8,14 +8,21 @@ import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.CursoResponse
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.RetroService
+import com.ubademy_mobile.view_models.tools.logFailure
+import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class CrearCursoActivityViewModel: ViewModel() {
+
+    val baseUrl = "https://ubademy-back.herokuapp.com/"
 
     lateinit var crearNuevoCursoLiveData: MutableLiveData<Curso?>
     lateinit var loadCursoData: MutableLiveData<Curso?>
+
+
     init{
         crearNuevoCursoLiveData = MutableLiveData()
         loadCursoData = MutableLiveData()
@@ -30,25 +37,18 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun crearCurso(curso: Curso){
-        val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
         val call = retroInstance.crearCurso(curso)
 
         call.enqueue(object: Callback<Curso> {
             override fun onFailure(call: Call<Curso>, t: Throwable){
                 crearNuevoCursoLiveData.postValue(null)
-                Log.d(
-                    "crearCurso onFailure",
-                    "Localized message: ${t.localizedMessage!!}\n"+
-                            "Cause:             ${t.cause!!}"
-                )
+                logFailure("CrearCurso" , t)
             }
 
             override fun onResponse(call: Call<Curso>, response: Response<Curso>){
 
-                Log.d("crearCurso onResponse",
-                    "Message:       ${Gson().toJson(response.message())}) \n" +
-                         "Successful: ${response.isSuccessful}\n" +
-                         "Body:          ${response.body()}")
+                logResponse("CrearCurso", response)
 
                 if(response.isSuccessful){
                     crearNuevoCursoLiveData.postValue(response.body())
@@ -60,7 +60,7 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun actualizarCurso(curso_id: String, curso: Curso){
-        val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
         val call = retroInstance.actualizarCurso(curso_id, curso)
         call.enqueue(object: Callback<Curso> {
             override fun onFailure(call: Call<Curso>, t: Throwable){
@@ -78,7 +78,7 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun getCursoData(curso_id: String?){
-        val retroInstance = RetroInstance.getRetroInstance().create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
         val call = retroInstance.obtenerCurso(curso_id!!)
         call.enqueue(object: Callback<Curso?> {
             override fun onFailure(call: Call<Curso?>, t: Throwable){
