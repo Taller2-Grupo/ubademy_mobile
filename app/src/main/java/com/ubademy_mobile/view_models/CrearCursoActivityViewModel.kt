@@ -1,13 +1,10 @@
 package com.ubademy_mobile.view_models
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import com.ubademy_mobile.services.Curso
-import com.ubademy_mobile.services.CursoResponse
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.RetroService
+import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -37,7 +34,7 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun crearCurso(curso: Curso){
-        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
         val call = retroInstance.crearCurso(curso)
 
         call.enqueue(object: Callback<Curso> {
@@ -60,7 +57,7 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun actualizarCurso(curso_id: String, curso: Curso){
-        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
         val call = retroInstance.actualizarCurso(curso_id, curso)
         call.enqueue(object: Callback<Curso> {
             override fun onFailure(call: Call<Curso>, t: Throwable){
@@ -78,7 +75,7 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun getCursoData(curso_id: String?){
-        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
         val call = retroInstance.obtenerCurso(curso_id!!)
         call.enqueue(object: Callback<Curso?> {
             override fun onFailure(call: Call<Curso?>, t: Throwable){

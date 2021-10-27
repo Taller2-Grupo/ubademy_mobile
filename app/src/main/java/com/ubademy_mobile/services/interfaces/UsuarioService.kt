@@ -1,4 +1,4 @@
-package com.ubademy_mobile.services
+package com.ubademy_mobile.services.interfaces
 
 import com.ubademy_mobile.services.data.Usuario
 import retrofit2.Call

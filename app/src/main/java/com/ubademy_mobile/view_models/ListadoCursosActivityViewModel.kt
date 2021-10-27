@@ -1,10 +1,9 @@
 package com.ubademy_mobile.view_models
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import com.ubademy_mobile.services.*
+import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -26,7 +25,7 @@ class ListadoCursosActivityViewModel: ViewModel() {
     }
 
     fun getCursos(){
-        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(RetroService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
         val call = retroInstance.obtenerCursos()
         call.enqueue(object: Callback<List<Curso>>{
             override fun onFailure(call: Call<List<Curso>>, t: Throwable){

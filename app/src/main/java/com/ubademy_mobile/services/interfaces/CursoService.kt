@@ -1,9 +1,10 @@
-package com.ubademy_mobile.services
+package com.ubademy_mobile.services.interfaces
 
+import com.ubademy_mobile.services.Curso
 import retrofit2.Call
 import retrofit2.http.*
 
-interface RetroService {
+interface CursoService {
 
     @GET("cursos")
     @Headers("Accept:application/json", "Content-Type:application/json")

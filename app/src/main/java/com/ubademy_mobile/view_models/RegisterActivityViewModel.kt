@@ -1,12 +1,8 @@
 package com.ubademy_mobile.view_models
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
-import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.RetroService
-import com.ubademy_mobile.services.UsuarioService
+import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.services.data.Usuario
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
