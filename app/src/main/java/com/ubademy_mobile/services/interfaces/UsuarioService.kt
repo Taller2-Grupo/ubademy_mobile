@@ -14,7 +14,7 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun obtenerUsuario(@Path("usuario_id") usuario_id: String): Call<Usuario>
 
-    @POST("usuarios/")
+    @POST("usuarios/registrar/")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun crearUsuario(@Body params: Usuario): Call<Usuario>
 

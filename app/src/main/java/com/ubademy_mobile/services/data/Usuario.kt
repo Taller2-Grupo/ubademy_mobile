@@ -1,11 +1,12 @@
 package com.ubademy_mobile.services.data
 
-import android.provider.ContactsContract
-
-data class Usuario(val id: Int?,
-                   val email: ContactsContract.CommonDataKinds.Email?,
-                   val nombre: String?,
-                   val apellido: String?,
-                   val password: String?,
-                   val ubicacion: String,
-                   val preferencias: Array<String> )
+data class Usuario(
+    val id: String? = null,
+    val username: String?,
+    val nombre: String?,
+    val apellido: String?,
+    val password: String?,
+    val esAdmin: String? = null,
+    val fechaCreacion: String? = null,
+    val fechaActualizacion: String? = null
+)

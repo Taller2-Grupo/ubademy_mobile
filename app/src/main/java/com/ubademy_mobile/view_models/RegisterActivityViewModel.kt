@@ -13,11 +13,18 @@ import retrofit2.Response
 
 class RegisterActivityViewModel {
 
-    val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+    val baseUrl = "https://ubademy-gateway-7.herokuapp.com/"
 
     var usuarioLiveData = MutableLiveData<Usuario>()
+    var progressBar = MutableLiveData<Boolean>()
+
+    fun getStatusBarObservable(): MutableLiveData<Boolean> {
+        return progressBar
+    }
 
     fun registrarUsuario(usuario: Usuario){
+
+        progressBar.postValue(true)
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
         val call = retroInstance.crearUsuario(usuario)
 
@@ -25,6 +32,8 @@ class RegisterActivityViewModel {
             override fun onFailure(call: Call<Usuario>, t: Throwable){
                 logFailure("RegistrarUsuario", t)
                 usuarioLiveData.postValue(null)
+
+                progressBar.postValue(false)
             }
 
             override fun onResponse(call: Call<Usuario>, response: Response<Usuario>){
@@ -36,6 +45,8 @@ class RegisterActivityViewModel {
                 } else{
                     usuarioLiveData.postValue(null)
                 }
+
+                progressBar.postValue(false)
             }
         })
     }
