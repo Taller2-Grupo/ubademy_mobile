@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
 
+    private var okMessage: Toast? = null
     private val viewModel = RegisterActivityViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         observarStatusBar()
+        observarNuevoUsuario()
 
     }
 
@@ -33,6 +35,18 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.getStatusBarObservable().observe(this,{
             if(it) progressBar.visibility= View.VISIBLE
             else progressBar.visibility=View.GONE
+        })
+    }
+
+    private fun observarNuevoUsuario(){
+
+        okMessage = Toast.makeText(this,"Registro exitoso, por favor inicia sesión para comenzar",Toast.LENGTH_LONG)
+
+        viewModel.getUsuarioObservable().observe(this,{
+            it?.run{
+                okMessage!!.show()
+                finish()
+            }
         })
     }
 
@@ -48,7 +62,6 @@ class RegisterActivity : AppCompatActivity() {
 
         viewModel.registrarUsuario(nuevoUsuario)
 
-        Toast.makeText(this,"REGISTRACION FINISHED",Toast.LENGTH_LONG).show()
 
     }
 

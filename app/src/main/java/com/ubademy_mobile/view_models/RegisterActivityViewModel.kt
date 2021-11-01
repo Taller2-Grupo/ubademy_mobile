@@ -22,6 +22,10 @@ class RegisterActivityViewModel {
         return progressBar
     }
 
+    fun getUsuarioObservable(): MutableLiveData<Usuario>{
+        return usuarioLiveData
+    }
+
     fun registrarUsuario(usuario: Usuario){
 
         progressBar.postValue(true)
