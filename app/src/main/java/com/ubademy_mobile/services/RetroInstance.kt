@@ -6,10 +6,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetroInstance {
     companion object{
-        val baseUrl = "https://ubademy-back.herokuapp.com/"
 
-        fun getRetroInstance():Retrofit{
-            var logging = HttpLoggingInterceptor()
+        fun getRetroInstance(baseUrl:String ):Retrofit{
+            val logging = HttpLoggingInterceptor()
             logging.level = (HttpLoggingInterceptor.Level.BODY)
 
             val client = OkHttpClient.Builder()

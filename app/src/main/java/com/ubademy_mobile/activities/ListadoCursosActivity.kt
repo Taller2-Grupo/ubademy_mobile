@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
-import com.ubademy_mobile.services.Cursos
 import com.ubademy_mobile.services.RecyclerViewAdapter
 import com.ubademy_mobile.view_models.ListadoCursosActivityViewModel
 import kotlinx.android.synthetic.main.activity_listado_cursos.*

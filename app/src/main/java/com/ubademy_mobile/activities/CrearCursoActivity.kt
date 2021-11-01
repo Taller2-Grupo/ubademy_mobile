@@ -2,14 +2,12 @@ package com.ubademy_mobile.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
 import com.ubademy_mobile.view_models.CrearCursoActivityViewModel
 import com.ubademy_mobile.services.Curso
-import com.ubademy_mobile.services.CursoResponse
 import kotlinx.android.synthetic.main.activity_crear_curso.*
 import kotlinx.android.synthetic.main.activity_crear_curso.view.*
 import kotlinx.android.synthetic.main.recycler_row_list.view.*
