@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.ubademy_mobile.R
 import kotlinx.android.synthetic.main.activity_home.*
@@ -23,6 +24,8 @@ class HomeActivity : AppCompatActivity() {
         val email = bundle?.getString("email")
         val provider = bundle?.getString("provider")
         setup(email ?: "", provider ?: "")
+
+        Log.d("Usuario Logueado", "${email} | ${provider}")
 
         // Guardado de datos
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
