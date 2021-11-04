@@ -3,11 +3,15 @@ package com.ubademy_mobile.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,7 +27,7 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
     lateinit var recyclerViewAdapter: RecyclerViewAdapter
     lateinit var viewModel: ListadoCursosActivityViewModel
 
-
+    lateinit var toogle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,19 +38,32 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
         initViewModel()
         viewModel.getCursos()
 
-        setSupportActionBar(main_toolbar)
-
-        main_toolbar.setNavigationOnClickListener(){
-            Toast.makeText(this, "Menu clickeado", Toast.LENGTH_LONG).show()
-        }
-//        BtnNuevoCurso.setOnClickListener {
-//            startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
-//        }
+        setup()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
+    private fun setup() {
+        setSupportActionBar(main_toolbar)
+
+        toogle = ActionBarDrawerToggle(this, drawerLayout, R.string.open_menu, R.string.close_menu)
+        drawerLayout.addDrawerListener(toogle)
+        toogle.syncState()
+
+        navigation_menu.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.perfil_menu -> Toast.makeText(applicationContext, "Perfil Cliqueado", Toast.LENGTH_LONG).show()
+                R.id.home_menu -> Toast.makeText(applicationContext, "Home Cliqueado", Toast.LENGTH_LONG).show()
+                R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Cliqueado", Toast.LENGTH_LONG).show()
+                R.id.logout_menu -> Toast.makeText(applicationContext, "LogOut Cliqueado", Toast.LENGTH_LONG).show()
+            }
+            true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toogle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView(){
@@ -56,7 +73,6 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
             addItemDecoration(decoration)
             recyclerViewAdapter = RecyclerViewAdapter(this@ListadoCursosActivity)
             adapter = recyclerViewAdapter
-
         }
     }
 

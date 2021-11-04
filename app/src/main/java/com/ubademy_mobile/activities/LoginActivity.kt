@@ -74,15 +74,19 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.getTokenObservable().observe(this,
             {
-                it?.access_token?.run{
-                    okMessage!!.show()
+                if(it == null){
+                    showAlert();
+                } else{
+                    it.access_token?.run{
+                        okMessage!!.show()
 
-                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                    prefs.putString("email", TxtEmail.text.toString())
-                    prefs.putString("provider", ProviderType.BASIC.toString())
-                    prefs.apply()
+                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                        prefs.putString("email", TxtEmail.text.toString())
+                        prefs.putString("provider", ProviderType.BASIC.toString())
+                        prefs.apply()
 
-                    showHome(TxtEmail.text.toString(),ProviderType.BASIC)
+                        showHome(TxtEmail.text.toString(),ProviderType.BASIC)
+                    }
                 }
             })
     }

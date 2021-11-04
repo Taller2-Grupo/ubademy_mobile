@@ -21,6 +21,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtCorreo"
         android:layout_width="match_parent"
@@ -39,7 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Correo"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +75,8 @@
             android:layout_height="wrap_content"
             android:hint="Nombre"
             android:inputType="text"
-            android:maxLength="30" />
+            android:maxLength="30"
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,7 +101,8 @@
             android:layout_height="wrap_content"
             android:hint="Apellido"
             android:inputType="text"
-            android:maxLength="30" />
+            android:maxLength="30"
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,7 +125,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contraseña"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,19 +137,19 @@
         android:layout_marginStart="41dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="41dp"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtContrasena"
-        app:passwordToggleEnabled="true"
-        app:errorEnabled="true"
-        >
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Repite la contrasñea"
-            android:inputType="textPassword" />
+            android:hint="Repite la contraseña"
+            android:inputType="textPassword"
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -143,40 +158,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="41dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="41dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/color_primary"
         android:text="Confirmar"
         app:layout_constraintBottom_toTopOf="@+id/BtnVolver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRepetirContrasena" />
 
     <Button
         android:id="@+id/BtnVolver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="41dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="41dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="48dp"
         android:background="#5F6365"
         android:text="Volver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        tools:visibility="visible"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/BtnFinalizarRegistro" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
