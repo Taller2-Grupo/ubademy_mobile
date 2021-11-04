@@ -1,6 +1,5 @@
 package com.ubademy_mobile.services.interfaces
 
-import com.ubademy_mobile.services.data.Credenciales
 import com.ubademy_mobile.services.data.UbademyToken
 import com.ubademy_mobile.services.data.Usuario
 import retrofit2.Call
@@ -34,5 +33,8 @@ interface UsuarioService {
     fun token(@Field("password") password : String,
               @Field("username") username: String): Call<UbademyToken>
 
+    @GET("token/swap/{firebase_token}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun swapToken(@Path("firebase_token") firebase_token: String?): Call<UbademyToken>
 
 }

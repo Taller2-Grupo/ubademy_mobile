@@ -18,7 +18,7 @@ import com.ubademy_mobile.R
 import com.ubademy_mobile.view_models.LoginActivityViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import com.ubademy_mobile.services.data.Credenciales
-import java.security.Provider
+import com.ubademy_mobile.services.data.UbademyToken
 
 class LoginActivity : AppCompatActivity() {
 
@@ -164,9 +164,32 @@ class LoginActivity : AppCompatActivity() {
                 if (account != null){
                     val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+
                         if (it.isSuccessful) {
-                            Log.d("Login with Google",credential.toString())
+                            var token = FirebaseAuth.getInstance().currentUser?.getIdToken(true)
+                                ?.addOnCompleteListener {
+
+                                    if (it.isSuccessful()) {
+                                        var idToken = it.getResult().token
+
+                                        val ubademyToken = UbademyToken(
+                                            firebase_token = idToken
+                                        )
+
+                                        viewModel.swap(ubademyToken)
+
+                                        // Send token to your backend via HTTPS
+                                        // ...
+                                    } else {
+                                        // Handle error -> task.getException();
+                                    }
+
+                                }
+
+
+                            Log.d("token => ",token.toString())
                             showHome(account.email ?: "", ProviderType.GOOGLE)
+
                         }else{
                             showAlert()
                         }

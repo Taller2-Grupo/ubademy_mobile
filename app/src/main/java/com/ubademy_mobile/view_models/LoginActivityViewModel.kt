@@ -61,4 +61,35 @@ class LoginActivityViewModel {
         })
     }
 
+    fun swap(token: UbademyToken){
+
+        progressBar.postValue(true)
+
+        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
+        val call = retroInstance.swapToken(token.firebase_token)
+
+        Log.d("Loguin Request",call.request().toString())
+
+        call.enqueue(object: Callback<UbademyToken> {
+            override fun onFailure(call: Call<UbademyToken>, t: Throwable){
+                logFailure("LogearUsuario", t)
+                tokenMutableLiveData.postValue(null)
+                progressBar.postValue(false)
+            }
+
+            override fun onResponse(call: Call<UbademyToken>, response: Response<UbademyToken>){
+
+                logResponse("LogearUsuario", response)
+                Log.d("LogearUsuario response", response.body().toString())
+                if(response.isSuccessful){
+                    tokenMutableLiveData.postValue(response.body())
+                } else{
+                    tokenMutableLiveData.postValue(null)
+                }
+
+                progressBar.postValue(false)
+            }
+        })
+    }
+
 }
