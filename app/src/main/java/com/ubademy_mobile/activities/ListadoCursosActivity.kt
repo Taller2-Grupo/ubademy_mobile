@@ -3,7 +3,10 @@ package com.ubademy_mobile.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,19 +23,30 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
     lateinit var recyclerViewAdapter: RecyclerViewAdapter
     lateinit var viewModel: ListadoCursosActivityViewModel
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listado_cursos)
-
 
         initRecyclerView()
 
         initViewModel()
         viewModel.getCursos()
 
-        BtnNuevoCurso.setOnClickListener {
-            startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
+        setSupportActionBar(main_toolbar)
+
+        main_toolbar.setNavigationOnClickListener(){
+            Toast.makeText(this, "Menu clickeado", Toast.LENGTH_LONG).show()
         }
+//        BtnNuevoCurso.setOnClickListener {
+//            startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
+//        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
     private fun initRecyclerView(){
