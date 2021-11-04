@@ -1,5 +1,6 @@
 package com.ubademy_mobile.services.interfaces
 
+import com.ubademy_mobile.services.data.UbademyToken
 import com.ubademy_mobile.services.data.Usuario
 import retrofit2.Call
 import retrofit2.http.*
@@ -25,4 +26,15 @@ interface UsuarioService {
     @DELETE("usuarios/{usuario_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun borrarUsuario(@Path("usuario_id") usuario_id: String): Call<Usuario>
+
+    @FormUrlEncoded
+    @POST("token")
+    @Headers("Accept:application/json")
+    fun token(@Field("password") password : String,
+              @Field("username") username: String): Call<UbademyToken>
+
+    @GET("token/swap/{firebase_token}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun swapToken(@Path("firebase_token") firebase_token: String?): Call<UbademyToken>
+
 }

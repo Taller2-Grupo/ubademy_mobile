@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.data.Usuario
 import com.ubademy_mobile.view_models.RegisterActivityViewModel
@@ -38,14 +39,29 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
+    private fun showAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("Error al intentar registrarse")
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
     private fun observarNuevoUsuario(){
 
         okMessage = Toast.makeText(this,"Registro exitoso, por favor inicia sesión para comenzar",Toast.LENGTH_LONG)
 
         viewModel.getUsuarioObservable().observe(this,{
-            it?.run{
-                okMessage!!.show()
-                finish()
+
+            if(it == null){
+                showAlert()
+            }
+            else{
+                it.run{
+                    okMessage!!.show()
+                    finish()
+                }
             }
         })
     }
@@ -61,7 +77,6 @@ class RegisterActivity : AppCompatActivity() {
             password = txtContrasena.editText!!.text.toString())
 
         viewModel.registrarUsuario(nuevoUsuario)
-
 
     }
 
