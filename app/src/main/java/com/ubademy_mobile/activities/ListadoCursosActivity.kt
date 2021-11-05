@@ -1,5 +1,6 @@
 package com.ubademy_mobile.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -16,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RecyclerViewAdapter
@@ -53,7 +55,8 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
                 R.id.perfil_menu -> Toast.makeText(applicationContext, "Perfil Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.home_menu -> Toast.makeText(applicationContext, "Home Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Cliqueado", Toast.LENGTH_LONG).show()
-                R.id.logout_menu -> Toast.makeText(applicationContext, "LogOut Cliqueado", Toast.LENGTH_LONG).show()
+                R.id.crear_curso_menu -> startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
+                R.id.logout_menu -> logout()
             }
             true
         }
@@ -100,5 +103,14 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
             viewModel.getCursos()
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun logout(){
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+        prefs.clear()
+        prefs.apply()
+
+        FirebaseAuth.getInstance().signOut()
+        onBackPressed()
     }
 }
