@@ -19,6 +19,7 @@ import com.ubademy_mobile.view_models.LoginActivityViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import com.ubademy_mobile.services.data.Credenciales
 import com.ubademy_mobile.services.data.UbademyToken
+import kotlinx.android.synthetic.main.activity_register.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -81,11 +82,11 @@ class LoginActivity : AppCompatActivity() {
                         okMessage!!.show()
 
                         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                        prefs.putString("email", TxtEmail.text.toString())
+                        prefs.putString("email", TxtEmail.editText!!.text.toString())
                         prefs.putString("provider", ProviderType.BASIC.toString())
                         prefs.apply()
 
-                        showHome(TxtEmail.text.toString(),ProviderType.BASIC)
+                        showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
                     }
                 }
             })
@@ -102,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setup() {
 
         BtnLogin.setOnClickListener {
-            if(TxtEmail.text.isNotEmpty() && TxtPassword.text.isNotEmpty()){
+            if(validarEmail() and validarContrasena()){
                 loginWithCredentials()
             }
         }
@@ -128,12 +129,8 @@ class LoginActivity : AppCompatActivity() {
     fun loginWithCredentials(){
 
         val credenciales = Credenciales(
-            grant_type = "",
-            username = TxtEmail.text.toString(),
-            password = TxtPassword.text.toString(),
-            scope = "",
-            client_id = "",
-            client_secret = ""
+            username = TxtEmail.editText!!.text.toString(),
+            password = TxtPassword.editText!!.text.toString()
         )
 
         viewModel.loginUsuario(credenciales)
@@ -205,5 +202,45 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun validarContrasena(): Boolean {
+
+        var result = true
+        if ( TxtPassword.editText?.text?.length == 0) {
+            TxtPassword.error = "Ingresa una contraseña"
+            TxtPassword.isErrorEnabled = true
+            result = false
+        }else{
+            TxtPassword.error = null
+            TxtPassword.isErrorEnabled = false
+        }
+
+        return result
+    }
+
+    fun validarEmail(): Boolean {
+
+        if ( TxtEmail.editText?.text?.length == 0 ) {
+            TxtEmail.error = "El email no puede estar vacío"
+            TxtEmail.isErrorEnabled = true
+            return false
+        }else{
+            TxtEmail.error = null
+            TxtEmail.isErrorEnabled = false
+        }
+
+        val regex = Regex("(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")
+        if (!regex.containsMatchIn(TxtEmail.editText!!.text)) {
+            TxtEmail.error = "Ingresa un correo válido"
+            TxtEmail.isErrorEnabled = true
+            return false
+        }else{
+            TxtEmail.error = null
+            TxtEmail.isErrorEnabled = false
+        }
+
+        return true
+
     }
 }
