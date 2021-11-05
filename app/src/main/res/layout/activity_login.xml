@@ -19,23 +19,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TxtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="36dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/color_primary"
-        android:ems="10"
-        android:hint="Ingrese su Email"
-        android:minHeight="48dp"
+        android:layout_marginEnd="41dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:backgroundTint="@color/color_primary"
+        app:errorEnabled="true"
+        android:ems="10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImgLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/ImgLogo"
+        >
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese su Email"
+            android:inputType="textEmailAddress"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TxtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,11 +53,22 @@
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/color_primary"
         android:ems="10"
-        android:hint="Ingrese su contraseña"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TxtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/TxtEmail"
+        app:passwordToggleEnabled="true"
+        app:errorEnabled="true"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese su contraseña"
+            android:inputType="textPassword"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/BtnLogin"
