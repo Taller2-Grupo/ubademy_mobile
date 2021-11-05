@@ -52,7 +52,16 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
 
         navigation_menu.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.perfil_menu -> Toast.makeText(applicationContext, "Perfil Cliqueado", Toast.LENGTH_LONG).show()
+                R.id.perfil_menu -> {
+                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+                    val email = prefs.getString("email", null)
+
+                    val intent = Intent(this@ListadoCursosActivity, PerfilActivity::class.java)
+                    // Le paso el email a PerfilActivity para que muestre el perfil de ese usuario.
+                    intent.putExtra("email", email)
+
+                    startActivity(intent)
+                }
                 R.id.home_menu -> Toast.makeText(applicationContext, "Home Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.crear_curso_menu -> startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
