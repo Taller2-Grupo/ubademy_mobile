@@ -23,8 +23,9 @@ class PerfilActivity : AppCompatActivity() {
 
         var email = intent.extras?.getString("email")
 
+        // Error, no se le paso el mail del usuario para mostrar ese perfil.
         if (email == null) {
-            // TODO: Error, no se le paso el mail del usuario para mostrar ese perfil.
+            finish()
         }
 
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
@@ -48,11 +49,18 @@ class PerfilActivity : AppCompatActivity() {
                 logResponse("PerfilUsuario", response)
 
                 if (response.isSuccessful){
-                    textView.text = "Perfil de ${response.body()?.data?.nombre} ${response.body()?.data?.apellido}"
+                    cargarDatos(response.body()?.data!!)
                 } else{
                     // TODO: Error al obtener la info
                 }
             }
         })
+    }
+
+    fun cargarDatos(usuario : Usuario){
+        titulo.text = "Perfil de ${usuario.nombre} ${usuario.apellido}"
+        txtNombre.text = usuario.nombre
+        txtApellido.text = usuario.apellido
+        txtFechaCreacion.text = usuario.fechaCreacion
     }
 }
