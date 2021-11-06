@@ -24,47 +24,66 @@ class PerfilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
+        cargarPantalla()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        cargarPantalla()
+    }
+
+    private fun cargarPantalla() {
         var email = intent.extras?.getString("email")
 
         // Error, no se le paso el mail del usuario para mostrar ese perfil.
         if (email == null) {
-            Toast.makeText(this@PerfilActivity, "Usuario no especificado.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@PerfilActivity, "Usuario no especificado.", Toast.LENGTH_LONG)
+                .show()
             finish()
         }
 
-        val retroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL).create(UsuarioService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL)
+            .create(UsuarioService::class.java)
         val call = retroInstance.obtenerUsuario(email!!)
 
-        call.enqueue(object: Callback<UsuarioResponse> {
-            override fun onFailure(call: Call<UsuarioResponse>, t: Throwable){
+        call.enqueue(object : Callback<UsuarioResponse> {
+            override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
                 logFailure("PerfilUsuario", t)
-                Toast.makeText(this@PerfilActivity, "Error al obtener el usuario.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@PerfilActivity,
+                    "Error al obtener el usuario.",
+                    Toast.LENGTH_LONG
+                ).show()
                 finish()
             }
 
-            override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>){
+            override fun onResponse(
+                call: Call<UsuarioResponse>,
+                response: Response<UsuarioResponse>
+            ) {
 
                 logResponse("PerfilUsuario", response)
 
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     cargarDatos(response.body()?.data!!)
-                } else{
+
+                    val prefs = getSharedPreferences(getString(R.string.prefs_file), MODE_PRIVATE)
+                    val emailLogueado = prefs.getString("email", null)
+
+                    if (email == emailLogueado) {
+                        titulo.text = "Mi perfil"
+                        btnEditarPerfil.visibility = VISIBLE
+                        btnEditarPerfil.setOnClickListener {
+                            startActivity(Intent(this@PerfilActivity, EditarPerfilActivity::class.java))
+                        }
+                    }
+                } else {
                     Toast.makeText(this@PerfilActivity, "Error al obtener el usuario.", Toast.LENGTH_LONG).show()
                     finish()
                 }
             }
         })
-
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val emailLogueado = prefs.getString("email", null)
-
-        if (email == emailLogueado) {
-            titulo.text = "Mi perfil"
-            btnEditarPerfil.visibility = VISIBLE
-            btnEditarPerfil.setOnClickListener {
-                startActivity(Intent(this@PerfilActivity, EditarPerfilActivity::class.java))
-            }
-        }
     }
 
     fun cargarDatos(usuario : Usuario){

@@ -1,6 +1,7 @@
 package com.ubademy_mobile.services.interfaces
 
 import com.ubademy_mobile.services.data.UbademyToken
+import com.ubademy_mobile.services.data.UpdateUsuarioRequest
 import com.ubademy_mobile.services.data.Usuario
 import com.ubademy_mobile.services.data.UsuarioResponse
 import retrofit2.Call
@@ -20,9 +21,9 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun crearUsuario(@Body params: Usuario): Call<Usuario>
 
-    @PATCH("usuarios/{usuario_id}")
+    @PATCH("usuarios/update/")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    fun actualizarUsuario(@Path("usuario_id") usuario_id: String, @Body params: Usuario): Call<Usuario>
+    fun actualizarUsuario(@Body params: UpdateUsuarioRequest): Call<UsuarioResponse>
 
     @DELETE("usuarios/{usuario_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
