@@ -104,6 +104,7 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
                 R.id.home_menu -> Toast.makeText(applicationContext, "Home Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.crear_curso_menu -> startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
+                R.id.upload_menu -> startActivity(Intent(this@ListadoCursosActivity, SubirArchivosActivity::class.java))
                 R.id.logout_menu -> logout()
             }
             true

@@ -3,4 +3,9 @@
     <string name="prefs_file">Ubademy.preferFile</string>
     <string name="open_menu">Open</string>
     <string name="close_menu">Close</string>
+    <string name="app_name">MultipleImageUploadFirebaseKotlin</string>
+    <string name="title_activity_main">Firebase Kotlin</string>
+    <string name="subtitle_activity_main">Upload FIles</string>
+    <string name="all">TODO</string>
+    <string name="upload">SUBIR ARCHIVOS</string>
 </resources>

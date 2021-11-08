@@ -26,8 +26,20 @@
         <entry key="..\:/Users/lauta/Desktop/Taller 2/ubademy_mobile/app/src/main/res/layout/header_menu.xml" value="0.33350357507660877" />
         <entry key="..\:/Users/lauta/Desktop/Taller 2/ubademy_mobile/app/src/main/res/layout/recycler_row_list.xml" value="0.33350357507660877" />
         <entry key="..\:/Users/lauta/Desktop/Taller 2/ubademy_mobile/app/src/main/res/menu/main_menu.xml" value="0.33350357507660877" />
+        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.26974358974358975" />
+        <entry key="app/src/main/res/drawable/ic_file_upload.xml" value="0.26974358974358975" />
+        <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.26974358974358975" />
+        <entry key="app/src/main/res/layout/activity_crear_curso.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/activity_editar_perfil.xml" value="0.12537993920972645" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.21748993676096331" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.23305767121661766" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/activity_subir_archivos.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/header_menu.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/layout/recycler_row_list.xml" value="0.12537993920972645" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.17037037037037037" />
       </map>
     </option>
   </component>
