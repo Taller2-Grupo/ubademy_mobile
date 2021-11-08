@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,14 +22,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RecyclerViewAdapter
+import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.UsuarioResponse
+import com.ubademy_mobile.services.interfaces.UsuarioService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.ListadoCursosActivityViewModel
+import com.ubademy_mobile.view_models.tools.logFailure
+import com.ubademy_mobile.view_models.tools.logResponse
 import kotlinx.android.synthetic.main.activity_listado_cursos.*
+import kotlinx.android.synthetic.main.activity_perfil.*
+import kotlinx.android.synthetic.main.header_menu.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClickListener {
 
     lateinit var recyclerViewAdapter: RecyclerViewAdapter
     lateinit var viewModel: ListadoCursosActivityViewModel
-
     lateinit var toogle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +52,35 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
         viewModel.getCursos()
 
         setup()
+
+        // TODO: Sacar el nombre del jwt cuando se agregue.
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        if (email != null){
+            val retroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL)
+                .create(UsuarioService::class.java)
+            val call = retroInstance.obtenerUsuario(email!!)
+
+            call.enqueue(object : Callback<UsuarioResponse> {
+                override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
+                    logFailure("ListadoCursos", t)
+                }
+
+                override fun onResponse(
+                    call: Call<UsuarioResponse>,
+                    response: Response<UsuarioResponse>
+                ) {
+
+                    logResponse("PerfilUsuario", response)
+
+                    if (response.isSuccessful) {
+                        val headerLayout = navigation_menu.getHeaderView(0) // 0-index header
+                        headerLayout.name_user_menu.text = response.body()?.data!!.nombre
+                    }
+                }
+            })
+        }
     }
 
     private fun setup() {
@@ -52,7 +92,15 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
 
         navigation_menu.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.perfil_menu -> Toast.makeText(applicationContext, "Perfil Cliqueado", Toast.LENGTH_LONG).show()
+                R.id.perfil_menu -> {
+                    val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+                    val email = prefs.getString("email", null)
+                    val intent = Intent(this@ListadoCursosActivity, PerfilActivity::class.java)
+                    // Le paso el email a PerfilActivity para que muestre el perfil de ese usuario.
+                    intent.putExtra("email", email)
+
+                    startActivity(intent)
+                }
                 R.id.home_menu -> Toast.makeText(applicationContext, "Home Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Cliqueado", Toast.LENGTH_LONG).show()
                 R.id.crear_curso_menu -> startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
@@ -106,9 +154,9 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
     }
 
     fun logout(){
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.clear()
-        prefs.apply()
+        val prefsEditor = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+        prefsEditor.clear()
+        prefsEditor.apply()
 
         FirebaseAuth.getInstance().signOut()
         onBackPressed()

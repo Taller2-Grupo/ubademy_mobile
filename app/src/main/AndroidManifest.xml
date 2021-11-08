@@ -10,13 +10,19 @@
         android:label="@string/Ubademy"
         android:roundIcon="@drawable/ubademy"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar" >
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity
+            android:name=".activities.EditarPerfilActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.PerfilActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="true" />
         <activity
             android:name=".activities.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
