@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         analytics.logEvent("InitScreen", bundle)
 
         setup()
-        session()
+        checkSession()
 
         observarStatusBar()
         observarCredenciales()
@@ -48,9 +48,10 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
 
         loginLayout.visibility = View.VISIBLE
+        checkSession()
     }
 
-    private fun session() {
+    private fun checkSession() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
         val provider = prefs.getString("provider", null)
@@ -76,17 +77,13 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getTokenObservable().observe(this,
             {
                 if(it == null){
+                    clearSession()
                     showAlert();
                 } else{
                     it.access_token?.run{
                         okMessage!!.show()
-
-                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-                        prefs.putString("email", TxtEmail.editText!!.text.toString())
-                        prefs.putString("provider", ProviderType.BASIC.toString())
-                        prefs.apply()
-
                         showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
+                        clearTextFields()
                     }
                 }
             })
@@ -133,7 +130,10 @@ class LoginActivity : AppCompatActivity() {
             password = TxtPassword.editText!!.text.toString()
         )
 
+        // Llamada al back
         viewModel.loginUsuario(credenciales)
+
+        initSession(credenciales.username,ProviderType.BASIC.toString())
     }
 
     fun loginWithGoogle(view: android.view.View) {
@@ -177,19 +177,17 @@ class LoginActivity : AppCompatActivity() {
                                             firebase_token = idToken
                                         )
 
-                                        viewModel.swap(ubademyToken)
-
                                         // Send token to your backend via HTTPS
-                                        // ...
+                                        viewModel.swap(ubademyToken)
+                                        initSession(account.email!!.toString(), ProviderType.GOOGLE.toString())
+
                                     } else {
                                         // Handle error -> task.getException();
                                     }
 
                                 }
 
-
-                            Log.d("token => ",token.toString())
-                            showHome(account.email ?: "", ProviderType.GOOGLE)
+                            Log.d("firebase_token => ", token.toString())
 
                         }else{
                             showAlert()
@@ -242,5 +240,26 @@ class LoginActivity : AppCompatActivity() {
 
         return true
 
+    }
+
+    fun initSession(email : String, provider: String){
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+        prefs.putString("email", email)
+        prefs.putString("provider",provider)
+        prefs.apply()
+    }
+
+    private fun clearSession() {
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+        prefs.clear()
+        prefs.apply()
+    }
+
+    fun clearTextFields(){
+
+        TxtEmail.clearFocus()
+        TxtPassword.clearFocus()
+        TxtEmail.editText!!.text.clear()
+        TxtPassword.editText!!.text.clear()
     }
 }
