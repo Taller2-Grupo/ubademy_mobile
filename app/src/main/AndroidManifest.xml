@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
+            android:name=".activities.VisualizarImagenesActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.SubirArchivosActivity"
             android:exported="true" />
         <activity

@@ -36,10 +36,11 @@
                     android:icon="@drawable/ic_baseline_format_list_bulleted_24"
                     android:title="Mis Cursos">
                 </item>
+
                 <item
-                    android:id="@+id/upload_menu"
+                    android:id="@+id/visualizar_menu"
                     android:icon="@drawable/ic_baseline_cloud_upload_24"
-                    android:title="Subir Archivos">
+                    android:title="Visualizar Archivos">
                 </item>
             </menu>
         </item>

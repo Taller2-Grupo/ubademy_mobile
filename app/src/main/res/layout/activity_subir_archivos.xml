@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,8 +25,8 @@
             android:layout_gravity="center"
             android:contentDescription="@string/all"
             app:srcCompat="@drawable/ic_baseline_cloud_upload_24"
-            tools:ignore="VectorDrawableCompat"
-            app:tint="@color/color_secondary" />
+            app:tint="@color/color_secondary"
+            tools:ignore="VectorDrawableCompat" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,5 +35,16 @@
             android:text="@string/upload"
             android:textSize="22sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/siguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siguiente"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.806" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

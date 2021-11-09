@@ -18,7 +18,8 @@ class SubirArchivosActivity : AppCompatActivity() {
     private val fileResult = 1
 
     private val database = Firebase.database
-    private val myRef = database.getReference("user")
+
+    //private val myRef = database.getReference(intent.getStringExtra("CursoId"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,10 @@ class SubirArchivosActivity : AppCompatActivity() {
 
         uploadImageView.setOnClickListener {
             fileManager()
+        }
+
+        siguiente.setOnClickListener{
+            finish()
         }
     }
 
@@ -60,7 +65,10 @@ class SubirArchivosActivity : AppCompatActivity() {
     }
 
     private fun fileUpload(mUri: Uri) {
-        val folder: StorageReference = FirebaseStorage.getInstance().reference.child("User")
+        val cursoId = intent.getStringExtra("CursoId")
+        if (cursoId == null) return;
+        val myRef = database.getReference(cursoId)
+        val folder: StorageReference = FirebaseStorage.getInstance().reference.child(cursoId)
         val path =mUri.lastPathSegment.toString()
         val fileName: StorageReference = folder.child(path.substring(path.lastIndexOf('/')+1))
 
