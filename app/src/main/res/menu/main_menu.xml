@@ -38,7 +38,7 @@
                 </item>
                 <item
                     android:id="@+id/upload_menu"
-                    android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+                    android:icon="@drawable/ic_baseline_cloud_upload_24"
                     android:title="Subir Archivos">
                 </item>
             </menu>
@@ -47,6 +47,7 @@
 
     <item
         android:id="@+id/logout_menu"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
         android:title="Cerrar Sesión">
 
     </item>
