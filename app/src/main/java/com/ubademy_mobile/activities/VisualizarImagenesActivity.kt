@@ -25,8 +25,11 @@ class VisualizarImagenesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_visualizar_imagenes)
 
+        var idCurso = intent.getStringExtra("cursoId").toString()
+
+
         val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference.child("User")
+        val storageRef = storage.reference.child(idCurso)
         val imageList: ArrayList<Item> = ArrayList()
         progressBar.visibility = View.VISIBLE
 

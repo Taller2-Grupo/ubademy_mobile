@@ -85,7 +85,6 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
         toogle.syncState()
 
         setupMainMenu()
-        //setupBottomMenuNav()
     }
 
     fun goToMiPerfil(){
@@ -105,21 +104,9 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
                 R.id.home_menu -> Toast.makeText(applicationContext, "Home Clickeado", Toast.LENGTH_LONG).show()
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Clickeado", Toast.LENGTH_LONG).show()
                 R.id.crear_curso_menu -> startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
-                //R.id.upload_menu -> startActivity(Intent(this@ListadoCursosActivity, SubirArchivosActivity::class.java))
-                R.id.visualizar_menu -> startActivity(Intent(this@ListadoCursosActivity, VisualizarImagenesActivity::class.java))
                 R.id.logout_menu -> logout()
             }
             true
-        }
-    }
-
-    private fun setupBottomMenuNav(){
-        bottom_menu_navigation.setOnNavigationItemReselectedListener { it ->
-            when(it.itemId){
-                R.id.bottom_menu_perfil -> goToMiPerfil()
-                R.id.bottom_menu_home -> startActivity(Intent(this, ListadoCursosActivity::class.java))
-                R.id.bottom_menu_upload -> startActivity(Intent(this, SubirArchivosActivity::class.java))
-            }
         }
     }
 
@@ -154,9 +141,12 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
     }
 
     override fun onItemEditClick(curso: Curso) {
-        val intent = Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java)
+        val intent = Intent(this@ListadoCursosActivity, ViewCursoActivity::class.java)
         intent.putExtra("curso_id", curso.id)
-        startActivityForResult(intent, 1000)
+        intent.putExtra("descripcion", curso.descripcion)
+        intent.putExtra("titulo", curso.titulo)
+        //usuarios
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

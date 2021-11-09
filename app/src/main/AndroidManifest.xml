@@ -47,6 +47,9 @@
         <activity
             android:name=".activities.ListadoCursosActivity"
             android:exported="true" />
+        <activity
+            android:name=".activities.ViewCursoActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
