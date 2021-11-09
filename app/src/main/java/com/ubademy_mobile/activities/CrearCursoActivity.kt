@@ -1,5 +1,7 @@
 package com.ubademy_mobile.activities
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -40,7 +42,9 @@ class CrearCursoActivity : AppCompatActivity() {
 
                 Toast.makeText(this@CrearCursoActivity, "Curso creado correctamente (ID: ${it.id})", Toast.LENGTH_LONG).show()
 
-
+                val intent = Intent(this@CrearCursoActivity, SubirArchivosActivity::class.java)
+                intent.putExtra("CursoId", it.id)
+                startActivity(intent)
                 finish()
             }
         })
@@ -50,7 +54,9 @@ class CrearCursoActivity : AppCompatActivity() {
         val titulo = TxtTituloNuevoCurso.text.toString()
         val descripcion = TxtDescripcionNuevoCurso.text.toString()
 
-        val curso = Curso(null, "3fa85f64-5717-4562-b3fc-2c963f66afa6", titulo, descripcion, null, null, null)
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+
+        val curso = Curso(null, prefs.getString("email", null), titulo, descripcion, null, null, null)
 
         viewModel.crearCurso(curso)
     }

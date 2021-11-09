@@ -38,6 +38,7 @@
         android:filterTouchesWhenObscured="false"
         android:padding="?attr/actionBarSize" />
 
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

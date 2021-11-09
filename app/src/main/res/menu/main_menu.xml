@@ -36,12 +36,19 @@
                     android:icon="@drawable/ic_baseline_format_list_bulleted_24"
                     android:title="Mis Cursos">
                 </item>
+
+                <item
+                    android:id="@+id/visualizar_menu"
+                    android:icon="@drawable/ic_baseline_cloud_upload_24"
+                    android:title="Visualizar Archivos">
+                </item>
             </menu>
         </item>
 
 
     <item
         android:id="@+id/logout_menu"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
         android:title="Cerrar Sesión">
 
     </item>
