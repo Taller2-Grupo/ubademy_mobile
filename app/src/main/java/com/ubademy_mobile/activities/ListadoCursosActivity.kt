@@ -141,10 +141,15 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
     }
 
     override fun onItemEditClick(curso: Curso) {
-        val intent = Intent(this@ListadoCursosActivity, ViewCursoActivity::class.java)
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        val intent = Intent(this@ListadoCursosActivity, VerCursoActivity::class.java)
         intent.putExtra("curso_id", curso.id)
         intent.putExtra("descripcion", curso.descripcion)
         intent.putExtra("titulo", curso.titulo)
+        intent.putExtra("usuario", email)
         //usuarios
         startActivity(intent)
     }
