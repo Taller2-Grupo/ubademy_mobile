@@ -35,6 +35,8 @@ class VisualizarImagenesActivity : AppCompatActivity() {
 
         val listAllTask: Task<ListResult> = storageRef.listAll()
         listAllTask.addOnCompleteListener { result ->
+            progressBar.visibility = View.GONE
+
             val items: List<StorageReference> = result.result!!.items
             //add cycle for add image url to list
             items.forEachIndexed { index, item ->
@@ -44,10 +46,20 @@ class VisualizarImagenesActivity : AppCompatActivity() {
                 }.addOnCompleteListener {
                     recyclerView.adapter = ImageAdapter(imageList, this)
                     recyclerView.layoutManager = LinearLayoutManager(this)
-                    progressBar.visibility = View.GONE
+
+                    if(imageList.isEmpty()) showEmptyAlert()
+                    else hideEmptyAlert()
                 }
             }
         }
+    }
+
+    private fun hideEmptyAlert() {
+        //TODO("Not yet implemented")
+    }
+
+    private fun showEmptyAlert() {
+        //TODO("Not yet implemented")
     }
 
 }
