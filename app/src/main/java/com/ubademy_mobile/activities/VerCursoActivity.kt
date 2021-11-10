@@ -84,6 +84,12 @@ class VerCursoActivity: AppCompatActivity() {
             startActivity(imagesIntent)
         }
 
+        var inscriptosIntent = Intent(this@VerCursoActivity, VerInscriptosActivity::class.java)
+        inscriptosIntent.putExtra("cursoId", idCurso)
+        BtnVerAlumnos.setOnClickListener {
+            startActivity(inscriptosIntent)
+        }
+
         setBotonDeInscripcion()
 
     }
