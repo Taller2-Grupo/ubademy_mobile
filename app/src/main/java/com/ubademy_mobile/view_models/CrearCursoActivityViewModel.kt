@@ -3,6 +3,7 @@ package com.ubademy_mobile.view_models
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ubademy_mobile.services.Curso
+import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
@@ -56,7 +57,7 @@ class CrearCursoActivityViewModel: ViewModel() {
         })
     }
 
-    fun actualizarCurso(curso_id: String, curso: Curso){
+    fun actualizarCurso(curso_id: String, curso: EditarCurso){
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
         val call = retroInstance.actualizarCurso(curso_id, curso)
         call.enqueue(object: Callback<Curso> {

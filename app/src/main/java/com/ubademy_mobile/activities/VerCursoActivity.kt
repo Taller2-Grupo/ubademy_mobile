@@ -84,6 +84,15 @@ class VerCursoActivity: AppCompatActivity() {
             startActivity(imagesIntent)
         }
 
+        var editIntent = Intent(this@VerCursoActivity, EditarCursoActivity::class.java)
+        editIntent.putExtra("cursoId", idCurso)
+        editIntent.putExtra("titulo", titulo)
+        editIntent.putExtra("descripcion", descripcion)
+
+        BtnEditarCurso.setOnClickListener {
+            startActivity(editIntent)
+        }
+
         setBotonDeInscripcion()
 
     }

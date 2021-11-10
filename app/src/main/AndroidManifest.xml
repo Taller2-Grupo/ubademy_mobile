@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
+            android:name=".activities.EditarCursoActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.VisualizarImagenesActivity"
             android:exported="true" />
         <activity
