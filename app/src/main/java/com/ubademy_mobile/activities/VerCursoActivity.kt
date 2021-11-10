@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -50,7 +51,7 @@ class VerCursoActivity: AppCompatActivity() {
             // Actualizar otros campos ...
 
             setBotonDeEdicion(it)
-
+            setBotonDeVerAlumnos(it)
         })
     }
 
@@ -109,10 +110,8 @@ class VerCursoActivity: AppCompatActivity() {
             startActivity(imagesIntent)
         }
 
-        var inscriptosIntent = Intent(this@VerCursoActivity, VerInscriptosActivity::class.java)
-        inscriptosIntent.putExtra("cursoId", idCurso)
         BtnVerAlumnos.setOnClickListener {
-            startActivity(inscriptosIntent)
+            Toast.makeText(this,"No se pudo recuperar el curso",Toast.LENGTH_LONG).show()
         }
 
         var editIntent = Intent(this@VerCursoActivity, EditarCursoActivity::class.java)
@@ -126,6 +125,18 @@ class VerCursoActivity: AppCompatActivity() {
         }
 
         setBotonDeInscripcion()
+
+    }
+
+    private fun setBotonDeVerAlumnos(curso: Curso){
+
+        val inscriptosIntent = Intent(this@VerCursoActivity, VerInscriptosActivity::class.java)
+        inscriptosIntent.putExtra("cursoId", idCurso)
+        inscriptosIntent.putExtra("ownerId", curso.id_creador.toString())
+
+        BtnVerAlumnos.setOnClickListener {
+            startActivity(inscriptosIntent)
+        }
 
     }
 
