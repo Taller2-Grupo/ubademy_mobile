@@ -1,6 +1,7 @@
 package com.ubademy_mobile.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.view_models.VerCursoActivityViewModel
 import kotlinx.android.synthetic.main.activity_ver_curso.*
 
@@ -46,6 +48,8 @@ class VerCursoActivity: AppCompatActivity() {
             LblNombreCursoView.setText(it.titulo)
             LblDescripcionCursoView.setText(it.descripcion)
             // Actualizar otros campos ...
+
+            setBotonDeEdicion(it)
 
         })
     }
@@ -123,6 +127,19 @@ class VerCursoActivity: AppCompatActivity() {
 
         setBotonDeInscripcion()
 
+    }
+
+    private fun setBotonDeEdicion(curso: Curso) {
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        if(email == null) Log.e("VerCursos","Usuario no logueado")
+        else{
+            if(email == curso.id_creador) {
+                BtnEditarCurso.visibility = View.VISIBLE
+            }
+        }
     }
 
 
