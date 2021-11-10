@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ubademy_mobile.R
 import kotlinx.android.synthetic.main.recycler_inscriptos_list.view.*
 
-class InscriptosRecyclerViewAdapter() :
+class InscriptosRecyclerViewAdapter( val clickListener: OnItemClickListener) :
     RecyclerView.Adapter<InscriptosRecyclerViewAdapter.ViewHolder>() {
 
     var inscriptos = mutableListOf<String>()
@@ -37,9 +37,15 @@ class InscriptosRecyclerViewAdapter() :
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.TxtInscripto.text = inscriptos[position]
+        viewHolder.itemView.setOnClickListener {
+            clickListener.onItemClick(inscriptos[position])
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = inscriptos.size
 
+    interface OnItemClickListener{
+        fun onItemClick(inscripto: String)
+    }
 }

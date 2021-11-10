@@ -1,5 +1,7 @@
 package com.ubademy_mobile.activities
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,11 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.InscriptosRecyclerViewAdapter
 import com.ubademy_mobile.view_models.VerInscriptosActivityViewModel
 import kotlinx.android.synthetic.main.activity_ver_inscriptos.*
 
-class VerInscriptosActivity : AppCompatActivity() {
+class VerInscriptosActivity : AppCompatActivity(), InscriptosRecyclerViewAdapter.OnItemClickListener {
 
 
     private lateinit var viewModel: VerInscriptosActivityViewModel
@@ -60,9 +63,18 @@ class VerInscriptosActivity : AppCompatActivity() {
     private fun initRecyclerView(){
         recyclerViewInscriptos.apply {
             layoutManager = LinearLayoutManager(this@VerInscriptosActivity)
-            inscriptosAdapter = InscriptosRecyclerViewAdapter()
+            inscriptosAdapter = InscriptosRecyclerViewAdapter(this@VerInscriptosActivity)
             adapter = inscriptosAdapter
         }}
 
+
+    override fun onItemClick(inscripto: String) {
+
+        val intent = Intent(this@VerInscriptosActivity, PerfilActivity::class.java)
+        // Le paso el email a PerfilActivity para que muestre el perfil de ese usuario.
+        intent.putExtra("email", inscripto)
+
+        startActivity(intent)
+    }
 
 }
