@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
 import com.ubademy_mobile.view_models.VerCursoActivityViewModel
+import kotlinx.android.synthetic.main.activity_editar_curso.*
 import kotlinx.android.synthetic.main.activity_ver_curso.*
 
 class VerCursoActivity: AppCompatActivity() {
@@ -36,7 +37,16 @@ class VerCursoActivity: AppCompatActivity() {
 
     private fun observarCurso(){
         viewModel.getCursoObservable().observe(this,{
-            Log.d("observar","observando")
+
+            if (it == null ){
+                Log.e("Overservar curso","Curso nulo")
+                return@observe
+            }
+
+            LblNombreCursoView.setText(it.titulo)
+            LblDescripcionCursoView.setText(it.descripcion)
+            // Actualizar otros campos ...
+
         })
     }
 
@@ -88,6 +98,16 @@ class VerCursoActivity: AppCompatActivity() {
         inscriptosIntent.putExtra("cursoId", idCurso)
         BtnVerAlumnos.setOnClickListener {
             startActivity(inscriptosIntent)
+        }
+
+        var editIntent = Intent(this@VerCursoActivity, EditarCursoActivity::class.java)
+        editIntent.putExtra("cursoId", idCurso)
+        editIntent.putExtra("titulo", titulo)
+        editIntent.putExtra("descripcion", descripcion)
+
+        BtnEditarCurso.setOnClickListener {
+            startActivity(editIntent)
+
         }
 
         setBotonDeInscripcion()

@@ -77,6 +77,12 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+
+        viewModel.getCursos()
+    }
+
     private fun setup() {
         setSupportActionBar(main_toolbar)
 

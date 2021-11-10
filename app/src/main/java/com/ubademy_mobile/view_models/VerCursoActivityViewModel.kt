@@ -70,12 +70,12 @@ class VerCursoActivityViewModel: ViewModel() {
             override fun onFailure(call: Call<List<String>>, t: Throwable){
                 progressBar.postValue(false)
                 inscriptos.postValue(null)
-                logFailure("Obtener curso" , t)
+                logFailure("obtenerInscriptos" , t)
             }
 
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>){
                 progressBar.postValue(false)
-                logResponse("Obtener curso", response)
+                logResponse("obtenerInscriptos", response)
 
                 if(response.isSuccessful){
                     inscriptos.postValue(response.body())

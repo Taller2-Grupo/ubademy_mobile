@@ -13,7 +13,10 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
             android:name=".activities.VerInscriptosActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".activities.EditarCursoActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.VisualizarImagenesActivity"
             android:exported="true" />
