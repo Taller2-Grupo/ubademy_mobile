@@ -36,6 +36,10 @@ class VerCursoActivityViewModel: ViewModel() {
         return inscriptos
     }
 
+    fun getProgressBarObservable(): MutableLiveData<Boolean>{
+        return progressBar
+    }
+
     fun getCurso(id: String){
 
         progressBar.postValue(true)
@@ -64,6 +68,8 @@ class VerCursoActivityViewModel: ViewModel() {
 
     fun obtenerInscriptos(curso_id: String){
 
+        progressBar.postValue(true)
+
         val call = retroInstance.obtenerInscriptos(curso_id)
 
         call.enqueue(object: Callback<List<String>> {
@@ -87,6 +93,8 @@ class VerCursoActivityViewModel: ViewModel() {
     }
 
     fun inscribirse(usuario: String) {
+
+        progressBar.postValue(true)
 
         val call = retroInstance.inscribirUsuario(curso.value?.id.toString(),InscripcionRequest(usuario))
 
@@ -116,17 +124,23 @@ class VerCursoActivityViewModel: ViewModel() {
 
     fun desinscribirse(usuario: String) {
 
+        progressBar.postValue(true)
+
         val call = retroInstance.desinscribirUsuario(curso.value?.id.toString(),InscripcionRequest(usuario))
 
         Log.d("Desinscripcion","Se desinscribe a ${usuario} de ${curso.value?.id.toString()}")
 
         call.enqueue(object: Callback<Cursada> {
             override fun onFailure(call: Call<Cursada>, t: Throwable){
+
+                progressBar.postValue(false)
                 cursada.postValue(null)
                 logFailure("Desinscripcion" , t)
             }
 
             override fun onResponse(call: Call<Cursada>, response: Response<Cursada>){
+
+                progressBar.postValue(false)
 
                 logResponse("Desinscripcion", response)
 

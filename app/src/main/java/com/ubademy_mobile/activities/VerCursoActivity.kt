@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
 import com.ubademy_mobile.view_models.VerCursoActivityViewModel
-import kotlinx.android.synthetic.main.activity_editar_curso.*
 import kotlinx.android.synthetic.main.activity_ver_curso.*
 
 class VerCursoActivity: AppCompatActivity() {
@@ -62,6 +62,16 @@ class VerCursoActivity: AppCompatActivity() {
         })
     }
 
+
+    private fun observarProgressBar() {
+
+        viewModel.getProgressBarObservable().observe(this,{
+
+                if(it) progressBar.visibility= View.VISIBLE
+                else progressBar.visibility= View.GONE
+        })
+    }
+
     private fun observarInscriptos(){
 
         val usuario = intent.getStringExtra("usuario").toString()
@@ -81,6 +91,7 @@ class VerCursoActivity: AppCompatActivity() {
         observarCursada()
         observarCurso()
         observarInscriptos()
+        observarProgressBar()
 
         var titulo = intent.getStringExtra("titulo").toString()
         var descripcion = intent.getStringExtra("descripcion").toString()
