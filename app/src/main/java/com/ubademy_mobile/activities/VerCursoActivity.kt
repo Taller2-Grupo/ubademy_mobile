@@ -1,15 +1,18 @@
 package com.ubademy_mobile.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.view_models.VerCursoActivityViewModel
 import kotlinx.android.synthetic.main.activity_ver_curso.*
 
@@ -47,6 +50,8 @@ class VerCursoActivity: AppCompatActivity() {
             LblDescripcionCursoView.setText(it.descripcion)
             // Actualizar otros campos ...
 
+            setBotonDeEdicion(it)
+            setBotonDeVerAlumnos(it)
         })
     }
 
@@ -105,10 +110,8 @@ class VerCursoActivity: AppCompatActivity() {
             startActivity(imagesIntent)
         }
 
-        var inscriptosIntent = Intent(this@VerCursoActivity, VerInscriptosActivity::class.java)
-        inscriptosIntent.putExtra("cursoId", idCurso)
         BtnVerAlumnos.setOnClickListener {
-            startActivity(inscriptosIntent)
+            Toast.makeText(this,"No se pudo recuperar el curso",Toast.LENGTH_LONG).show()
         }
 
         var editIntent = Intent(this@VerCursoActivity, EditarCursoActivity::class.java)
@@ -123,6 +126,31 @@ class VerCursoActivity: AppCompatActivity() {
 
         setBotonDeInscripcion()
 
+    }
+
+    private fun setBotonDeVerAlumnos(curso: Curso){
+
+        val inscriptosIntent = Intent(this@VerCursoActivity, VerInscriptosActivity::class.java)
+        inscriptosIntent.putExtra("cursoId", idCurso)
+        inscriptosIntent.putExtra("ownerId", curso.id_creador.toString())
+
+        BtnVerAlumnos.setOnClickListener {
+            startActivity(inscriptosIntent)
+        }
+
+    }
+
+    private fun setBotonDeEdicion(curso: Curso) {
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        if(email == null) Log.e("VerCursos","Usuario no logueado")
+        else{
+            if(email == curso.id_creador) {
+                BtnEditarCurso.visibility = View.VISIBLE
+            }
+        }
     }
 
 

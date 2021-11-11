@@ -2,16 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/TxtViewNombre"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:text="Nombre y apellido"/>
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView android:id="@+id/TxtViewNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:text="Nombre y apellido"/>
+
+        <ImageView
+            android:id="@+id/ImgOwner"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/owner_icon"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="20dp"
+            />
+
+    </LinearLayout>
+
 
     <View
         android:id="@+id/divider"
