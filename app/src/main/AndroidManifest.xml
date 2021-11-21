@@ -12,7 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
+            android:name=".activities.MessagingActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.VerInscriptosActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.Chat2Activity"
             android:exported="true" />
         <activity
             android:name=".activities.EditarCursoActivity"

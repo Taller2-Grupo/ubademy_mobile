@@ -39,6 +39,17 @@
             </menu>
         </item>
 
+    <item
+        android:title="Mensajería">
+        <menu>
+            <item
+                android:id="@+id/chat_menu"
+                android:icon="@drawable/ic_baseline_add_24"
+                android:title="Mensajes privados">
+            </item>
+        </menu>
+    </item>
+
 
     <item
         android:id="@+id/logout_menu"

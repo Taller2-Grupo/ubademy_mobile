@@ -1,9 +1,6 @@
 package com.ubademy_mobile.services.interfaces
 
-import com.ubademy_mobile.services.data.UbademyToken
-import com.ubademy_mobile.services.data.UpdateUsuarioRequest
-import com.ubademy_mobile.services.data.Usuario
-import com.ubademy_mobile.services.data.UsuarioResponse
+import com.ubademy_mobile.services.data.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,7 +8,7 @@ interface UsuarioService {
 
     @GET("usuarios")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    fun obtenerUsuarios(): Call<List<Usuario>>
+    fun obtenerUsuarios(): Call<GetUsersResponse>
 
     @GET("usuarios/{usuario_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
