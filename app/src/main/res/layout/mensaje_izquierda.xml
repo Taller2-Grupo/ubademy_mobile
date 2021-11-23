@@ -22,6 +22,7 @@
         android:padding="8dp"
         android:layout_centerVertical="true"
         android:textSize="18sp"
+        android:textColor="#fff"
         />
 
 
