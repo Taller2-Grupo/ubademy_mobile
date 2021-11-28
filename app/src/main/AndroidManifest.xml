@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ubademy_mobile">
         <activity
+            android:name=".activities.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MessagingActivity"
             android:exported="true" />
         <activity
