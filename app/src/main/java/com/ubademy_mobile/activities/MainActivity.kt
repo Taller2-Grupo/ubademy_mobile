@@ -4,22 +4,33 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.ubademy_mobile.Fragments.ListadoCursosFragment
 import com.ubademy_mobile.R
+import com.ubademy_mobile.utils.SearchPreferences
 import com.ubademy_mobile.view_models.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_menu.view.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
     lateinit var viewModel: MainActivityViewModel
     lateinit var toogle: ActionBarDrawerToggle
+
+    private var searchMode = "BASIC"
+    lateinit var searchPreferences : SearchPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +74,43 @@ class MainActivity : AppCompatActivity() {
 
         setupMainMenu()
 
+
+        searchPreferences = SearchPreferences(this)
+        initSearchBox()
+
+        BtnFlecha.setOnClickListener {
+            toggleSearchMode()
+        }
+
+        EditTxTBuscarCurso.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+                searchPreferences.patron = s.toString()
+                viewModel.filtrarCursos(searchPreferences)
+            }
+        })
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.suscripcion,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spnCategorias.adapter = adapter
+            spnCategorias.onItemSelectedListener = this
+        }
+
     }
 
     fun goToMiPerfil(){
@@ -105,4 +153,60 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    fun initSearchBox(){
+        checkBoxIdioma.isChecked = true
+        checkBoxProgramacion.isChecked = true
+        checkBoxMultimedia.isChecked = true
+
+        checkBoxIdioma.setOnClickListener{
+            if(it is CheckBox)
+                if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_idioma))
+                else  searchPreferences.categorias.remove(getString(R.string.categoria_idioma))
+            viewModel.filtrarCursos(searchPreferences)
+        }
+
+        checkBoxProgramacion.setOnClickListener{
+            if(it is CheckBox)
+                if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_programacion))
+                else  searchPreferences.categorias.remove(getString(R.string.categoria_programacion))
+            viewModel.filtrarCursos(searchPreferences)
+        }
+
+        checkBoxMultimedia.setOnClickListener{
+            if(it is CheckBox)
+                if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_multimedia))
+                else  searchPreferences.categorias.remove(getString(R.string.categoria_multimedia))
+            viewModel.filtrarCursos(searchPreferences)
+        }
+    }
+
+    fun toggleSearchMode(){
+
+        if(searchMode == "BASIC"){
+
+            BtnFlecha.text = "▼"
+            SearchBox.visibility = View.VISIBLE
+            searchMode = "PRO"
+
+        }else {
+
+            BtnFlecha.text = "▶"
+            SearchBox.visibility = View.GONE
+            searchMode = "BASIC"
+        }
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().lowercase()
+        viewModel.filtrarCursos(searchPreferences)
+
+        Log.d("Busqueda filtrada", searchPreferences.toString())
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
 }

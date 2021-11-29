@@ -60,9 +60,6 @@
             android:name=".activities.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ListadoCursosActivity"
-            android:exported="true" />
-        <activity
             android:name=".activities.VerCursoActivity"
             android:exported="true" />
     </application>

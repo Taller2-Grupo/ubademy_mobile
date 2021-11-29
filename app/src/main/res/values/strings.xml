@@ -13,13 +13,13 @@
 
     <!-- Parametros de un curso -->
 
-    <string-array name="suscripcion" >
+    <string-array name="suscripcion">
         <item>Todos</item>
         <item>Gratuito</item>
         <item>Pago</item>
     </string-array>
 
-    <string-array name="categorias" >
+    <string-array name="categorias">
         <item>Idioma</item>
         <item>Programacion</item>
         <item>Multimedia</item>
