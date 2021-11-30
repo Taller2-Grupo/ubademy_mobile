@@ -64,7 +64,7 @@ class ChatsFragment(var userid: String) : Fragment() {
         val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
         val call = retroInstance.obtenerUsuarios()
-        Log.d("ccc", "cccc")
+
         call.enqueue(object: Callback<GetUsersResponse> {
             override fun onFailure(call: Call<GetUsersResponse>, t: Throwable){
                 Log.d("onFailure", t.localizedMessage)
