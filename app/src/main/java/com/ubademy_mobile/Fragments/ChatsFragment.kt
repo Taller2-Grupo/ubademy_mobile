@@ -25,7 +25,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChatsFragment(var userid: String) : Fragment() {
+class ChatsFragment(var userid: String, var userFullName: String) : Fragment() {
     lateinit var rView: RecyclerView
     lateinit var adapter: UserAdapter
     private val mUsuarios: MutableList<Usuario> = ArrayList()
@@ -82,7 +82,7 @@ class ChatsFragment(var userid: String) : Fragment() {
                             usuariosRenderizados.add(it.username)
                         }
                     }
-                    adapter = UserAdapter(context, mUsuarios, true, userid)
+                    adapter = UserAdapter(context, mUsuarios, true, userid, userFullName)
                     rView.adapter = adapter
                 }
             }

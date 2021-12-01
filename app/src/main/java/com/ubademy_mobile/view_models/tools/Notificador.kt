@@ -13,7 +13,7 @@ fun notificar(username: String, titulo: String, body: String){
 
     val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
-    val call = retroInstance.notificar(Notificacion(username = username, titulo = titulo, body = body))
+    val call = retroInstance.notificar(Notificacion(username = username, title = titulo, body = body))
 
     call.enqueue(object: Callback<Notificacion> {
         override fun onFailure(call: Call<Notificacion>, t: Throwable){

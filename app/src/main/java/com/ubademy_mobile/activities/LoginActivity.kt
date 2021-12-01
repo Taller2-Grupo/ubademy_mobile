@@ -19,12 +19,9 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.ubademy_mobile.Adapter.UserAdapter
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.*
 import com.ubademy_mobile.view_models.LoginActivityViewModel
 import kotlinx.android.synthetic.main.activity_login.*
-import com.ubademy_mobile.services.data.Credenciales
-import com.ubademy_mobile.services.data.Device
-import com.ubademy_mobile.services.data.GetUsersResponse
-import com.ubademy_mobile.services.data.UbademyToken
 import com.ubademy_mobile.services.interfaces.UsuarioService
 import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
@@ -286,7 +283,25 @@ class LoginActivity : AppCompatActivity() {
 
                 }
             })
+
+            val callUser = retroInstance.obtenerUsuario(email)
+
+            callUser.enqueue(object: Callback<UsuarioResponse> {
+                override fun onFailure(call: Call<UsuarioResponse>, t: Throwable){
+                    Log.d("onFailure", t.localizedMessage)
+                    clearSession()
+                    initSession(email, provider)
+                }
+
+                override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>){
+                    prefs.putString("full_name", response.body()!!.data!!.nombre + " " + response.body()!!.data!!.apellido)
+                    prefs.apply()
+                //Log.d("apellido", "---------------- " + prefs)
+                }
+            })
+
         })
+
 
     }
 
@@ -294,27 +309,6 @@ class LoginActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
         prefs.clear()
         prefs.apply()
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {task ->
-            val token = task.result
-            // aca hay que llamar al back para registrar este device al usuario
-            Log.d("DeviceID", token)
-
-            val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
-            val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
-            val call = retroInstance.borrarDevice(token)
-
-            call.enqueue(object: Callback<Device> {
-                override fun onFailure(call: Call<Device>, t: Throwable){
-                    Log.d("onFailure", t.localizedMessage)
-                    clearSession()
-                }
-
-                override fun onResponse(call: Call<Device>, response: Response<Device>){
-
-                }
-            })
-        })
     }
 
     fun clearTextFields(){

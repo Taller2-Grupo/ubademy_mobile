@@ -113,7 +113,10 @@ public class MessagingActivity extends AppCompatActivity {
 
         reference.child("Mensajes").push().setValue(hashMap);
 
-        NotificadorKt.notificar(receptor, "Mensaje recibido", "Tenés un mensaje disponible");
+        intent = getIntent();
+        String userFullName = intent.getStringExtra("nombre_completo_usuario");
+
+        NotificadorKt.notificar(receptor, "Mensaje de " + userFullName, mensaje);
 
     }
 
