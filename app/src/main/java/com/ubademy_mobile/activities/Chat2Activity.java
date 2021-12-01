@@ -2,6 +2,7 @@ package com.ubademy_mobile.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,8 +35,11 @@ public class Chat2Activity extends AppCompatActivity {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPagerAdapter.addFragment(new ChatsFragment(getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("email", null)), "Chats");
-        viewPagerAdapter.addFragment(new UsersFragment(getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("email", null)), "Usuarios");
+        String name = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("full_name", null);
+        Log.d("full name", "--------------- " + name);
+
+        viewPagerAdapter.addFragment(new ChatsFragment(getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("email", null), getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("full_name", null)), "Chats");
+        viewPagerAdapter.addFragment(new UsersFragment(getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("email", null), getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).getString("full_name", null)), "Usuarios");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
