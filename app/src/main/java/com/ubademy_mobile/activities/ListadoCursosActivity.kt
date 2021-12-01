@@ -54,7 +54,7 @@ class ListadoCursosActivity:
         initRecyclerView()
 
         initViewModel()
-        viewModel.getCursos()
+        //viewModel.getCursos()
 
         setup()
 
@@ -91,7 +91,7 @@ class ListadoCursosActivity:
     override fun onRestart() {
         super.onRestart()
 
-        viewModel.getCursos()
+        //viewModel.getCursos()
     }
 
     private fun setup() {
@@ -123,7 +123,7 @@ class ListadoCursosActivity:
                                        before: Int, count: Int) {
 
                 searchPreferences.patron = s.toString()
-                viewModel.filtrarCursos(searchPreferences)
+                //viewModel.filtrarCursos(searchPreferences)
             }
         })
 
@@ -213,7 +213,7 @@ class ListadoCursosActivity:
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 1000){
-            viewModel.getCursos()
+            //viewModel.getCursos()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -253,28 +253,28 @@ class ListadoCursosActivity:
             if(it is CheckBox)
                 if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_idioma))
                 else  searchPreferences.categorias.remove(getString(R.string.categoria_idioma))
-            viewModel.filtrarCursos(searchPreferences)
+            //viewModel.filtrarCursos(searchPreferences)
         }
 
         checkBoxProgramacion.setOnClickListener{
             if(it is CheckBox)
                 if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_programacion))
                 else  searchPreferences.categorias.remove(getString(R.string.categoria_programacion))
-            viewModel.filtrarCursos(searchPreferences)
+            //viewModel.filtrarCursos(searchPreferences)
         }
 
         checkBoxMultimedia.setOnClickListener{
             if(it is CheckBox)
                 if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_multimedia))
                 else  searchPreferences.categorias.remove(getString(R.string.categoria_multimedia))
-            viewModel.filtrarCursos(searchPreferences)
+            //viewModel.filtrarCursos(searchPreferences)
         }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().lowercase()
-        viewModel.filtrarCursos(searchPreferences)
+        //viewModel.filtrarCursos(searchPreferences)
 
         Log.d("Busqueda filtrada", searchPreferences.toString())
 

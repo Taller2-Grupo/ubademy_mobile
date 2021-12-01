@@ -14,10 +14,14 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.ubademy_mobile.Fragments.ListadoCursosFragment
+import com.ubademy_mobile.GaleriaDeCursosFragment
 import com.ubademy_mobile.R
+import com.ubademy_mobile.activities.tools.Themes
 import com.ubademy_mobile.utils.SearchPreferences
 import com.ubademy_mobile.view_models.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,6 +30,7 @@ import kotlinx.android.synthetic.main.header_menu.view.*
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
+    private var galleryMode: Boolean = false
     lateinit var viewModel: MainActivityViewModel
     lateinit var toogle: ActionBarDrawerToggle
 
@@ -46,10 +51,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
         if (email != null){
             viewModel.getLoggedUser(email)
         }
-
-        val fragment = ListadoCursosFragment.newInstance(email.toString())
-        val manager = supportFragmentManager
-        manager.beginTransaction().replace(R.id.fragmentContainerView,fragment,fragment.tag).commit()
     }
 
     fun initViewModel(){
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
         setupMainMenu()
 
+        initThemes()
 
         searchPreferences = SearchPreferences(this)
         initSearchBox()
@@ -82,6 +84,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
             toggleSearchMode()
         }
 
+        BtnIniciarBusqueda.setOnClickListener {
+            viewCoursesOf(null)
+            toggleSearchMode()
+        }
         EditTxTBuscarCurso.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {}
@@ -111,6 +117,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
             spnCategorias.onItemSelectedListener = this
         }
 
+    }
+
+    private fun initThemes() {
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        var transaction = supportFragmentManager.beginTransaction()
+
+        Themes.values().forEach {
+            val newView = FragmentContainerView(this@MainActivity)
+            themesContainer.addView(newView)
+            newView.id = View.generateViewId()
+            val newFragment = ListadoCursosFragment.newInstance(email.toString(),it.toString())
+                transaction.setReorderingAllowed(true)
+                transaction.add(newView.id, newFragment,newFragment.tag).addToBackStack(it.name)
+        }
+        transaction.commit()
     }
 
     fun goToMiPerfil(){
@@ -185,13 +209,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
         if(searchMode == "BASIC"){
 
             BtnFlecha.text = "▼"
-            SearchBox.visibility = View.VISIBLE
+            FilterBox.visibility = View.VISIBLE
             searchMode = "PRO"
 
         }else {
-
             BtnFlecha.text = "▶"
-            SearchBox.visibility = View.GONE
+            FilterBox.visibility = View.GONE
             searchMode = "BASIC"
         }
 
@@ -209,4 +232,40 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
+
+    fun viewCoursesOf(theme: Themes?) {
+
+        galleryMode = true
+
+        supportFragmentManager.popBackStack()
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        val newView = FragmentContainerView(this@MainActivity,)
+        themesContainer.addView(newView)
+        newView.id = View.generateViewId()
+        val newFragment = GaleriaDeCursosFragment.newInstance(email.toString(), theme.toString())
+        supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .add(newView.id, newFragment,newFragment.tag)
+            .addToBackStack(theme.toString())
+            .commit()
+
+
+    }
+
+    override fun onBackPressed() {
+
+        if (galleryMode){
+
+            supportFragmentManager.popBackStack()
+            initThemes()
+            galleryMode=false
+        }else{
+            super.onBackPressed()
+        }
+    }
+
+
 }

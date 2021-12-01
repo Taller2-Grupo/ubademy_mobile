@@ -68,6 +68,7 @@
                         android:hint="Busca un curso"
                         android:textSize="20sp"
                         android:inputType="text"
+                        android:paddingHorizontal="10sp"
                         />
 
                     <ImageView
@@ -83,7 +84,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/SearchBox"
+                    android:id="@+id/FilterBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -118,6 +119,7 @@
                         />
 
                     <Button
+                        android:id="@+id/BtnIniciarBusqueda"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -130,12 +132,26 @@
 
             </LinearLayout>
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentContainerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/CuadroBusqueda"
-                />
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/CuadroBusqueda"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/themesContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+
+                        >
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
