@@ -10,7 +10,7 @@
         android:label="@string/Ubademy"
         android:roundIcon="@drawable/ubademy"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.Ubademy_mobile">
         <activity
             android:name=".activities.MessagingActivity"
             android:exported="true" />
