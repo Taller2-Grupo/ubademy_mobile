@@ -3,9 +3,12 @@ package com.ubademy_mobile.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -24,6 +27,7 @@ import com.ubademy_mobile.services.data.Device
 import com.ubademy_mobile.services.data.UsuarioResponse
 import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.Constants
+import com.ubademy_mobile.utils.SearchPreferences
 import com.ubademy_mobile.view_models.ListadoCursosActivityViewModel
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
@@ -35,7 +39,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClickListener {
+class ListadoCursosActivity:
+    AppCompatActivity(),
+    RecyclerViewAdapter.OnItemClickListener,
+    AdapterView.OnItemSelectedListener {
+
+    private var searchMode = "BASIC"
+    lateinit var searchPreferences : SearchPreferences
 
     lateinit var recyclerViewAdapter: RecyclerViewAdapter
     lateinit var viewModel: ListadoCursosActivityViewModel
@@ -96,6 +106,45 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
         toogle.syncState()
 
         setupMainMenu()
+
+        searchPreferences = SearchPreferences(this)
+        initSearchBox()
+
+
+        BtnFlecha.setOnClickListener {
+            toggleSearchMode()
+        }
+
+        EditTxTBuscarCurso.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+                searchPreferences.patron = s.toString()
+                viewModel.filtrarCursos(searchPreferences)
+            }
+        })
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.suscripcion,
+            android.R.layout.simple_spinner_dropdown_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spnCategorias.adapter = adapter
+            spnCategorias.onItemSelectedListener = this
+        }
+
+
     }
 
     fun goToMiPerfil(){
@@ -203,4 +252,62 @@ class ListadoCursosActivity: AppCompatActivity(), RecyclerViewAdapter.OnItemClic
         })
 
     }
+
+    fun toggleSearchMode(){
+
+        if(searchMode == "BASIC"){
+
+            BtnFlecha.text = "▼"
+            SearchBox.visibility = View.VISIBLE
+            searchMode = "PRO"
+
+        }else {
+
+            BtnFlecha.text = "▶"
+            SearchBox.visibility = View.GONE
+            searchMode = "BASIC"
+        }
+
+    }
+
+    fun initSearchBox(){
+        checkBoxIdioma.isChecked = true
+        checkBoxProgramacion.isChecked = true
+        checkBoxMultimedia.isChecked = true
+
+        checkBoxIdioma.setOnClickListener{
+            if(it is CheckBox)
+                if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_idioma))
+                else  searchPreferences.categorias.remove(getString(R.string.categoria_idioma))
+            viewModel.filtrarCursos(searchPreferences)
+        }
+
+        checkBoxProgramacion.setOnClickListener{
+            if(it is CheckBox)
+                if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_programacion))
+                else  searchPreferences.categorias.remove(getString(R.string.categoria_programacion))
+            viewModel.filtrarCursos(searchPreferences)
+        }
+
+        checkBoxMultimedia.setOnClickListener{
+            if(it is CheckBox)
+                if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_multimedia))
+                else  searchPreferences.categorias.remove(getString(R.string.categoria_multimedia))
+            viewModel.filtrarCursos(searchPreferences)
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().lowercase()
+        viewModel.filtrarCursos(searchPreferences)
+
+        Log.d("Busqueda filtrada", searchPreferences.toString())
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
 }

@@ -10,4 +10,24 @@
     <string name="upload">Subir Imágenes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Parametros de un curso -->
+
+    <string-array name="suscripcion" >
+        <item>Todos</item>
+        <item>Gratuito</item>
+        <item>Pago</item>
+    </string-array>
+
+    <string-array name="categorias" >
+        <item>Idioma</item>
+        <item>Programacion</item>
+        <item>Multimedia</item>
+    </string-array>
+
+    <string name="categoria_idioma">idioma</string>
+    <string name="categoria_programacion">programacion</string>
+    <string name="categoria_multimedia">multimedia</string>
+
+
 </resources>

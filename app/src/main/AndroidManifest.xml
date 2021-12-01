@@ -10,7 +10,7 @@
         android:label="@string/Ubademy"
         android:roundIcon="@drawable/ubademy"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.Ubademy_mobile">
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->
