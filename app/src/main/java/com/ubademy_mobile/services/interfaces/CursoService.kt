@@ -43,4 +43,9 @@ interface CursoService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun obtenerInscriptos(@Path("curso_id") curso_id: String): Call<List<String>>
 
+    @GET("cursos/{curso_id}/examenes")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun obtenerExamenes(@Path("curso_id") curso_id: String): Call<List<String>>
+
+
 }
