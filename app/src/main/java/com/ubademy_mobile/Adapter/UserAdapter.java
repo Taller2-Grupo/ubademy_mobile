@@ -29,14 +29,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private List<Usuario> mUsuarios;
     private String userid;
     private Boolean isChat;
+    private String userFullName;
 
     String ultimoMsj;
 
-    public UserAdapter(Context mContext, List<Usuario> mUsuarios, Boolean isChat, String userid){
+    public UserAdapter(Context mContext, List<Usuario> mUsuarios, Boolean isChat, String userid, String userFullName){
         this.mUsuarios = mUsuarios;
         this.mContext = mContext;
         this.userid = userid;
         this.isChat = isChat;
+        this.userFullName = userFullName;
     }
 
     @NonNull
@@ -65,6 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 Intent intent = new Intent(mContext, MessagingActivity.class);
                 intent.putExtra("userid", user.getUsername());
                 intent.putExtra("nombre_completo", user.getNombre() + " " + user.getApellido());
+                intent.putExtra("nombre_completo_usuario", userFullName);
                 mContext.startActivity(intent);
             }
         });

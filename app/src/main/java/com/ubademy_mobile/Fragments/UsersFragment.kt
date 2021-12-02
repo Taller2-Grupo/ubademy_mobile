@@ -23,7 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.collections.ArrayList
 
-class UsersFragment(var userid: String) : Fragment() {
+class UsersFragment(var userid: String, var userFullName: String) : Fragment() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var userAdapter: UserAdapter
@@ -64,7 +64,7 @@ class UsersFragment(var userid: String) : Fragment() {
                     response.body()?.data?.forEach {
                         usuarios.add(it)
                     }
-                    userAdapter = UserAdapter(context, usuarios, false, userid)
+                    userAdapter = UserAdapter(context, usuarios, false, userid, userFullName)
                     recyclerView.adapter = userAdapter
                 }
             }

@@ -15,11 +15,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceIdReceiver
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RecyclerViewAdapter
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.Device
 import com.ubademy_mobile.services.data.UsuarioResponse
 import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.Constants
@@ -225,6 +229,28 @@ class ListadoCursosActivity:
 
         FirebaseAuth.getInstance().signOut()
         onBackPressed()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {task ->
+            val token = task.result
+            // aca hay que llamar al back para registrar este device al usuario
+            Log.d("DeviceID", token)
+
+            val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+            val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
+            val call = retroInstance.borrarDevice(token)
+
+            call.enqueue(object: Callback<Device> {
+                override fun onFailure(call: Call<Device>, t: Throwable){
+                    Log.d("onFailure", t.localizedMessage)
+                    logout()
+                }
+
+                override fun onResponse(call: Call<Device>, response: Response<Device>){
+
+                }
+            })
+        })
+
     }
 
     fun toggleSearchMode(){

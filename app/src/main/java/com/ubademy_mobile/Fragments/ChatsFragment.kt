@@ -25,7 +25,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChatsFragment(var userid: String) : Fragment() {
+class ChatsFragment(var userid: String, var userFullName: String) : Fragment() {
     lateinit var rView: RecyclerView
     lateinit var adapter: UserAdapter
     private val mUsuarios: MutableList<Usuario> = ArrayList()
@@ -64,7 +64,7 @@ class ChatsFragment(var userid: String) : Fragment() {
         val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
         val call = retroInstance.obtenerUsuarios()
-        Log.d("ccc", "cccc")
+
         call.enqueue(object: Callback<GetUsersResponse> {
             override fun onFailure(call: Call<GetUsersResponse>, t: Throwable){
                 Log.d("onFailure", t.localizedMessage)
@@ -82,7 +82,7 @@ class ChatsFragment(var userid: String) : Fragment() {
                             usuariosRenderizados.add(it.username)
                         }
                     }
-                    adapter = UserAdapter(context, mUsuarios, true, userid)
+                    adapter = UserAdapter(context, mUsuarios, true, userid, userFullName)
                     rView.adapter = adapter
                 }
             }
