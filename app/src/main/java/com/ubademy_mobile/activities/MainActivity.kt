@@ -17,15 +17,23 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ubademy_mobile.Fragments.ListadoCursosFragment
-import com.ubademy_mobile.GaleriaDeCursosFragment
+import com.ubademy_mobile.Fragments.GaleriaDeCursosFragment
 import com.ubademy_mobile.R
 import com.ubademy_mobile.activities.tools.Themes
+import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.Device
+import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.SearchPreferences
 import com.ubademy_mobile.view_models.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_menu.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
@@ -168,6 +176,27 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
         FirebaseAuth.getInstance().signOut()
         onBackPressed()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            val token = task.result
+            // aca hay que llamar al back para registrar este device al usuario
+            Log.d("DeviceID", token)
+
+            val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+            val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
+            val call = retroInstance.borrarDevice(token)
+
+            call.enqueue(object: Callback<Device> {
+                override fun onFailure(call: Call<Device>, t: Throwable){
+                    Log.d("onFailure", t.localizedMessage)
+                    logout()
+                }
+
+                override fun onResponse(call: Call<Device>, response: Response<Device>){
+
+                }
+            })
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

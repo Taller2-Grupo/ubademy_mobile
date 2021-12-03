@@ -61,7 +61,7 @@ class ListadoCursosActivity:
         //viewModel.getCursos()
 
         setup()
-
+        Log.e("ERROr","Hay que borrar esta actividad, ya no debería usarse")
         // TODO: Sacar el nombre del jwt cuando se agregue.
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)

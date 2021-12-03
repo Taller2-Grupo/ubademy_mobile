@@ -1,9 +1,8 @@
-package com.ubademy_mobile
+package com.ubademy_mobile.Fragments
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ubademy_mobile.Fragments.ListadoCursosFragment
+import com.ubademy_mobile.R
 import com.ubademy_mobile.activities.VerCursoActivity
 import com.ubademy_mobile.activities.tools.Themes
 import com.ubademy_mobile.services.Curso
