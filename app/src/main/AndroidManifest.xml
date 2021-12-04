@@ -24,6 +24,9 @@
             android:resource="@color/color_primary" />
 
         <activity
+            android:name=".activities.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MessagingActivity"
             android:exported="true" />
         <activity
@@ -67,9 +70,6 @@
             android:exported="true" />
         <activity
             android:name=".activities.HomeActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.ListadoCursosActivity"
             android:exported="true" />
         <activity
             android:name=".activities.VerCursoActivity"

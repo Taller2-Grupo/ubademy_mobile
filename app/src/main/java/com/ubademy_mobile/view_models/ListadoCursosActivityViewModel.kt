@@ -29,7 +29,8 @@ class ListadoCursosActivityViewModel: ViewModel() {
         return recyclerListData
     }
 
-    fun getCursos(){
+    /*fun getCursos(){
+
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
         val call = retroInstance.obtenerCursos()
         call.enqueue(object: Callback<List<Curso>>{
@@ -69,7 +70,7 @@ class ListadoCursosActivityViewModel: ViewModel() {
         }
 
         recyclerListData.postValue(filtered)
-    }
+    }*/
 
 
 
