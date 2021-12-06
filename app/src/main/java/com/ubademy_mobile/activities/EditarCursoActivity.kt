@@ -1,6 +1,7 @@
 package com.ubademy_mobile.activities
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -22,6 +23,13 @@ class EditarCursoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editar_curso)
 
         initViewModel()
+
+        btnEditFiles.setOnClickListener {
+            var imagesIntent = Intent(this@EditarCursoActivity, SubirArchivosActivity::class.java)
+            val curso_id = intent.getStringExtra("cursoId")
+            imagesIntent.putExtra("CursoId", curso_id)
+            startActivity(imagesIntent)
+        }
 
         btnAplicarCambiosCurso.setOnClickListener {
             editarCurso()
