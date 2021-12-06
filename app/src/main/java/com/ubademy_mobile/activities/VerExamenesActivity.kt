@@ -14,16 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.ExamenesRecyclerViewAdapter
+import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
-import kotlinx.android.synthetic.main.activity_ver_inscriptos.*
+import kotlinx.android.synthetic.main.activity_ver_examenes.*
 
 class VerExamenesActivity : AppCompatActivity(), ExamenesRecyclerViewAdapter.OnItemClickListener {
 
+    private lateinit var viewModel: VerExamenesActivityViewModel
+    private lateinit var examenesAdapter: ExamenesRecyclerViewAdapter
 
-private lateinit var viewModel: VerExamenesActivityViewModel
-private lateinit var examenesAdapter: ExamenesRecyclerViewAdapter
-
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ver_examenes)
 
@@ -43,22 +43,22 @@ private lateinit var examenesAdapter: ExamenesRecyclerViewAdapter
 
         viewModel.obtenerExamenes(idCurso)
 
-        }
+    }
 
-private fun observarProgressBar() {
+    private fun observarProgressBar() {
         viewModel.obtenerShowProgressbarObservable().observe(this,{
         if(it) progressBar.visibility= View.VISIBLE
         else progressBar.visibility= View.GONE
         })
         }
 
-private fun initViewModel() {
+    private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(VerExamenesActivityViewModel::class.java)
         }
 
 
-@SuppressLint("NotifyDataSetChanged")
-private fun observarExamenes(){
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observarExamenes(){
         viewModel.obtenerExamenesObservable().observe(this,{
         if(it == null || it.isEmpty()) {
         Toast.makeText(this@VerExamenesActivity, "No hay examenes disponibles...", Toast.LENGTH_LONG).show()
@@ -69,21 +69,22 @@ private fun observarExamenes(){
         })
         }
 
-private fun initRecyclerView(owner : String, user:String){
-        recyclerViewInscriptos.apply {
+    private fun initRecyclerView(owner : String, user:String){
+        recyclerViewExamenes.apply {
         layoutManager = LinearLayoutManager(this@VerExamenesActivity)
         examenesAdapter = ExamenesRecyclerViewAdapter(this@VerExamenesActivity,owner,user)
         adapter = examenesAdapter
         }}
 
 
-        override fun onItemClick(inscripto: String) {
+    override fun onItemClick(examen: Examen) {
+        Log.d("VerExamenesActivity", examen.nombre.toString())
 
-        val intent = Intent(this@VerExamenesActivity, PerfilActivity::class.java)
+        val intent = Intent(this@VerExamenesActivity, VerExamenActivity::class.java)
         // Le paso el email a PerfilActivity para que muestre el perfil de ese usuario.
-        intent.putExtra("email", inscripto)
+        intent.putExtra("id", examen.id.toString())
 
         startActivity(intent)
-        }
+    }
 
-        }
+}

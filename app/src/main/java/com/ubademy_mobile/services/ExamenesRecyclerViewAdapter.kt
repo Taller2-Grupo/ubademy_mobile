@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ubademy_mobile.R
-import kotlinx.android.synthetic.main.recycler_inscriptos_list.view.*
+import com.ubademy_mobile.services.data.Examen
+import kotlinx.android.synthetic.main.recycler_examenes_list.view.*
 
 class ExamenesRecyclerViewAdapter(
     val clickListener: OnItemClickListener,
@@ -14,7 +15,7 @@ class ExamenesRecyclerViewAdapter(
     val idUsuario: String) :
     RecyclerView.Adapter<ExamenesRecyclerViewAdapter.ViewHolder>() {
 
-    var examenes = mutableListOf<String>()
+    var examenes = mutableListOf<Examen>()
 
     /**
      * Provide a reference to the type of views that you are using
@@ -22,8 +23,6 @@ class ExamenesRecyclerViewAdapter(
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val TxtExamen = view.TxtViewNombre
-            get() = field
-        val ImgOwner = view.ImgOwner
             get() = field
     }
 
@@ -44,15 +43,7 @@ class ExamenesRecyclerViewAdapter(
         Log.e("Logger","${examenes[position]} vs ( ${idCreador} and ${idUsuario} )")
         var name = examenes[position]
 
-        if(examenes[position] == idCreador){
-            viewHolder.ImgOwner.visibility = View.VISIBLE
-        }
-
-        if (examenes[position] == idUsuario){
-            name += " (tú)"
-        }
-
-        viewHolder.TxtExamen.text = name
+        viewHolder.TxtExamen.text = name.nombre
 
         viewHolder.itemView.setOnClickListener {
             clickListener.onItemClick(examenes[position])
@@ -63,6 +54,7 @@ class ExamenesRecyclerViewAdapter(
     override fun getItemCount() = examenes.size
 
     interface OnItemClickListener{
-        fun onItemClick(inscripto: String)
+
+        fun onItemClick(examen: Examen)
     }
 }

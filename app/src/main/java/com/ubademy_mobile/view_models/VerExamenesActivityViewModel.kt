@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
@@ -16,10 +17,10 @@ class VerExamenesActivityViewModel: ViewModel() {
     val baseUrl = "https://ubademy-back.herokuapp.com/"
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
-    val examenes = MutableLiveData<List<String>>()
+    val examenes = MutableLiveData<List<Examen>>()
     val showProgressBar = MutableLiveData<Boolean>()
 
-    fun obtenerExamenesObservable(): MutableLiveData<List<String>> {
+    fun obtenerExamenesObservable(): MutableLiveData<List<Examen>> {
         return examenes
     }
 
@@ -34,14 +35,14 @@ class VerExamenesActivityViewModel: ViewModel() {
         Log.d("obtenerExamenes", "Curso_id: ${curso_id}")
         val call = retroInstance.obtenerExamenes(curso_id)
 
-        call.enqueue(object: Callback<List<String>> {
-            override fun onFailure(call: Call<List<String>>, t: Throwable){
+        call.enqueue(object: Callback<List<Examen>> {
+            override fun onFailure(call: Call<List<Examen>>, t: Throwable){
                 showProgressBar.postValue(false)
                 examenes.postValue(null)
                 logFailure("obtenerExamenes" , t)
             }
 
-            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>){
+            override fun onResponse(call: Call<List<Examen>>, response: Response<List<Examen>>){
                 showProgressBar.postValue(false)
                 logResponse("obtenerExamenes", response)
 
@@ -52,6 +53,15 @@ class VerExamenesActivityViewModel: ViewModel() {
                 }
             }
         })
+    }
+
+    fun obtenerExamen(id: String): Examen? {
+        showProgressBar.postValue(true)
+
+        examenes.value?.forEach {
+            if (it.id == id) return@obtenerExamen it
+        }
+        return null
     }
 
 }

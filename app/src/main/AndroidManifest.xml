@@ -12,7 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
+            android:name=".activities.VerExamenActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MessagingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.VerExamenesActivity"
             android:exported="true" />
         <activity
             android:name=".activities.VerInscriptosActivity"

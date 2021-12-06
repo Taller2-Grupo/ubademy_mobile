@@ -52,7 +52,19 @@ class VerCursoActivity: AppCompatActivity() {
 
             setBotonDeEdicion(it)
             setBotonDeVerAlumnos(it)
+            setBotonDeVerExamenes(it)
         })
+    }
+
+    private fun setBotonDeVerExamenes(curso: Curso) {
+
+        val inscriptosIntent = Intent(this@VerCursoActivity, VerExamenesActivity::class.java)
+        inscriptosIntent.putExtra("cursoId", idCurso)
+        inscriptosIntent.putExtra("ownerId", curso.id_creador.toString())
+
+        BtnExamenes.setOnClickListener {
+            startActivity(inscriptosIntent)
+        }
     }
 
     private fun observarCursada(){
@@ -125,6 +137,7 @@ class VerCursoActivity: AppCompatActivity() {
         }
 
         setBotonDeInscripcion()
+
 
     }
 
