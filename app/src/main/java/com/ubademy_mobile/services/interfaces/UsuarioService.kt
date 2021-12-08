@@ -6,8 +6,12 @@ import retrofit2.http.*
 
 interface UsuarioService {
 
+    val token: String
+
+    get
+
     @GET("usuarios")
-    @Headers("Accept:application/json", "Content-Type:application/json")
+    @Headers("Accept:application/json", "Content-Type:application/json" , "Authorization: Bearer ")
     fun obtenerUsuarios(): Call<GetUsersResponse>
 
     @GET("usuarios/{usuario_id}")
@@ -41,7 +45,7 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun registrarDevice(@Body device: Device): Call<Device>
 
-    @DELETE("usuarios/device/{device}")
+    @DELETE("usuarios/devices/{device}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun borrarDevice(@Path("device") device: String): Call<Device>
 

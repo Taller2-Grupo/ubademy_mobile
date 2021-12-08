@@ -1,14 +1,18 @@
 package com.ubademy_mobile.repositories
 
+import android.content.Context
+import android.util.Log
+import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CursosRepository {
 
-    private val baseUrl = "https://ubademy-back.herokuapp.com/"
+    private val baseUrl = Constants.API_CURSOS_URL
     private val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
     suspend fun cursos() : List<Curso>{

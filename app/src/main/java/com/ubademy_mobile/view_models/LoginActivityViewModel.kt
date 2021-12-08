@@ -6,6 +6,7 @@ import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Credenciales
 import com.ubademy_mobile.services.data.UbademyToken
 import com.ubademy_mobile.services.interfaces.UsuarioService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -15,7 +16,7 @@ import retrofit2.Response
 
 class LoginActivityViewModel {
 
-    val baseUrl = "https://ubademy-gateway-7.herokuapp.com/"
+    val baseUrl = Constants.API_GATEWAY
 
     var tokenMutableLiveData = MutableLiveData<UbademyToken>()
     var progressBar = MutableLiveData<Boolean>()
@@ -37,22 +38,25 @@ class LoginActivityViewModel {
             username = credenciales.username,
             password = credenciales.password)
 
-        Log.d("Loguin Request",call.request().toString())
+        Log.d("Login Request",call.request().toString())
 
         call.enqueue(object: Callback<UbademyToken> {
             override fun onFailure(call: Call<UbademyToken>, t: Throwable){
+                Log.e("failure", "aaa")
                 logFailure("LogearUsuario", t)
                 tokenMutableLiveData.postValue(null)
                 progressBar.postValue(false)
             }
 
             override fun onResponse(call: Call<UbademyToken>, response: Response<UbademyToken>){
-
+                Log.e("response", "aaa")
                 logResponse("LogearUsuario", response)
-                Log.d("LogearUsuario response", response.body().toString())
                 if(response.isSuccessful){
+                    Log.e("token response", response.toString())
                     tokenMutableLiveData.postValue(response.body())
+                    Log.d("mutable", tokenMutableLiveData.toString())
                 } else{
+                    Log.e("errorr", response.toString())
                     tokenMutableLiveData.postValue(null)
                 }
 

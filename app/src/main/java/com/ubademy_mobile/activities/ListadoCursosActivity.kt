@@ -235,7 +235,7 @@ class ListadoCursosActivity:
             // aca hay que llamar al back para registrar este device al usuario
             Log.d("DeviceID", token)
 
-            val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+            val baseUrl = Constants.API_USUARIOS_URL
             val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
             val call = retroInstance.borrarDevice(token)
 

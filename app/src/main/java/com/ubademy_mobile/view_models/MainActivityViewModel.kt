@@ -1,10 +1,12 @@
 package com.ubademy_mobile.view_models
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ubademy_mobile.R
 import com.ubademy_mobile.activities.tools.Themes
 import com.ubademy_mobile.repositories.CursosRepository
 import com.ubademy_mobile.services.Curso

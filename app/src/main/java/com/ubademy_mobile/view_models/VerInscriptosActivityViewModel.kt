@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -13,7 +14,7 @@ import retrofit2.Response
 
 class VerInscriptosActivityViewModel: ViewModel() {
 
-    val baseUrl = "https://ubademy-back.herokuapp.com/"
+    val baseUrl = Constants.API_CURSOS_URL
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
     val inscriptos = MutableLiveData<List<String>>()

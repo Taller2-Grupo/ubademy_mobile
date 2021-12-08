@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.services.data.Usuario
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -13,7 +14,7 @@ import retrofit2.Response
 
 class RegisterActivityViewModel {
 
-    val baseUrl = "https://ubademy-gateway-7.herokuapp.com/"
+    val baseUrl = Constants.API_GATEWAY
 
     var usuarioLiveData = MutableLiveData<Usuario>()
     var progressBar = MutableLiveData<Boolean>()

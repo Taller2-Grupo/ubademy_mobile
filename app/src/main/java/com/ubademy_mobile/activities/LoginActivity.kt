@@ -23,6 +23,7 @@ import com.ubademy_mobile.services.data.*
 import com.ubademy_mobile.view_models.LoginActivityViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import com.ubademy_mobile.services.interfaces.UsuarioService
+import com.ubademy_mobile.utils.Constants
 import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,6 +71,8 @@ class LoginActivity : AppCompatActivity() {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
         val provider = prefs.getString("provider", null)
+
+        Constants.TOKEN = prefs.getString("access-token", null)
 
         // quiere decir que ya hay una session iniciada
         if(email != null && provider != null){
@@ -148,6 +151,27 @@ class LoginActivity : AppCompatActivity() {
         // Llamada al back
         viewModel.loginUsuario(credenciales)
 
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+
+        viewModel.getTokenObservable().observe(this,
+            {
+                if(it == null){
+                    clearSession()
+                    showAlert();
+                } else{
+                    it.access_token?.run{
+                        Log.e("token al login", it.access_token)
+                        prefs.putString("access_token", it.access_token)
+                        prefs.apply()
+                        Constants.TOKEN = it.access_token
+                        okMessage!!.show()
+                        showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
+                        clearTextFields()
+                    }
+                }
+            })
+
+
         initSession(credenciales.username,ProviderType.BASIC.toString())
     }
 
@@ -194,6 +218,27 @@ class LoginActivity : AppCompatActivity() {
 
                                         // Send token to your backend via HTTPS
                                         viewModel.swap(ubademyToken)
+
+                                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+
+                                        viewModel.getTokenObservable().observe(this,
+                                            { res ->
+                                                if(res == null){
+                                                    clearSession()
+                                                    showAlert();
+                                                } else{
+                                                    res.access_token?.run{
+                                                        Log.e("token al login", res.access_token)
+                                                        prefs.putString("access_token", res.access_token)
+                                                        prefs.apply()
+                                                        Constants.TOKEN = res.access_token
+                                                        okMessage!!.show()
+                                                        showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
+                                                        clearTextFields()
+                                                    }
+                                                }
+                                            })
+
                                         initSession(account.email!!.toString(), ProviderType.GOOGLE.toString())
 
                                     } else {
@@ -268,7 +313,7 @@ class LoginActivity : AppCompatActivity() {
             // aca hay que llamar al back para registrar este device al usuario
             Log.d("DeviceID", token)
 
-            val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+            val baseUrl = Constants.API_USUARIOS_URL
             val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
             val call = retroInstance.registrarDevice(Device(username = email, device = token))
 

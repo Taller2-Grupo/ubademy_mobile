@@ -8,6 +8,7 @@ import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Cursada
 import com.ubademy_mobile.services.data.InscripcionRequest
 import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -16,7 +17,7 @@ import retrofit2.Response
 
 class VerCursoActivityViewModel: ViewModel() {
 
-    var baseUrl = "https://ubademy-back.herokuapp.com/"
+    var baseUrl = Constants.API_CURSOS_URL
     var curso = MutableLiveData<Curso?>()
     var cursada = MutableLiveData<Cursada?>()
     var inscriptos = MutableLiveData<List<String>>()
