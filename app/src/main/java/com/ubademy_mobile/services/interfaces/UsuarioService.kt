@@ -49,7 +49,7 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun borrarDevice(@Path("device") device: String): Call<Device>
 
-    @POST("/usuarios/notify")
+    @POST("usuarios/notify")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun notificar(@Body notificacion: Notificacion): Call<Notificacion>
 }

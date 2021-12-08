@@ -33,12 +33,12 @@ class LoginActivityViewModel {
 
         progressBar.postValue(true)
 
-        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance("https://ubademy-gateway-7.herokuapp.com/").create(UsuarioService::class.java)
         val call = retroInstance.token(
             username = credenciales.username,
             password = credenciales.password)
 
-        Log.d("Login Request",call.request().toString())
+        //Log.d("Login Request",call.request().toString())
 
         call.enqueue(object: Callback<UbademyToken> {
             override fun onFailure(call: Call<UbademyToken>, t: Throwable){

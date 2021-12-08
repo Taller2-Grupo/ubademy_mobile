@@ -72,7 +72,9 @@ class LoginActivity : AppCompatActivity() {
         val email = prefs.getString("email", null)
         val provider = prefs.getString("provider", null)
 
-        Constants.TOKEN = prefs.getString("access-token", null)
+        Log.e("check Session", prefs.getString("access_token", null).toString())
+
+        Constants.TOKEN = prefs.getString("access_token", null)
 
         // quiere decir que ya hay una session iniciada
         if(email != null && provider != null){
@@ -151,28 +153,32 @@ class LoginActivity : AppCompatActivity() {
         // Llamada al back
         viewModel.loginUsuario(credenciales)
 
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-
         viewModel.getTokenObservable().observe(this,
             {
                 if(it == null){
+                    Log.e("token al login", "error, es null")
                     clearSession()
                     showAlert();
                 } else{
                     it.access_token?.run{
-                        Log.e("token al login", it.access_token)
-                        prefs.putString("access_token", it.access_token)
+                        /*val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                        prefs.putString("access_token", it.access_token.toString())
                         prefs.apply()
+                        val prefs2 = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+                        Log.e("token al login", "access token " + prefs2.getString("access_token", null).toString())*/
                         Constants.TOKEN = it.access_token
+
+                        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+                        prefs.putString("access_token", Constants.TOKEN)
+                        prefs.apply()
+
                         okMessage!!.show()
                         showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
                         clearTextFields()
+                        initSession(credenciales.username,ProviderType.BASIC.toString())
                     }
                 }
             })
-
-
-        initSession(credenciales.username,ProviderType.BASIC.toString())
     }
 
     fun loginWithGoogle(view: android.view.View) {

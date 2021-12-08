@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
     private var galleryMode: Boolean = false
     lateinit var viewModel: MainActivityViewModel
-    lateinit var bearerToken: String
     lateinit var toogle: ActionBarDrawerToggle
 
     private var searchMode = "BASIC"
