@@ -12,13 +12,16 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.RespuestasAdapter
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.fragment_examen.*
 import kotlinx.android.synthetic.main.fragment_examen.view.*
 
 class ExamenFragment : Fragment() {
 
+    private lateinit var respuestasAdapter : RespuestasAdapter
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
     private lateinit var appActivity: FragmentActivity
     //private lateinit var viewModel: VerExamenesActivityViewModel
@@ -70,6 +73,9 @@ class ExamenFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initViewModel()
 
+        initRecyclerView()
+        respuestasAdapter.consignas.addAll(viewModel.examen_seleccionado.consignas!!)
+
         if (viewModel.isOwner){
             FABEditarExamen.visibility = View.VISIBLE
             FABEditarExamen.setOnClickListener {
@@ -77,6 +83,13 @@ class ExamenFragment : Fragment() {
             }
         }
     }
+
+    private fun initRecyclerView(){
+        recyclerRespuestas.apply {
+            layoutManager = LinearLayoutManager(appContext)
+            respuestasAdapter = RespuestasAdapter()
+            adapter = respuestasAdapter
+        }}
 
     private fun initViewModel() {
 

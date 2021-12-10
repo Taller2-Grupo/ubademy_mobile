@@ -15,6 +15,9 @@
         <action
             android:id="@+id/navigateToRespuestas"
             app:destination="@id/NaVrespuestasFragment" />
+        <action
+            android:id="@+id/ActionEditarExamen"
+            app:destination="@id/crearExamenFragment" />
     </fragment>
     <fragment
         android:id="@+id/NaVrespuestasFragment"
@@ -34,7 +37,7 @@
             android:id="@+id/SelectExamen"
             app:destination="@id/NaVexamenFragment" />
         <action
-            android:id="@+id/CreateExamen"
+            android:id="@+id/ActionCreateExamen"
             app:destination="@id/crearExamenFragment" />
     </fragment>
     <fragment
@@ -44,5 +47,8 @@
         <action
             android:id="@+id/ActionNewExamenDone"
             app:destination="@id/verExamenesFragment" />
+        <action
+            android:id="@+id/ActionEditExamenDone"
+            app:destination="@id/NaVexamenFragment" />
     </fragment>
 </navigation>
