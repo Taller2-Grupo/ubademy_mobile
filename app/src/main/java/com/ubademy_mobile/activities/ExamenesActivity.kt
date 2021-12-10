@@ -30,6 +30,7 @@ class ExamenesActivity : AppCompatActivity() {
 
         viewModel.idcurso = idCurso
         viewModel.iduser = user
+        viewModel.isOwner = user == idOwner
 
         BtnBack.setOnClickListener {
             finish()

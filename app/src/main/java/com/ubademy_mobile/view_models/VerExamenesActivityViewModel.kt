@@ -18,6 +18,7 @@ import retrofit2.Response
 
 class VerExamenesActivityViewModel: ViewModel() {
 
+    var isOwner: Boolean = false
     val baseUrl = "https://ubademy-back.herokuapp.com/"
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
@@ -50,10 +51,20 @@ class VerExamenesActivityViewModel: ViewModel() {
         // Handlea la llamada en paralelo a las apis
         viewModelScope.launch {
 
-            examenes.postValue(repository.examenesDeCurso(curso_id))
+            var allExamenes = repository.examenesDeCurso(curso_id)
+            if(isOwner) examenes.postValue(allExamenes)
+            else examenes.postValue(filtrarNoPublicados(allExamenes))
 
             showProgressBar.postValue(false)
         }
+    }
+
+    private fun filtrarNoPublicados(allExamenes: List<Examen>): List<Examen> {
+        val filtrados = mutableListOf<Examen>()
+        allExamenes.forEach{
+            if (it.estado == "publicado") filtrados.add(it)
+        }
+        return filtrados
     }
 
     fun crearExamen(examen: Examen){

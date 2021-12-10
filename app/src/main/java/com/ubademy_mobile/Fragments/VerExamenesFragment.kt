@@ -73,8 +73,11 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
 
         viewModel.obtenerExamenes(viewModel.idcurso)
 
-        FabNuevoExamen.setOnClickListener{
-            Navigation.findNavController(requireView()).navigate(R.id.CreateExamen)
+        if(viewModel.isOwner) {
+            FabNuevoExamen.visibility = View.VISIBLE
+            FabNuevoExamen.setOnClickListener {
+                Navigation.findNavController(requireView()).navigate(R.id.CreateExamen)
+            }
         }
     }
 
@@ -110,28 +113,33 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
 
     override fun setImgStatus(examen: Examen, imageView: ImageView?) {
 
+        if (!viewModel.isOwner) return
+
+        imageView!!.visibility = View.VISIBLE
+
         if (examen.estado == "creado"){
-            imageView!!.setImageResource(R.drawable.ic_private)
+            imageView.setImageResource(R.drawable.ic_private)
             imageView.setOnClickListener {
-
-                val alert: AlertDialog.Builder = AlertDialog.Builder(appContext)
-                alert.setTitle("Publicar examen")
-                alert.setMessage("Desea publicar el examen? No se podrá volver a editar")
-                alert.setPositiveButton("Sí") { dialog, which ->
-
-                    viewModel.publicarExamen(examen_id = examen.id.toString())
-                    dialog.dismiss()
-                }
-
-                alert.setNegativeButton("No",
-                    DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
-
-                alert.show()
-
+                publicarExamen(examen.id.toString())
             }
         }
 
     }
 
+    fun publicarExamen(id_examen : String){
+        val alert: AlertDialog.Builder = AlertDialog.Builder(appContext)
+        alert.setTitle("Publicar examen")
+        alert.setMessage("Desea publicar el examen? No se podrá volver a editar")
+        alert.setPositiveButton("Sí") { dialog, which ->
+
+            viewModel.publicarExamen(examen_id = id_examen)
+            dialog.dismiss()
+        }
+
+        alert.setNegativeButton("No",
+            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+
+        alert.show()
+    }
 }
 

@@ -51,15 +51,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FabNuevoExamen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="20dp"
+            android:contentDescription="Nuevo examen"
+            app:srcCompat="@drawable/ic_baseline_add_24"
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/FabNuevoExamen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="20dp"
-        android:contentDescription="Nuevo examen"
-        app:srcCompat="@drawable/ic_baseline_add_24"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

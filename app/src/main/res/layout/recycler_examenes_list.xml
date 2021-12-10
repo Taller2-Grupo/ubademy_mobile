@@ -30,6 +30,8 @@
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_marginHorizontal="30dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             />
 
     </RelativeLayout>
