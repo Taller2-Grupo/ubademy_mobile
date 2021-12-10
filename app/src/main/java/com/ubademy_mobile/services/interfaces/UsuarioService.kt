@@ -36,4 +36,16 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun swapToken(@Path("firebase_token") firebase_token: String?): Call<UbademyToken>
 
+    /* devices */
+    @POST("usuarios/devices")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun registrarDevice(@Body device: Device): Call<Device>
+
+    @DELETE("usuarios/device/{device}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun borrarDevice(@Path("device") device: String): Call<Device>
+
+    @POST("/usuarios/notify")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun notificar(@Body notificacion: Notificacion): Call<Notificacion>
 }

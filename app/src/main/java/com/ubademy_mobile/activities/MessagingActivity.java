@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ubademy_mobile.Adapter.MessageAdapter;
 import com.ubademy_mobile.R;
 import com.ubademy_mobile.services.data.Mensaje;
-import com.ubademy_mobile.services.data.Usuario;
+import com.ubademy_mobile.view_models.tools.NotificadorKt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,6 +112,11 @@ public class MessagingActivity extends AppCompatActivity {
         hashMap.put("mensaje", mensaje);
 
         reference.child("Mensajes").push().setValue(hashMap);
+
+        intent = getIntent();
+        String userFullName = intent.getStringExtra("nombre_completo_usuario");
+
+        NotificadorKt.notificar(receptor, "Mensaje de " + userFullName, mensaje);
 
     }
 

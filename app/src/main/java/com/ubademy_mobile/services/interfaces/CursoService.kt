@@ -6,13 +6,14 @@ import com.ubademy_mobile.services.data.Cursada
 import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.services.data.InscripcionRequest
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface CursoService {
 
     @GET("cursos")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    fun obtenerCursos(): Call<List<Curso>>
+    suspend fun obtenerCursos(): Response<List<Curso>>
 
     @GET("cursos/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")

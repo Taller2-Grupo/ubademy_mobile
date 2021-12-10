@@ -2,103 +2,79 @@ package com.ubademy_mobile.activities
 
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 import com.google.firebase.messaging.FirebaseMessaging
+import com.ubademy_mobile.Fragments.ListadoCursosFragment
+import com.ubademy_mobile.Fragments.GaleriaDeCursosFragment
 import com.ubademy_mobile.R
-import com.ubademy_mobile.services.Curso
-import com.ubademy_mobile.services.RecyclerViewAdapter
+import com.ubademy_mobile.activities.tools.Themes
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Device
-import com.ubademy_mobile.services.data.UsuarioResponse
 import com.ubademy_mobile.services.interfaces.UsuarioService
-import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.utils.SearchPreferences
-import com.ubademy_mobile.view_models.ListadoCursosActivityViewModel
-import com.ubademy_mobile.view_models.tools.logFailure
-import com.ubademy_mobile.view_models.tools.logResponse
-import kotlinx.android.synthetic.main.activity_listado_cursos.*
-import kotlinx.android.synthetic.main.activity_perfil.*
-import kotlinx.android.synthetic.main.bottom_menu_navigation.*
+import com.ubademy_mobile.view_models.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_menu.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ListadoCursosActivity:
-    AppCompatActivity(),
-    RecyclerViewAdapter.OnItemClickListener,
-    AdapterView.OnItemSelectedListener {
+
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
+
+    private var galleryMode: Boolean = false
+    lateinit var viewModel: MainActivityViewModel
+    lateinit var toogle: ActionBarDrawerToggle
 
     private var searchMode = "BASIC"
     lateinit var searchPreferences : SearchPreferences
 
-    lateinit var recyclerViewAdapter: RecyclerViewAdapter
-    lateinit var viewModel: ListadoCursosActivityViewModel
-    lateinit var toogle: ActionBarDrawerToggle
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_listado_cursos)
-
-        initRecyclerView()
+        setContentView(R.layout.activity_main)
 
         initViewModel()
-        //viewModel.getCursos()
-
         setup()
-        Log.e("ERROr","Hay que borrar esta actividad, ya no debería usarse")
+
         // TODO: Sacar el nombre del jwt cuando se agregue.
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
 
         if (email != null){
-            val retroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL)
-                .create(UsuarioService::class.java)
-            val call = retroInstance.obtenerUsuario(email!!)
-
-            call.enqueue(object : Callback<UsuarioResponse> {
-                override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
-                    logFailure("ListadoCursos", t)
-                }
-
-                override fun onResponse(
-                    call: Call<UsuarioResponse>,
-                    response: Response<UsuarioResponse>
-                ) {
-
-                    logResponse("PerfilUsuario", response)
-
-                    if (response.isSuccessful) {
-                        val headerLayout = navigation_menu.getHeaderView(0) // 0-index header
-                        headerLayout.name_user_menu.text = response.body()?.data!!.nombre
-                    }
-                }
-            })
+            viewModel.getLoggedUser(email)
         }
     }
 
-    override fun onRestart() {
-        super.onRestart()
+    fun initViewModel(){
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel.loggedUser.observe(this, {
+            if(it != null) {
 
-        //viewModel.getCursos()
+                val headerLayout = navigation_menu.getHeaderView(0) // 0-index header
+                headerLayout.name_user_menu.text = it.nombre
+            }
+        })
+
     }
 
     private fun setup() {
+
         setSupportActionBar(main_toolbar)
 
         toogle = ActionBarDrawerToggle(this, drawerLayout, R.string.open_menu, R.string.close_menu)
@@ -107,14 +83,19 @@ class ListadoCursosActivity:
 
         setupMainMenu()
 
+        initThemes()
+
         searchPreferences = SearchPreferences(this)
         initSearchBox()
-
 
         BtnFlecha.setOnClickListener {
             toggleSearchMode()
         }
 
+        BtnIniciarBusqueda.setOnClickListener {
+            viewCoursesOf(null)
+            toggleSearchMode()
+        }
         EditTxTBuscarCurso.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {}
@@ -127,7 +108,7 @@ class ListadoCursosActivity:
                                        before: Int, count: Int) {
 
                 searchPreferences.patron = s.toString()
-                //viewModel.filtrarCursos(searchPreferences)
+                viewModel.filtrarCursos(searchPreferences)
             }
         })
 
@@ -144,13 +125,30 @@ class ListadoCursosActivity:
             spnCategorias.onItemSelectedListener = this
         }
 
+    }
 
+    private fun initThemes() {
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        var transaction = supportFragmentManager.beginTransaction()
+
+        Themes.values().forEach {
+            val newView = FragmentContainerView(this@MainActivity)
+            themesContainer.addView(newView)
+            newView.id = View.generateViewId()
+            val newFragment = ListadoCursosFragment.newInstance(email.toString(),it.toString())
+                transaction.setReorderingAllowed(true)
+                transaction.add(newView.id, newFragment,newFragment.tag).addToBackStack(it.name)
+        }
+        transaction.commit()
     }
 
     fun goToMiPerfil(){
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
-        val intent = Intent(this@ListadoCursosActivity, PerfilActivity::class.java)
+        val intent = Intent(this@MainActivity, PerfilActivity::class.java)
         // Le paso el email a PerfilActivity para que muestre el perfil de ese usuario.
         intent.putExtra("email", email)
 
@@ -163,63 +161,12 @@ class ListadoCursosActivity:
                 R.id.perfil_menu -> goToMiPerfil()
                 R.id.home_menu -> Toast.makeText(applicationContext, "Home Clickeado", Toast.LENGTH_LONG).show()
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Clickeado", Toast.LENGTH_LONG).show()
-                R.id.crear_curso_menu -> startActivity(Intent(this@ListadoCursosActivity, CrearCursoActivity::class.java))
-                R.id.chat_menu -> startActivity(Intent(this@ListadoCursosActivity, Chat2Activity::class.java))
+                R.id.crear_curso_menu -> startActivity(Intent(this@MainActivity, CrearCursoActivity::class.java))
+                R.id.chat_menu -> startActivity(Intent(this@MainActivity, Chat2Activity::class.java))
                 R.id.logout_menu -> logout()
             }
             true
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(toogle.onOptionsItemSelected(item)){
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initRecyclerView(){
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@ListadoCursosActivity)
-            val decoration = DividerItemDecoration(this@ListadoCursosActivity, DividerItemDecoration.VERTICAL)
-            addItemDecoration(decoration)
-            recyclerViewAdapter = RecyclerViewAdapter(this@ListadoCursosActivity)
-            adapter = recyclerViewAdapter
-        }
-    }
-
-    fun initViewModel(){
-        viewModel = ViewModelProvider(this).get(ListadoCursosActivityViewModel::class.java)
-        viewModel.getCursosObservable().observe(this, Observer<List<Curso>>{
-            if(it == null){
-                Toast.makeText(this@ListadoCursosActivity, "No hay datos...", Toast.LENGTH_LONG).show()
-            } else{
-                recyclerViewAdapter.cursos = it.toMutableList()
-                recyclerViewAdapter.notifyDataSetChanged()
-            }
-        })
-
-    }
-
-    override fun onItemEditClick(curso: Curso) {
-
-        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
-        val email = prefs.getString("email", null)
-
-        val intent = Intent(this@ListadoCursosActivity, VerCursoActivity::class.java)
-        intent.putExtra("curso_id", curso.id)
-        intent.putExtra("descripcion", curso.descripcion)
-        intent.putExtra("titulo", curso.titulo)
-        intent.putExtra("usuario", email)
-        //usuarios
-        startActivity(intent)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == 1000){
-            //viewModel.getCursos()
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun logout(){
@@ -230,7 +177,7 @@ class ListadoCursosActivity:
         FirebaseAuth.getInstance().signOut()
         onBackPressed()
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {task ->
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             val token = task.result
             // aca hay que llamar al back para registrar este device al usuario
             Log.d("DeviceID", token)
@@ -250,24 +197,13 @@ class ListadoCursosActivity:
                 }
             })
         })
-
     }
 
-    fun toggleSearchMode(){
-
-        if(searchMode == "BASIC"){
-
-            BtnFlecha.text = "▼"
-            SearchBox.visibility = View.VISIBLE
-            searchMode = "PRO"
-
-        }else {
-
-            BtnFlecha.text = "▶"
-            SearchBox.visibility = View.GONE
-            searchMode = "BASIC"
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toogle.onOptionsItemSelected(item)){
+            return true
         }
-
+        return super.onOptionsItemSelected(item)
     }
 
     fun initSearchBox(){
@@ -279,28 +215,44 @@ class ListadoCursosActivity:
             if(it is CheckBox)
                 if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_idioma))
                 else  searchPreferences.categorias.remove(getString(R.string.categoria_idioma))
-            //viewModel.filtrarCursos(searchPreferences)
+            viewModel.filtrarCursos(searchPreferences)
         }
 
         checkBoxProgramacion.setOnClickListener{
             if(it is CheckBox)
                 if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_programacion))
                 else  searchPreferences.categorias.remove(getString(R.string.categoria_programacion))
-            //viewModel.filtrarCursos(searchPreferences)
+            viewModel.filtrarCursos(searchPreferences)
         }
 
         checkBoxMultimedia.setOnClickListener{
             if(it is CheckBox)
                 if (it.isChecked) searchPreferences.categorias.add(getString(R.string.categoria_multimedia))
                 else  searchPreferences.categorias.remove(getString(R.string.categoria_multimedia))
-            //viewModel.filtrarCursos(searchPreferences)
+            viewModel.filtrarCursos(searchPreferences)
         }
+    }
+
+    fun toggleSearchMode(){
+
+        if(searchMode == "BASIC"){
+
+            BtnFlecha.text = "▼"
+            FilterBox.visibility = View.VISIBLE
+            searchMode = "PRO"
+
+        }else {
+            BtnFlecha.text = "▶"
+            FilterBox.visibility = View.GONE
+            searchMode = "BASIC"
+        }
+
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().lowercase()
-        //viewModel.filtrarCursos(searchPreferences)
+        viewModel.filtrarCursos(searchPreferences)
 
         Log.d("Busqueda filtrada", searchPreferences.toString())
 
@@ -309,5 +261,40 @@ class ListadoCursosActivity:
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
+
+    fun viewCoursesOf(theme: Themes?) {
+
+        galleryMode = true
+
+        supportFragmentManager.popBackStack()
+
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+
+        val newView = FragmentContainerView(this@MainActivity,)
+        themesContainer.addView(newView)
+        newView.id = View.generateViewId()
+        val newFragment = GaleriaDeCursosFragment.newInstance(email.toString(), theme.toString())
+        supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .add(newView.id, newFragment,newFragment.tag)
+            .addToBackStack(theme.toString())
+            .commit()
+
+
+    }
+
+    override fun onBackPressed() {
+
+        if (galleryMode){
+
+            supportFragmentManager.popBackStack()
+            initThemes()
+            galleryMode=false
+        }else{
+            super.onBackPressed()
+        }
+    }
+
 
 }
