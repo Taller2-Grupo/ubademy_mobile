@@ -93,7 +93,7 @@ class MainActivityViewModel : ViewModel() {
                 when(theme){
                    Themes.CURSOS_POPULARES -> new_cursos = repository.cursos()
                    Themes.CURSOS_FAVORITOS -> new_cursos = repository.favoritosDe(email)
-                   Themes.CURSOS_INSCRIPTOS -> new_cursos = repository.inscriptosDe(email)
+                   Themes.CURSOS_HISTORICOS -> new_cursos = repository.inscriptosDe(email)
                    Themes.CURSOS_RECOMENDADOS -> new_cursos = repository.recomendados(email)
                    else -> new_cursos = emptyList()
                 }

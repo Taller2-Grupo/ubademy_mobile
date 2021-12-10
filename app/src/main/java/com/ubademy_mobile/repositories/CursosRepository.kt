@@ -23,8 +23,11 @@ class CursosRepository {
         return emptyList()
     }
 
-    fun favoritosDe(email : String) : List<Curso>{
-        return emptyList()
+    suspend fun favoritosDe(email : String) : List<Curso>{
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.obtenerfavoritos(email)
+            response.body() ?: emptyList()
+        }
     }
 
     fun propiosDe(email: String) : List<Curso>{

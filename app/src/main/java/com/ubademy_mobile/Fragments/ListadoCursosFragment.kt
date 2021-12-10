@@ -70,7 +70,7 @@ class ListadoCursosFragment : Fragment(),
         when(theme){
             Themes.CURSOS_POPULARES -> TxTTitulo.text = "Cursos populares"
             Themes.CURSOS_FAVORITOS -> TxTTitulo.text = "Mis Favoritos"
-            Themes.CURSOS_INSCRIPTOS -> TxTTitulo.text = "Cursos inscriptos"
+            Themes.CURSOS_HISTORICOS -> TxTTitulo.text = "Cursos históricos"
             Themes.CURSOS_RECOMENDADOS -> TxTTitulo.text = "Recomenadados"
             else -> TxTTitulo.text = "Otros cursos"
         }
