@@ -3,6 +3,7 @@ package com.ubademy_mobile.services.interfaces
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.data.Cursada
+import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.services.data.InscripcionRequest
 import retrofit2.Call
 import retrofit2.Response
@@ -43,5 +44,10 @@ interface CursoService {
     @GET("cursos/{curso_id}/alumnos")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun obtenerInscriptos(@Path("curso_id") curso_id: String): Call<List<String>>
+
+    @GET("examenes/curso/{curso_id}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun obtenerExamenes(@Path("curso_id") curso_id: String): Call<List<Examen>>
+
 
 }

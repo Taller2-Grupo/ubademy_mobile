@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_ver_inscriptos.*
 
 class VerInscriptosActivity : AppCompatActivity(), InscriptosRecyclerViewAdapter.OnItemClickListener {
 
-
     private lateinit var viewModel: VerInscriptosActivityViewModel
     private lateinit var inscriptosAdapter: InscriptosRecyclerViewAdapter
 

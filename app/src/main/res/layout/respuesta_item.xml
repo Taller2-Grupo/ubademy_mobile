@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/TxTEnunciado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enunciado"
+        android:textSize="20dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="10dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtInputRespuesta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/color_primary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+        android:layout_marginHorizontal="10dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:hint="Respuesta"
+            android:inputType="none"
+            android:maxLines="10"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/correctorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Corrector:"
+            android:layout_marginHorizontal="10dp"/>
+        <TextView
+            android:id="@+id/corrector"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:text="Juan Emilio"
+            android:gravity="end"
+            android:paddingHorizontal="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/calificacionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Calificacion:"
+            android:layout_marginHorizontal="10dp"/>
+        <EditText
+            android:id="@+id/calificacion"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="0"
+            android:gravity="end"
+            android:paddingHorizontal="20dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        />
+
+</LinearLayout>

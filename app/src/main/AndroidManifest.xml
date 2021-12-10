@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ubademy_mobile">
 
+        <activity
+            android:name=".activities.ExamenesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.VerExamenActivity"
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->
         <meta-data
@@ -28,6 +33,9 @@
             android:exported="false" />
         <activity
             android:name=".activities.MessagingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.VerExamenesActivity"
             android:exported="true" />
         <activity
             android:name=".activities.VerInscriptosActivity"

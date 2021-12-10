@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.VerExamenesFragment">
+
+    <TextView
+        android:id="@+id/TxTTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Examenes del curso"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="25dp"
+
+        android:textSize="15sp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewExamenes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TxTTitulo"
+        android:layout_marginHorizontal="32dp"
+        />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="405dp"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="30dp"
+        app:layout_constraintTop_toBottomOf="@id/TxTTitulo"
+        />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FabNuevoExamen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="20dp"
+            android:contentDescription="Nuevo examen"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

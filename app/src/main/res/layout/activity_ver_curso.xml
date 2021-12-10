@@ -108,6 +108,23 @@
                 app:layout_constraintTop_toBottomOf="@id/BtnInscribirse" />
 
             <Button
+                android:id="@+id/BtnExamenes"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="140dp"
+                android:background="@drawable/button_rounded"
+                android:backgroundTint="@color/color_tertiary"
+                android:textColor="@color/color_background"
+                android:text="Examenes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/BtnVerAlumnos"
+                />
+
+            <Button
                 android:id="@+id/BtnVerImagenes"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -121,7 +138,7 @@
                 android:text="Ver Imagenes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/BtnVerAlumnos" />
+                app:layout_constraintTop_toBottomOf="@+id/BtnExamenes" />
 
             <Button
                 android:id="@+id/BtnEditarCurso"

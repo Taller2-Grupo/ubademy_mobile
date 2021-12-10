@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav.xml"
+    app:startDestination="@id/verExamenesFragment">
+
+
+    <fragment
+        android:id="@+id/NaVexamenFragment"
+        android:name="com.ubademy_mobile.Fragments.ExamenFragment"
+        android:label="ExamenFragment"
+        tools:layout="@layout/fragment_examen">
+
+        <action
+            android:id="@+id/navigateToRespuestas"
+            app:destination="@id/NaVrespuestasFragment" />
+        <action
+            android:id="@+id/ActionEditarExamen"
+            app:destination="@id/crearExamenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/NaVrespuestasFragment"
+        android:name="com.ubademy_mobile.Fragments.RespuestasFragment"
+        android:label="RespuestasFragment"
+        tools:layout="@layout/fragment_respuestas" >
+        <action
+            android:id="@+id/navigateToExamen"
+            app:destination="@id/NaVexamenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verExamenesFragment"
+        android:name="com.ubademy_mobile.Fragments.VerExamenesFragment"
+        android:label="fragment_ver_examenes"
+        tools:layout="@layout/fragment_ver_examenes" >
+        <action
+            android:id="@+id/SelectExamen"
+            app:destination="@id/NaVexamenFragment" />
+        <action
+            android:id="@+id/ActionCreateExamen"
+            app:destination="@id/crearExamenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/crearExamenFragment"
+        android:name="com.ubademy_mobile.Fragments.CrearExamenFragment"
+        android:label="CrearExamenFragment" >
+        <action
+            android:id="@+id/ActionNewExamenDone"
+            app:destination="@id/verExamenesFragment" />
+        <action
+            android:id="@+id/ActionEditExamenDone"
+            app:destination="@id/NaVexamenFragment" />
+    </fragment>
+</navigation>
