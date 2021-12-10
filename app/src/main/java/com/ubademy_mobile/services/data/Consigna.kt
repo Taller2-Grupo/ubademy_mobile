@@ -1,7 +1,7 @@
 package com.ubademy_mobile.services.data
 
-data class Consigna(val enunciado: String? = null,
-                    val puntaje: String? = null,
+data class Consigna(var enunciado: String? = null,
+                    var puntaje: String? = null,
                     val id: String? = null,
                     val fecha_creacion: String? = null,
                     val fecha_actualizacion: String? = null,
