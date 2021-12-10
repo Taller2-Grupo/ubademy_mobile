@@ -69,6 +69,19 @@ class VerExamenesActivityViewModel: ViewModel() {
         }
     }
 
+    fun publicarExamen(examen_id : String){
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            repository.publicarExamen(examen_id)
+
+            showProgressBar.postValue(false)
+        }
+    }
+
     fun selectExamen(id: String) {
         Log.d("Selecting exam","buscando: ${id} ")
         examenes.value?.forEach {

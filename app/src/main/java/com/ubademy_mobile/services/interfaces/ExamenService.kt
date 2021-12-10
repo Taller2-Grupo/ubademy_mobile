@@ -22,7 +22,7 @@ interface ExamenService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun obtenerExamen(@Path("examen_id") examen_id: String): Response<Examen>
 
-    @PUT("examenes/publicar/{examen_id}")
+    @POST("examenes/publicar/{examen_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun publicarExamen(@Path("examen_id") curso_id: String): Response<Examen>
 

@@ -28,6 +28,14 @@ class ExamenesRepository {
         }
     }
 
+    suspend fun publicarExamen(id_examen: String){
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.publicarExamen(id_examen)
+            response.body()
+        }
+    }
+
 
 
 }

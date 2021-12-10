@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/TxTConsigna"
+        android:id="@+id/TxTNombreExamen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Consigna"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/TxTConsigna"
+        app:layout_constraintTop_toBottomOf="@id/TxTNombreExamen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
 
@@ -37,32 +37,14 @@
         android:layout_marginVertical="10dp"
         />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtRespuesta"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerRespuestas"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="32dp"
-        android:backgroundTint="@color/color_primary"
-        android:ems="10"
-        android:minHeight="48dp"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        android:layout_margin="32dp"
+        />
 
-        <com.google.android.material.textfield.TextInputEditText
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top"
-            android:hint="Aún no se ha registrado una respuesta"
-            android:inputType="none"
-            android:minLines="10"
-            android:textSize="14sp"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
 

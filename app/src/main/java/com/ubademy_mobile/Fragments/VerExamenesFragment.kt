@@ -1,6 +1,7 @@
 package com.ubademy_mobile.Fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -25,6 +26,10 @@ import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.activity_ver_examenes.*
 import kotlinx.android.synthetic.main.activity_ver_examenes.recyclerViewExamenes
 import kotlinx.android.synthetic.main.fragment_ver_examenes.*
+import android.content.DialogInterface
+
+
+
 
 class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickListener {
 
@@ -104,9 +109,29 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
     }
 
     override fun setImgStatus(examen: Examen, imageView: ImageView?) {
+
         if (examen.estado == "creado"){
             imageView!!.setImageResource(R.drawable.ic_private)
+            imageView.setOnClickListener {
+
+                val alert: AlertDialog.Builder = AlertDialog.Builder(appContext)
+                alert.setTitle("Publicar examen")
+                alert.setMessage("Desea publicar el examen? No se podrá volver a editar")
+                alert.setPositiveButton("Sí") { dialog, which ->
+
+                    viewModel.publicarExamen(examen_id = examen.id.toString())
+                    dialog.dismiss()
+                }
+
+                alert.setNegativeButton("No",
+                    DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+
+                alert.show()
+
+            }
         }
+
     }
+
 }
 

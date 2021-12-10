@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.Navigation
 import com.ubademy_mobile.R
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
@@ -28,6 +26,8 @@ class ExamenFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var mode : ExamenMode
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,7 +42,7 @@ class ExamenFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_examen, container, false)
-        view.TxTConsigna.setOnClickListener {
+        view.TxTNombreExamen.setOnClickListener {
             Log.e("listener","CLick in examen Listener")
             Navigation.findNavController(view).navigate(R.id.navigateToRespuestas)
         }
@@ -75,8 +75,13 @@ class ExamenFragment : Fragment() {
 
         //viewModel = ViewModelProvider(context as ViewModelStoreOwner).get(VerExamenesActivityViewModel::class.java)
         viewModel.examen_seleccionado.value.apply {
-            Log.e("examen seleccionado obs","${this?.consignas?.get(0)?.enunciado}")
-            TxTConsigna.text = this?.consignas?.get(0)?.enunciado.toString()
+            if (this == null){
+                Toast.makeText(appContext,"No se ha seleccioado un examen",Toast.LENGTH_LONG).show()
+            }else{
+                Log.e("Examen seleccionado","${this.nombre}")
+                TxTNombreExamen.text = this.nombre
+
+            }
         }
     }
 }
