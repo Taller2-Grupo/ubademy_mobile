@@ -1,22 +1,21 @@
 package com.ubademy_mobile.Fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.view.forEach
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.ConsignaAdapter
-import com.ubademy_mobile.services.ExamenesRecyclerViewAdapter
 import com.ubademy_mobile.services.data.Consigna
 import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
@@ -24,8 +23,11 @@ import kotlinx.android.synthetic.main.activity_ver_examenes.*
 import kotlinx.android.synthetic.main.consigna_item.view.*
 import kotlinx.android.synthetic.main.fragment_crear_examen.*
 
+
+
 class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
 
+    private var editMode: Boolean = false
     private lateinit var appContext: Context
     private lateinit var consignaAdapter: ConsignaAdapter
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
@@ -46,27 +48,47 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        BtnCrearExamen.setOnClickListener {
-            crearExamen()
+        if( viewModel.examen_seleccionado.id != null){
+            editMode = true
+        }
+
+        BtnCrearExamen.apply {
+
+            if (editMode) {
+                this.text = "Editar"
+                this.setOnClickListener { editarExamen() }
+            }else{
+                this.text = "Crear"
+                this.setOnClickListener {  crearExamen() }
+            }
         }
 
         BtnNuevaConsigna.setOnClickListener {
             nuevaConsigna()
         }
 
-        initViewModel()
         initRecyclerView("owner","user")
+        initViewModel()
     }
 
     private fun initViewModel() {
-        viewModel.examen_seleccionado.observe(viewLifecycleOwner,{
-            if (it != null){
-                Toast.makeText(appContext,"Examen creado exitosamente con id ${it.id}",Toast.LENGTH_LONG).show()
+        viewModel.nuevo_examen.observe(viewLifecycleOwner,{
+
+            if (it?.id != null){
+                Log.e("examen","${it.consignas} - ${it.nombre}")
+                Toast.makeText(appContext,"Operacion exitosa. Examen id ${it.id}",Toast.LENGTH_LONG).show()
                 Navigation.findNavController(requireView()).navigate(R.id.ActionNewExamenDone)
+                viewModel.nuevo_examen.value = Examen()
             }else{
                 Toast.makeText(appContext,"Error en la creacion",Toast.LENGTH_LONG).show()
             }
         })
+        viewModel.examen_seleccionado.apply {
+            if(this.id != null){
+                TxTNombreExamen.editText!!.setText(this.nombre)
+                this.consignas?.let { consignaAdapter.consignas.addAll(it) }
+            }
+        }
     }
 
     private fun initRecyclerView(owner : String, user:String){
@@ -91,10 +113,18 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
                 id_curso = viewModel.idcurso,
                 consignas = consignaAdapter.consignas
             )
-
             viewModel.crearExamen(new_Examen)
         }
+    }
 
+    private fun editarExamen(){
+        if(validar_formulario()){
+
+            viewModel.editarExamenSeleccionado(
+                nombre = TxTNombreExamen.editText!!.text.toString(),
+                consignas = consignaAdapter.consignas
+            )
+        }
     }
 
     private fun validar_formulario(): Boolean {
@@ -142,4 +172,19 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
         }
     }
 
+    /*
+    fun eliminarExamen(id_examen : String){
+        val alert: AlertDialog.Builder = AlertDialog.Builder(appContext)
+        alert.setTitle("Eliminar")
+        alert.setMessage("¿Desea eliminar el examen?")
+        alert.setPositiveButton("Sí") { dialog, _ ->
+
+            viewModel.eliminarExamen(examen_id = id_examen)
+            dialog.dismiss()
+        }
+
+        alert.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+        alert.show()
+    }
+    */
 }

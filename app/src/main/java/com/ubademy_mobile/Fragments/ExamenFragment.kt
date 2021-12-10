@@ -69,13 +69,20 @@ class ExamenFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViewModel()
+
+        if (viewModel.isOwner){
+            FABEditarExamen.visibility = View.VISIBLE
+            FABEditarExamen.setOnClickListener {
+                Navigation.findNavController(requireView()).navigate(R.id.ActionEditarExamen)
+            }
+        }
     }
 
     private fun initViewModel() {
 
         //viewModel = ViewModelProvider(context as ViewModelStoreOwner).get(VerExamenesActivityViewModel::class.java)
-        viewModel.examen_seleccionado.value.apply {
-            if (this == null){
+        viewModel.examen_seleccionado.apply {
+            if (this.id == null){
                 Toast.makeText(appContext,"No se ha seleccioado un examen",Toast.LENGTH_LONG).show()
             }else{
                 Log.e("Examen seleccionado","${this.nombre}")

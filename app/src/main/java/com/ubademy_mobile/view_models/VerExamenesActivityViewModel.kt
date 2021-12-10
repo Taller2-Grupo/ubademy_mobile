@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ubademy_mobile.repositories.ExamenesRepository
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.Consigna
 import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
@@ -23,9 +24,10 @@ class VerExamenesActivityViewModel: ViewModel() {
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
     val examenes = MutableLiveData<List<Examen>>()
-    val examen_seleccionado = MutableLiveData<Examen>()
+    val nuevo_examen = MutableLiveData<Examen>()
     val showProgressBar = MutableLiveData<Boolean>()
 
+    var examen_seleccionado = Examen()
     val repository = ExamenesRepository()
 
     lateinit var idcurso : String
@@ -40,7 +42,7 @@ class VerExamenesActivityViewModel: ViewModel() {
     }
 
     fun obtenerExamenSeleccionado(): Examen? {
-        return examen_seleccionado.value
+        return examen_seleccionado
     }
 
 
@@ -74,7 +76,7 @@ class VerExamenesActivityViewModel: ViewModel() {
         // Handlea la llamada en paralelo a las apis
         viewModelScope.launch {
 
-            examen_seleccionado.postValue(repository.crearExamen(examen))
+            nuevo_examen.postValue(repository.crearExamen(examen))
 
             showProgressBar.postValue(false)
         }
@@ -88,17 +90,46 @@ class VerExamenesActivityViewModel: ViewModel() {
         viewModelScope.launch {
 
             repository.publicarExamen(examen_id)
-
             showProgressBar.postValue(false)
         }
     }
 
     fun selectExamen(id: String) {
-        Log.d("Selecting exam","buscando: ${id} ")
+        Log.d("Selecting exam","buscando: ${id}")
+        examen_seleccionado = Examen()
         examenes.value?.forEach {
             Log.d("Selecting exam","encontrado: ${it.id.toString()} ")
-            if (it.id.toString() == id) examen_seleccionado.value = it
+            if (it.id.toString() == id) examen_seleccionado = it
         }
     }
+
+    fun editarExamenSeleccionado(nombre: String, consignas: MutableList<Consigna>) {
+
+        examen_seleccionado.nombre = nombre
+        examen_seleccionado.consignas = consignas
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            nuevo_examen.postValue(repository.editarExamen(examen_seleccionado))
+            showProgressBar.postValue(false)
+        }
+    }
+/*
+
+    fun eliminarExamen(examen_id: String) {
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            repository.eliminarExamen(examen_id)
+            showProgressBar.postValue(false)
+        }
+    }
+*/
 
 }

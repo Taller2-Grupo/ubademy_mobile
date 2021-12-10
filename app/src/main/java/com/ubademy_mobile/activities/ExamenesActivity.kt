@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.activity_examenes.*
 
@@ -31,9 +32,9 @@ class ExamenesActivity : AppCompatActivity() {
         viewModel.idcurso = idCurso
         viewModel.iduser = user
         viewModel.isOwner = user == idOwner
-
+        
         BtnBack.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 

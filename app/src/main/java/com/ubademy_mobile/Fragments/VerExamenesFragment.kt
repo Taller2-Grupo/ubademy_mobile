@@ -72,11 +72,12 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
         observarExamenes()
 
         viewModel.obtenerExamenes(viewModel.idcurso)
+        viewModel.selectExamen("")
 
         if(viewModel.isOwner) {
             FabNuevoExamen.visibility = View.VISIBLE
             FabNuevoExamen.setOnClickListener {
-                Navigation.findNavController(requireView()).navigate(R.id.CreateExamen)
+                Navigation.findNavController(requireView()).navigate(R.id.ActionCreateExamen)
             }
         }
     }
@@ -123,7 +124,6 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
                 publicarExamen(examen.id.toString())
             }
         }
-
     }
 
     fun publicarExamen(id_examen : String){

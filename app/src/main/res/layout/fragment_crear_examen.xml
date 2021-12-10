@@ -120,20 +120,40 @@
         android:paddingHorizontal="20dp"
         android:paddingVertical="30dp"
         android:layout_marginVertical="10dp"
-        app:layout_constraintBottom_toTopOf="@id/BtnCrearExamen"
+        app:layout_constraintBottom_toTopOf="@id/botonera"
         />
 
-    <Button
-        android:id="@+id/BtnCrearExamen"
+    <LinearLayout
+        android:id="@+id/botonera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:background="@drawable/button_rounded"
-        android:text="Crear"
-
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="20dp"
         >
 
-    </Button>
+        <Button
+            android:id="@+id/BtnEliminarExamen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="Eliminar"
+            android:layout_marginHorizontal="5dp"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/BtnCrearExamen"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/button_rounded"
+            android:text="Crear"
+            android:layout_marginHorizontal="5dp"
+            />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

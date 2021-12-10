@@ -1,5 +1,6 @@
 package com.ubademy_mobile.repositories
 
+import androidx.lifecycle.MutableLiveData
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.services.interfaces.CursoService
@@ -36,6 +37,20 @@ class ExamenesRepository {
         }
     }
 
+    suspend fun editarExamen(examen: Examen) : Examen? {
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.editarExamen(examen)
+            response.body()
+        }
+    }
 
+    /*
+    suspend fun eliminarExamen(examenId: String) {
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.eliminarExamen(examen)
+            response.body()
+        }
+    }
+    */
 
 }
