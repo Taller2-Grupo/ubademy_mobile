@@ -58,7 +58,7 @@ class VerCursoActivity: AppCompatActivity() {
 
     private fun setBotonDeVerExamenes(curso: Curso) {
 
-        val inscriptosIntent = Intent(this@VerCursoActivity, VerExamenesActivity::class.java)
+        val inscriptosIntent = Intent(this@VerCursoActivity, ExamenesActivity::class.java)
         inscriptosIntent.putExtra("cursoId", idCurso)
         inscriptosIntent.putExtra("ownerId", curso.id_creador.toString())
 

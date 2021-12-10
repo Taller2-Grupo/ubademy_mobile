@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -61,7 +62,7 @@ class VerExamenesActivity : AppCompatActivity(), ExamenesRecyclerViewAdapter.OnI
     private fun observarExamenes(){
         viewModel.obtenerExamenesObservable().observe(this,{
         if(it == null || it.isEmpty()) {
-        Toast.makeText(this@VerExamenesActivity, "No hay examenes disponibles...", Toast.LENGTH_LONG).show()
+        Toast.makeText(this@VerExamenesActivity, "No hay consignas disponibles...", Toast.LENGTH_LONG).show()
         } else{
         examenesAdapter.examenes = it.toMutableList()
         examenesAdapter.notifyDataSetChanged()
@@ -85,6 +86,10 @@ class VerExamenesActivity : AppCompatActivity(), ExamenesRecyclerViewAdapter.OnI
         intent.putExtra("id", examen.id.toString())
 
         startActivity(intent)
+    }
+
+    override fun setImgStatus(examen: Examen, imageView: ImageView?) {
+
     }
 
 }

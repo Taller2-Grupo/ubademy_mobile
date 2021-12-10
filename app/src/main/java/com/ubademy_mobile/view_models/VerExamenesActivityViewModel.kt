@@ -3,11 +3,15 @@ package com.ubademy_mobile.view_models
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ubademy_mobile.repositories.ExamenesRepository
+import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +22,13 @@ class VerExamenesActivityViewModel: ViewModel() {
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
     val examenes = MutableLiveData<List<Examen>>()
+    val examen_seleccionado = MutableLiveData<Examen>()
     val showProgressBar = MutableLiveData<Boolean>()
+
+    val repository = ExamenesRepository()
+
+    lateinit var idcurso : String
+    lateinit var iduser: String
 
     fun obtenerExamenesObservable(): MutableLiveData<List<Examen>> {
         return examenes
@@ -28,40 +38,43 @@ class VerExamenesActivityViewModel: ViewModel() {
         return showProgressBar
     }
 
-    fun obtenerExamenes(curso_id: String) {
-
-        showProgressBar.postValue(true)
-
-        Log.d("obtenerExamenes", "Curso_id: ${curso_id}")
-        val call = retroInstance.obtenerExamenes(curso_id)
-
-        call.enqueue(object: Callback<List<Examen>> {
-            override fun onFailure(call: Call<List<Examen>>, t: Throwable){
-                showProgressBar.postValue(false)
-                examenes.postValue(null)
-                logFailure("obtenerExamenes" , t)
-            }
-
-            override fun onResponse(call: Call<List<Examen>>, response: Response<List<Examen>>){
-                showProgressBar.postValue(false)
-                logResponse("obtenerExamenes", response)
-
-                if(response.isSuccessful){
-                    examenes.postValue(response.body())
-                } else{
-                    examenes.postValue(null)
-                }
-            }
-        })
+    fun obtenerExamenSeleccionado(): Examen? {
+        return examen_seleccionado.value
     }
 
-    fun obtenerExamen(id: String): Examen? {
+
+    fun obtenerExamenes(curso_id: String){
+
         showProgressBar.postValue(true)
 
-        examenes.value?.forEach {
-            if (it.id == id) return@obtenerExamen it
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            examenes.postValue(repository.examenesDeCurso(curso_id))
+
+            showProgressBar.postValue(false)
         }
-        return null
+    }
+
+    fun crearExamen(examen: Examen){
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            examen_seleccionado.postValue(repository.crearExamen(examen))
+
+            showProgressBar.postValue(false)
+        }
+    }
+
+    fun selectExamen(id: String) {
+        Log.d("Selecting exam","buscando: ${id} ")
+        examenes.value?.forEach {
+            Log.d("Selecting exam","encontrado: ${it.id.toString()} ")
+            if (it.id.toString() == id) examen_seleccionado.value = it
+        }
     }
 
 }
