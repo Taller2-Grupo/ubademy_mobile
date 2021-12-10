@@ -45,8 +45,16 @@ interface CursoService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun obtenerInscriptos(@Path("curso_id") curso_id: String): Call<List<String>>
 
-    @GET("cursos/favoritos/")
+    @GET("cursos/favoritos/{username}")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    fun obtenerfavoritos(@Body() username: String): Response<List<Curso>>
+    suspend fun obtenerfavoritos(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("cursos/historicos/{username}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerhistoricos(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("cursos/colaboraciones/{username}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenercolaboraciones(@Path("username") username: String): Response<List<Curso>>
 
 }

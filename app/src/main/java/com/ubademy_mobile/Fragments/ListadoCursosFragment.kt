@@ -66,11 +66,13 @@ class ListadoCursosFragment : Fragment(),
         initRecyclerView()
         initViewModel()
         viewModel.getCursos(loggedUserEmail!!,theme)
+        Log.e("theme: ", theme.toString())
 
         when(theme){
             Themes.CURSOS_POPULARES -> TxTTitulo.text = "Cursos populares"
             Themes.CURSOS_FAVORITOS -> TxTTitulo.text = "Mis Favoritos"
             Themes.CURSOS_HISTORICOS -> TxTTitulo.text = "Cursos históricos"
+            Themes.CURSOS_COLABORADORES -> TxTTitulo.text = "Colaboraciones"
             Themes.CURSOS_RECOMENDADOS -> TxTTitulo.text = "Recomenadados"
             else -> TxTTitulo.text = "Otros cursos"
         }
