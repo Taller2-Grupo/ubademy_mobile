@@ -27,6 +27,7 @@ import com.ubademy_mobile.activities.tools.Themes
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Device
 import com.ubademy_mobile.services.interfaces.UsuarioService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.utils.SearchPreferences
 import com.ubademy_mobile.view_models.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -70,7 +71,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
                 headerLayout.name_user_menu.text = it.nombre
             }
         })
-
     }
 
     private fun setup() {
@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
             // aca hay que llamar al back para registrar este device al usuario
             Log.d("DeviceID", token)
 
-            val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+            val baseUrl = Constants.API_USUARIOS_URL
             val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
             val call = retroInstance.borrarDevice(token)
 

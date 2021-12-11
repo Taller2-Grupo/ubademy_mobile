@@ -16,6 +16,7 @@ import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.GetUsersResponse
 import com.ubademy_mobile.services.data.Usuario
 import com.ubademy_mobile.services.interfaces.UsuarioService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
 import retrofit2.Call
@@ -49,7 +50,7 @@ class UsersFragment(var userid: String, var userFullName: String) : Fragment() {
     }
 
     fun getUsuarios(){
-        val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+        val baseUrl = Constants.API_USUARIOS_URL
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
         val call = retroInstance.obtenerUsuarios()
         call.enqueue(object: Callback<GetUsersResponse> {

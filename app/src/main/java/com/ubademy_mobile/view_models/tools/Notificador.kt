@@ -5,13 +5,14 @@ import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Device
 import com.ubademy_mobile.services.data.Notificacion
 import com.ubademy_mobile.services.interfaces.UsuarioService
+import com.ubademy_mobile.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 fun notificar(username: String, titulo: String, body: String){
 
-    val baseUrl = "https://ubademy-usuarios.herokuapp.com/"
+    val baseUrl = Constants.API_USUARIOS_URL
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
     val call = retroInstance.notificar(Notificacion(username = username, title = titulo, body = body))
 
