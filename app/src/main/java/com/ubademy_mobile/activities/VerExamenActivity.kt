@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
-import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 
 class VerExamenActivity : AppCompatActivity() {

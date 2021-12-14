@@ -7,7 +7,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.ubademy_mobile.R
-import com.ubademy_mobile.services.data.Consigna
+import com.ubademy_mobile.services.data.examenes.Consigna
 import kotlinx.android.synthetic.main.consigna_item.view.*
 
 class ConsignaAdapter(

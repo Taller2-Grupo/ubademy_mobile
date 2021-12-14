@@ -1,8 +1,8 @@
 package com.ubademy_mobile.services.interfaces
 
-import com.ubademy_mobile.services.data.CorreccionRequest
-import com.ubademy_mobile.services.data.Examen
-import com.ubademy_mobile.services.data.ExamenResuelto
+import com.ubademy_mobile.services.data.examenes.CorreccionRequest
+import com.ubademy_mobile.services.data.examenes.Examen
+import com.ubademy_mobile.services.data.examenes.ExamenResuelto
 import retrofit2.Response
 import retrofit2.http.*
 

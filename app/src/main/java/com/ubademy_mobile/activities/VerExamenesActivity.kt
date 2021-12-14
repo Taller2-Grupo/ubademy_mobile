@@ -10,12 +10,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubademy_mobile.R
-import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.ExamenesRecyclerViewAdapter
-import com.ubademy_mobile.services.data.Examen
+import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.activity_ver_examenes.*
 
