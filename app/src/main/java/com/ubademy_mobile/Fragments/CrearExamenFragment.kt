@@ -17,7 +17,6 @@ import com.ubademy_mobile.services.ConsignaAdapter
 import com.ubademy_mobile.services.data.examenes.Consigna
 import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
-import kotlinx.android.synthetic.main.activity_ver_examenes.*
 import kotlinx.android.synthetic.main.consigna_item.view.*
 import kotlinx.android.synthetic.main.fragment_crear_examen.*
 

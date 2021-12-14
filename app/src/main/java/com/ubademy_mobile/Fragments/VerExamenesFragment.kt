@@ -17,8 +17,6 @@ import com.ubademy_mobile.R
 import com.ubademy_mobile.services.ExamenesRecyclerViewAdapter
 import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
-import kotlinx.android.synthetic.main.activity_ver_examenes.*
-import kotlinx.android.synthetic.main.activity_ver_examenes.recyclerViewExamenes
 import kotlinx.android.synthetic.main.fragment_ver_examenes.*
 import android.content.DialogInterface
 
