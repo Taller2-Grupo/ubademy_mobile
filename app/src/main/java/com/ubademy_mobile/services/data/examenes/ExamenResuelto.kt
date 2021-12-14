@@ -1,4 +1,4 @@
-package com.ubademy_mobile.services.data
+package com.ubademy_mobile.services.data.examenes
 
 data class ExamenResuelto(
     val id: String? = null,

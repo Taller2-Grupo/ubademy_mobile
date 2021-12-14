@@ -1,4 +1,6 @@
-package com.ubademy_mobile.services.data
+package com.ubademy_mobile.services.data.examenes
+
+import com.ubademy_mobile.services.data.examenes.Consigna
 
 data class Examen(
     var nombre: String? = null,

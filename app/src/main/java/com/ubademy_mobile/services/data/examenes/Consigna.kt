@@ -1,4 +1,4 @@
-package com.ubademy_mobile.services.data
+package com.ubademy_mobile.services.data.examenes
 
 data class Consigna(var enunciado: String? = null,
                     var puntaje: String? = null,
