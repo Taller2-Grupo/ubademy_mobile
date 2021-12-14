@@ -13,20 +13,13 @@
         tools:layout="@layout/fragment_examen">
 
         <action
-            android:id="@+id/navigateToRespuestas"
-            app:destination="@id/NaVrespuestasFragment" />
-        <action
             android:id="@+id/ActionEditarExamen"
             app:destination="@id/crearExamenFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/NaVrespuestasFragment"
-        android:name="com.ubademy_mobile.Fragments.RespuestasFragment"
-        android:label="RespuestasFragment"
-        tools:layout="@layout/fragment_respuestas" >
         <action
-            android:id="@+id/navigateToExamen"
-            app:destination="@id/NaVexamenFragment" />
+            android:id="@+id/actionExamenToConsigna"
+            app:destination="@id/consginaFragment" >
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/verExamenesFragment"
@@ -50,5 +43,18 @@
         <action
             android:id="@+id/ActionEditExamenDone"
             app:destination="@id/NaVexamenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/consginaFragment"
+        android:name="com.ubademy_mobile.Fragments.ConsginaFragment"
+        android:label="fragment_consgina"
+        tools:layout="@layout/fragment_consgina" >
+        <action
+            android:id="@+id/ActionConsginaToExamen"
+            app:destination="@id/NaVexamenFragment" />
+        <action
+            android:id="@+id/action_SiguienteConsigna"
+            app:destination="@id/consginaFragment" />
+
     </fragment>
 </navigation>

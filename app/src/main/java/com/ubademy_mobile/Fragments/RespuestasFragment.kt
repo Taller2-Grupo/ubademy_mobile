@@ -30,10 +30,7 @@ class RespuestasFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_respuestas, container, false)
-        view.TxTConsigna.setOnClickListener {
-            Log.e("listener","CLick in respuestas Listener")
-            Navigation.findNavController(view).navigate(R.id.navigateToExamen)
-        }
+        
         return view
     }
 

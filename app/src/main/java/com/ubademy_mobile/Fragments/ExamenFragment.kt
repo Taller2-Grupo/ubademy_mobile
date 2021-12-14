@@ -2,27 +2,33 @@ package com.ubademy_mobile.Fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.MaterialElevationScale
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.RespuestasAdapter
+import com.ubademy_mobile.services.data.examenes.Consigna
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.fragment_examen.*
 import kotlinx.android.synthetic.main.fragment_examen.view.*
 
-class ExamenFragment : Fragment() {
+class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
 
     private lateinit var respuestasAdapter : RespuestasAdapter
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
+
     private lateinit var appActivity: FragmentActivity
     //private lateinit var viewModel: VerExamenesActivityViewModel
     private lateinit var appContext: Context
@@ -45,10 +51,6 @@ class ExamenFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_examen, container, false)
-        view.TxTNombreExamen.setOnClickListener {
-            Log.e("listener","CLick in examen Listener")
-            Navigation.findNavController(view).navigate(R.id.navigateToRespuestas)
-        }
         appActivity = requireActivity()
         appContext = requireContext()
         return view
@@ -87,7 +89,7 @@ class ExamenFragment : Fragment() {
     private fun initRecyclerView(){
         recyclerRespuestas.apply {
             layoutManager = LinearLayoutManager(appContext)
-            respuestasAdapter = RespuestasAdapter()
+            respuestasAdapter = RespuestasAdapter(this@ExamenFragment)
             adapter = respuestasAdapter
         }}
 
@@ -103,5 +105,23 @@ class ExamenFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onItemEditClick(consigna: Consigna, view: View,idx: Int) {
+
+        exitTransition= MaterialElevationScale(false).apply{
+            duration = (500).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = (500).toLong()
+        }
+
+        val name = getString(R.string.consignas_transition_name)
+        val extras = FragmentNavigatorExtras(view to name)
+        val direction = ExamenFragmentDirections.actionExamenToConsigna()
+
+        val bundle = bundleOf("idx_consigna" to idx.toString())
+        findNavController().navigate(R.id.actionExamenToConsigna,bundle)
+
     }
 }

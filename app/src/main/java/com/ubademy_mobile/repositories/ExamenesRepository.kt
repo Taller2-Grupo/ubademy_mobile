@@ -1,9 +1,8 @@
 package com.ubademy_mobile.repositories
 
-import androidx.lifecycle.MutableLiveData
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.data.Examen
-import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.services.data.examenes.Examen
+import com.ubademy_mobile.services.data.examenes.ExamenResuelto
 import com.ubademy_mobile.services.interfaces.ExamenService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,6 +39,13 @@ class ExamenesRepository {
     suspend fun editarExamen(examen: Examen) : Examen? {
         return withContext(Dispatchers.IO) {
             val response = retroInstance.editarExamen(examen)
+            response.body()
+        }
+    }
+
+    suspend fun resolverExamen(examenResuelto: ExamenResuelto): ExamenResuelto? {
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.crearExamenResuelto(examenResuelto)
             response.body()
         }
     }

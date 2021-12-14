@@ -3,14 +3,15 @@ package com.ubademy_mobile.services
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.ubademy_mobile.Fragments.ExamenMode
 import com.ubademy_mobile.R
-import com.ubademy_mobile.services.data.*
+import com.ubademy_mobile.services.data.examenes.Consigna
+import com.ubademy_mobile.services.data.examenes.CorreccionRequest
 import kotlinx.android.synthetic.main.respuesta_item.view.*
 
 class RespuestasAdapter(
+    val clickListener: RespuestasAdapter.OnItemClickListener,
     val mode: ExamenMode = ExamenMode.RESOLUCION) :
     RecyclerView.Adapter<RespuestasAdapter.ViewHolder>() {
 
@@ -21,11 +22,11 @@ class RespuestasAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val TxTEnunciado = view.TxTEnunciado
             get() = field
-        val txtInputRespuesta = view.txtInputRespuesta
-        val correctorContainer = view.correctorContainer
-        val corrector = view.corrector
-        val calificacionContainer = view.calificacionContainer
-        val calificacion = view.calificacion
+        //val txtInputRespuesta = view.txtInputRespuesta
+        //val correctorContainer = view.correctorContainer
+        //val corrector = view.corrector
+        //val calificacionContainer = view.calificacionContainer
+        //val calificacion = view.calificacion
     }
 
     // Create new views (invoked by the layout manager)
@@ -43,21 +44,25 @@ class RespuestasAdapter(
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.TxTEnunciado.text = consignas[position].enunciado
+        viewHolder.itemView.setOnClickListener{
+            clickListener.onItemEditClick(consignas[position],it,position)
+        }
 
         when(mode){
 
             ExamenMode.RESOLUCION -> {
                 viewHolder.TxTEnunciado.text = consignas[position].enunciado
-                viewHolder.calificacionContainer.visibility = View.GONE
-                viewHolder.correctorContainer.visibility = View.GONE
+
+                //viewHolder.calificacionContainer.visibility = View.GONE
+                //viewHolder.correctorContainer.visibility = View.GONE
             }
             ExamenMode.CORRECCION -> {
-                viewHolder.correctorContainer.visibility = View.GONE
-                viewHolder.txtInputRespuesta.editText!!.isEnabled = false
+                //viewHolder.correctorContainer.visibility = View.GONE
+                //viewHolder.txtInputRespuesta.editText!!.isEnabled = false
             }
             ExamenMode.REVISION -> {
-                viewHolder.txtInputRespuesta.editText!!.isEnabled = false
-                viewHolder.calificacion.isEnabled = false
+                //viewHolder.txtInputRespuesta.editText!!.isEnabled = false
+                //viewHolder.calificacion.isEnabled = false
             }
         }
     }
@@ -65,4 +70,7 @@ class RespuestasAdapter(
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = consignas.size
 
+    interface OnItemClickListener{
+        fun onItemEditClick(consigna: Consigna, view: View, idx: Int)
+    }
 }

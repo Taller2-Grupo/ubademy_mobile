@@ -5,20 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ubademy_mobile.repositories.ExamenesRepository
-import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.data.Consigna
-import com.ubademy_mobile.services.data.Examen
+import com.ubademy_mobile.services.data.examenes.Consigna
+import com.ubademy_mobile.services.data.examenes.Examen
+import com.ubademy_mobile.services.data.examenes.ExamenResuelto
+import com.ubademy_mobile.services.data.examenes.Respuesta
 import com.ubademy_mobile.services.interfaces.CursoService
-import com.ubademy_mobile.view_models.tools.logFailure
-import com.ubademy_mobile.view_models.tools.logResponse
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class VerExamenesActivityViewModel: ViewModel() {
 
+    val nuevo_examen_resuelto = MutableLiveData<ExamenResuelto>()
     var isOwner: Boolean = false
     val baseUrl = "https://ubademy-back.herokuapp.com/"
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
@@ -26,6 +23,8 @@ class VerExamenesActivityViewModel: ViewModel() {
     val examenes = MutableLiveData<List<Examen>>()
     val nuevo_examen = MutableLiveData<Examen>()
     val showProgressBar = MutableLiveData<Boolean>()
+
+    val respuestas = HashMap<Examen,MutableList<Respuesta>>()
 
     var examen_seleccionado = Examen()
     val repository = ExamenesRepository()
@@ -95,12 +94,14 @@ class VerExamenesActivityViewModel: ViewModel() {
     }
 
     fun selectExamen(id: String) {
-        Log.d("Selecting exam","buscando: ${id}")
+
         examen_seleccionado = Examen()
         examenes.value?.forEach {
-            Log.d("Selecting exam","encontrado: ${it.id.toString()} ")
+
             if (it.id.toString() == id) examen_seleccionado = it
         }
+        Log.e("Selecting Exam", "Finding for $id, found ${examen_seleccionado.id}" +
+                " by course ${examen_seleccionado.id_curso}")
     }
 
     fun editarExamenSeleccionado(nombre: String, consignas: MutableList<Consigna>) {
@@ -114,6 +115,52 @@ class VerExamenesActivityViewModel: ViewModel() {
         viewModelScope.launch {
 
             nuevo_examen.postValue(repository.editarExamen(examen_seleccionado))
+            showProgressBar.postValue(false)
+        }
+    }
+
+    fun agregarRespuesta(idx_Consigna: Int, respuesta: String) {
+
+        // Nunca debería ser nulo
+        val id_consigna = examen_seleccionado.consignas!![idx_Consigna].id
+
+        val nueva_respuesta =
+            Respuesta(
+            id_consigna = id_consigna,
+            resolucion = respuesta
+            )
+
+        respuestas.apply {
+            if(this.containsKey(examen_seleccionado)) {
+                this[examen_seleccionado]!!.forEach {
+
+                    if (it.id_consigna == id_consigna) it.resolucion = nueva_respuesta.resolucion
+                    else {
+                        this[examen_seleccionado]!!.add(nueva_respuesta)
+                    }
+                }
+            }else{
+                    this[examen_seleccionado] = MutableList(1) { nueva_respuesta }
+            }
+
+        }
+    }
+
+    fun resolverExamen() {
+
+        val examen_resuelto = ExamenResuelto(
+            id_examen = examen_seleccionado.id,
+            id_curso = examen_seleccionado.id_curso,
+            username = iduser,
+            respuestas = respuestas[examen_seleccionado] ?: emptyList()
+        )
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            nuevo_examen_resuelto.postValue(repository.resolverExamen(examen_resuelto))
             showProgressBar.postValue(false)
         }
     }
