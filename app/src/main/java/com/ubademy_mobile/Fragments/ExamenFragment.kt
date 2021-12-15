@@ -14,7 +14,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialElevationScale
 import com.ubademy_mobile.R
@@ -23,6 +22,7 @@ import com.ubademy_mobile.services.data.examenes.Consigna
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.fragment_examen.*
 import kotlinx.android.synthetic.main.fragment_examen.view.*
+import kotlinx.android.synthetic.main.respuesta_item.*
 
 class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
 
@@ -86,10 +86,15 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getExamenResueltoPorUsuario()
+    }
     private fun initRecyclerView(){
         recyclerRespuestas.apply {
             layoutManager = LinearLayoutManager(appContext)
-            respuestasAdapter = RespuestasAdapter(this@ExamenFragment)
+            respuestasAdapter = RespuestasAdapter(this@ExamenFragment, appContext)
             adapter = respuestasAdapter
         }}
 
@@ -97,13 +102,36 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
 
         //viewModel = ViewModelProvider(context as ViewModelStoreOwner).get(VerExamenesActivityViewModel::class.java)
         viewModel.examen_seleccionado.apply {
-            if (this.id == null){
-                Toast.makeText(appContext,"No se ha seleccioado un examen",Toast.LENGTH_LONG).show()
-            }else{
-                Log.e("Examen seleccionado","${this.nombre}")
+            if (this.id == null) {
+                Toast.makeText(appContext, "No se ha seleccioado un examen", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                Log.d("Examen fragment", "Seleccionado => ${this.nombre} { id: ${this.id}}")
                 TxTNombreExamen.text = this.nombre
 
             }
+        }
+
+        viewModel.examen_resuelto.observe(viewLifecycleOwner) {
+
+            if (it?.id != null) {
+
+                viewModel.examen_seleccionado.consignas?.forEach { consigna ->
+                    it.respuestas.forEach { respuesta ->
+                        if (respuesta.id_consigna == consigna.id)
+                            consigna.estadoUser = respuesta.estado
+                    }
+                }
+
+            } else {
+                viewModel.examen_seleccionado.consignas?.forEach { consigna ->
+                    consigna.estadoUser = "Pendiente"
+                }
+            }
+            respuestasAdapter.consignas =
+                (viewModel.examen_seleccionado.consignas!!).toMutableList()
+            respuestasAdapter.notifyDataSetChanged()
+
         }
     }
 
@@ -116,9 +144,9 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
             duration = (500).toLong()
         }
 
-        val name = getString(R.string.consignas_transition_name)
-        val extras = FragmentNavigatorExtras(view to name)
-        val direction = ExamenFragmentDirections.actionExamenToConsigna()
+        //val name = getString(R.string.consignas_transition_name)
+        //val extras = FragmentNavigatorExtras(view to name)
+        //val direction = ExamenFragmentDirections.actionExamenToConsigna()
 
         val bundle = bundleOf("idx_consigna" to idx.toString())
         findNavController().navigate(R.id.actionExamenToConsigna,bundle)

@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class VerExamenesActivityViewModel: ViewModel() {
 
-    val nuevo_examen_resuelto = MutableLiveData<ExamenResuelto>()
+    val examen_resuelto = MutableLiveData<ExamenResuelto>()
     var isOwner: Boolean = false
     val baseUrl = "https://ubademy-back.herokuapp.com/"
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
@@ -160,9 +160,27 @@ class VerExamenesActivityViewModel: ViewModel() {
         // Handlea la llamada en paralelo a las apis
         viewModelScope.launch {
 
-            nuevo_examen_resuelto.postValue(repository.resolverExamen(examen_resuelto))
+            this@VerExamenesActivityViewModel.examen_resuelto.postValue(repository.resolverExamen(examen_resuelto))
             showProgressBar.postValue(false)
         }
+    }
+
+    fun getExamenResueltoPorUsuario() {
+
+        val id_examen = examen_seleccionado.id
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            examen_resuelto.postValue(
+                repository.obtenerExamenDeCursoResueltoPor(id_examen.toString(), idcurso, iduser)
+            )
+
+            showProgressBar.postValue(false)
+        }
+
     }
 /*
 

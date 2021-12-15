@@ -41,4 +41,10 @@ interface ExamenService {
     @POST("examenes/examenes_resueltos/corregir")
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun corregirExamenResuelto(@Body correccionRequest: CorreccionRequest): Response<ExamenResuelto>
+
+    @GET("/examenes/examenes_resueltos/curso/{curso_id}/{username}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerExamenResueltoDeCursoPorUsuario(
+        @Path("curso_id") idcurso: String,
+        @Path("username") username: String      ): Response<List<ExamenResuelto>>
 }

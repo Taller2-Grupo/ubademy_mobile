@@ -46,8 +46,6 @@ class ConsginaFragment : Fragment() {
             else if( idx_consigna == this - 1)
                 last_consigna = true
         }
-
-
     }
 
     override fun onCreateView(
@@ -77,6 +75,17 @@ class ConsginaFragment : Fragment() {
         }
 
         setConsigna()
+        setRespuesta()
+    }
+
+    private fun setRespuesta() {
+        txtInputRespuesta.editText!!.apply {
+            viewModel.examen_resuelto.value?.respuestas?.forEach{
+                if (it.id_consigna == viewModel.examen_seleccionado.consignas?.get(idx_consigna)?.id)
+                    this.setText(it.resolucion.toString())
+                    this.isEnabled = false
+            }
+        }
     }
 
     private fun setConsigna() {

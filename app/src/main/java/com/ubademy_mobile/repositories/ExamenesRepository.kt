@@ -50,6 +50,21 @@ class ExamenesRepository {
         }
     }
 
+    suspend fun obtenerExamenDeCursoResueltoPor(id_examen: String, idcurso: String, iduser: String): ExamenResuelto? {
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.obtenerExamenResueltoDeCursoPorUsuario(idcurso,iduser)
+            var result : ExamenResuelto? = null
+            response.body()?.forEach{
+                if(it.id_examen == id_examen) {
+                    result = it
+                    return@forEach
+                }
+            }
+            result
+        }
+    }
+
     /*
     suspend fun eliminarExamen(examenId: String) {
         return withContext(Dispatchers.IO) {
