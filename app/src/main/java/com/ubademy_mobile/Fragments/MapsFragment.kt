@@ -27,9 +27,16 @@ class MapsFragment : Fragment() {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
+        // TODO: Setear la ubicacion del usuario si tiene una
         val buenosAires = LatLng(-34.61315, -58.37723)
-        googleMap.addMarker(MarkerOptions().position(buenosAires).title("Marker in Buenos Aires"))
+        // googleMap.addMarker(MarkerOptions().position(buenosAires).title("Marker in Buenos Aires"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(buenosAires))
+
+        googleMap.setOnMapClickListener { param ->
+            googleMap.clear()
+            Log.e("On map click", param.toString())
+            googleMap.addMarker(MarkerOptions().position(param).title("User Location"))
+        }
     }
 
     override fun onCreateView(
