@@ -6,12 +6,8 @@ import retrofit2.http.*
 
 interface UsuarioService {
 
-    val token: String
-
-    get
-
     @GET("usuarios")
-    @Headers("Accept:application/json", "Content-Type:application/json" , "Authorization: Bearer ")
+    @Headers("Accept:application/json", "Content-Type:application/json", "Authorization: Bearer ")
     fun obtenerUsuarios(): Call<GetUsersResponse>
 
     @GET("usuarios/{usuario_id}")
@@ -33,8 +29,10 @@ interface UsuarioService {
     @FormUrlEncoded
     @POST("token")
     @Headers("Accept:application/json")
-    fun token(@Field("password") password : String,
-              @Field("username") username: String): Call<UbademyToken>
+    fun token(
+        @Field("password") password: String,
+        @Field("username") username: String
+    ): Call<UbademyToken>
 
     @GET("token/swap/{firebase_token}")
     @Headers("Accept:application/json", "Content-Type:application/json")

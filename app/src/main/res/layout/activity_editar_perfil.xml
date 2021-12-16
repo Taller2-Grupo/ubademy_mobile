@@ -65,10 +65,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Aplicar cambios"
-        android:theme="@style/Theme.MaterialComponents"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:theme="@style/Theme.MaterialComponents"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.ubademy_mobile.Fragments.MapsFragment"
+        android:layout_width="376dp"
+        android:layout_height="375dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAplicarCambios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
