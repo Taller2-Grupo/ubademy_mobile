@@ -1,5 +1,6 @@
 package com.ubademy_mobile.Fragments
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ubademy_mobile.R
+import com.ubademy_mobile.activities.OnDataPass
 
 class MapsFragment : Fragment() {
 
@@ -36,7 +38,15 @@ class MapsFragment : Fragment() {
             googleMap.clear()
             Log.e("On map click", param.toString())
             googleMap.addMarker(MarkerOptions().position(param).title("User Location"))
+            dataPasser.onDataPass(param)
         }
+    }
+
+    lateinit var dataPasser: OnDataPass
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataPasser = context as OnDataPass
     }
 
     override fun onCreateView(
