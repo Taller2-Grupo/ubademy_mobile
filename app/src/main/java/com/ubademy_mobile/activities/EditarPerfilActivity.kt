@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.RetroInstance
@@ -46,6 +47,11 @@ class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
         }
 
         val obtenerUsuarioCall = _apiUsuarios.obtenerUsuario(email!!)
+
+        val bundle = Bundle()
+        bundle.putDouble("latitud", -34.61315)
+        bundle.putDouble("longitud", -58.37723)
+        map.arguments = bundle
 
         obtenerUsuarioCall.enqueue(object : Callback<UsuarioResponse> {
             override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
@@ -105,5 +111,6 @@ class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
         _usuario = usuario
         txtNombre.setText(usuario.nombre)
         txtApellido.setText(usuario.apellido)
+        Log.e("CARGAR DATOS", "Latitud: " + usuario.latitud?.toString())
     }
 }

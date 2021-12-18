@@ -24,20 +24,26 @@ class MapsFragment : Fragment() {
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
          * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
          * If Google Play services is not installed on the device, the user will be prompted to
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        // TODO: Setear la ubicacion del usuario si tiene una
-        val buenosAires = LatLng(-34.61315, -58.37723)
-        // googleMap.addMarker(MarkerOptions().position(buenosAires).title("Marker in Buenos Aires"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(buenosAires))
+        val latitud = arguments?.getDouble("latitud") ?: 0.0
+        val longitud = arguments?.getDouble("longitud") ?: 0.0
+
+        Log.e("LOG", "A ver $latitud $longitud")
+
+        val ubicacionUsuario = LatLng(latitud, longitud)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionUsuario))
+
+        if (arguments?.getDouble("latitud") != null) {
+            googleMap.addMarker(MarkerOptions().position(ubicacionUsuario).title("Mi ubicación"))
+        }
 
         googleMap.setOnMapClickListener { param ->
             googleMap.clear()
             Log.e("On map click", param.toString())
-            googleMap.addMarker(MarkerOptions().position(param).title("User Location"))
+            googleMap.addMarker(MarkerOptions().position(param).title("Mi ubicación"))
             dataPasser.onDataPass(param)
         }
     }
