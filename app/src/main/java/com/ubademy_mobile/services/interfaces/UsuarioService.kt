@@ -22,6 +22,10 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun actualizarUsuario(@Body params: UpdateUsuarioRequest): Call<UsuarioResponse>
 
+    @PATCH("usuarios/ubicacion/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun actualizarUbicacionUsuario(@Body params: UpdateUbicacionUsuarioRequest): Call<UsuarioResponse>
+
     @DELETE("usuarios/{usuario_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun borrarUsuario(@Path("usuario_id") usuario_id: String): Call<Usuario>

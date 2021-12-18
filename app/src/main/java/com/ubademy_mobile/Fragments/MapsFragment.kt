@@ -31,8 +31,6 @@ class MapsFragment : Fragment() {
         val latitud = arguments?.getDouble("latitud") ?: 0.0
         val longitud = arguments?.getDouble("longitud") ?: 0.0
 
-        Log.e("LOG", "A ver $latitud $longitud")
-
         val ubicacionUsuario = LatLng(latitud, longitud)
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacionUsuario))
 

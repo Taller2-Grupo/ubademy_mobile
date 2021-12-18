@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import com.google.android.gms.maps.model.LatLng
+import com.ubademy_mobile.Fragments.MapsFragment
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.UpdateUbicacionUsuarioRequest
 import com.ubademy_mobile.services.data.UpdateUsuarioRequest
 import com.ubademy_mobile.services.data.Usuario
 import com.ubademy_mobile.services.data.UsuarioResponse
@@ -28,10 +32,14 @@ interface OnDataPass {
 class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
     private var _usuario: Usuario? = null
     private val _apiUsuarios = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL).create(UsuarioService::class.java)
+    private var latitud: Double? = null
+    private var longitud: Double? = null
 
     override fun onDataPass(data: LatLng) {
         Log.d("LOG", "La latitud es ${data.latitude}")
         Log.d("LOG", "La longitud es ${data.longitude}")
+        latitud = data.latitude
+        longitud = data.longitude
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,11 +55,6 @@ class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
         }
 
         val obtenerUsuarioCall = _apiUsuarios.obtenerUsuario(email!!)
-
-        val bundle = Bundle()
-        bundle.putDouble("latitud", -34.61315)
-        bundle.putDouble("longitud", -58.37723)
-        map.arguments = bundle
 
         obtenerUsuarioCall.enqueue(object : Callback<UsuarioResponse> {
             override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
@@ -103,6 +106,27 @@ class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
                 }
             })
 
+            var updateUbicacionRequest = UpdateUbicacionUsuarioRequest(_usuario!!.username!!, latitud, longitud)
+            val actualizarUbicacionCall = _apiUsuarios.actualizarUbicacionUsuario(updateUbicacionRequest)
+
+            actualizarUbicacionCall.enqueue(object : Callback<UsuarioResponse> {
+                override fun onFailure(call: Call<UsuarioResponse>, t: Throwable) {
+                    logFailure("EditarUbicacionUsuario", t)
+                    Toast.makeText(this@EditarPerfilActivity, "Error al actualizar la ubicacion.", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+
+                override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>) {
+                    logResponse("PerfilUsuario Ubicacion", response)
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@EditarPerfilActivity, "Ubicación actualizada.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this@EditarPerfilActivity, "Error al actualizar ubicación.", Toast.LENGTH_LONG).show()
+                    }
+                    finish()
+                }
+            })
+
             finish()
         }
     }
@@ -112,5 +136,15 @@ class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
         txtNombre.setText(usuario.nombre)
         txtApellido.setText(usuario.apellido)
         Log.e("CARGAR DATOS", "Latitud: " + usuario.latitud?.toString())
+
+        if (usuario.latitud != null && usuario.longitud != null) {
+            val bundle = Bundle()
+            bundle.putDouble("latitud", usuario.latitud)
+            bundle.putDouble("longitud", usuario.longitud)
+
+            supportFragmentManager.commit {
+                add<MapsFragment>(R.id.mapContainerView, args = bundle)
+            }
+        }
     }
 }

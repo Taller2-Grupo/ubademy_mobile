@@ -71,9 +71,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.ubademy_mobile.Fragments.MapsFragment"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapContainerView"
         android:layout_width="376dp"
         android:layout_height="375dp"
         android:layout_marginBottom="8dp"
