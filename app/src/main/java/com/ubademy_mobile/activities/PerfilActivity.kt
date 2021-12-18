@@ -37,13 +37,11 @@ class PerfilActivity : AppCompatActivity() {
 
         // Error, no se le paso el mail del usuario para mostrar ese perfil.
         if (email == null) {
-            Toast.makeText(this@PerfilActivity, "Usuario no especificado.", Toast.LENGTH_LONG)
-                .show()
+            Toast.makeText(this@PerfilActivity, "Usuario no especificado.", Toast.LENGTH_LONG).show()
             finish()
         }
 
-        val retroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL)
-            .create(UsuarioService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL).create(UsuarioService::class.java)
         val call = retroInstance.obtenerUsuario(email!!)
 
         call.enqueue(object : Callback<UsuarioResponse> {
@@ -85,7 +83,7 @@ class PerfilActivity : AppCompatActivity() {
         })
     }
 
-    fun cargarDatos(usuario : Usuario){
+    fun cargarDatos(usuario: Usuario) {
         titulo.text = "Perfil de ${usuario.nombre} ${usuario.apellido}"
         txtNombre.text = usuario.nombre
         txtApellido.text = usuario.apellido

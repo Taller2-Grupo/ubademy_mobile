@@ -8,5 +8,7 @@ data class Usuario(
     val password: String?,
     val esAdmin: String? = null,
     val fechaCreacion: String? = null,
-    val fechaActualizacion: String? = null
+    val fechaActualizacion: String? = null,
+    val latitud: Double? = null,
+    val longitud: Double? = null
 )
