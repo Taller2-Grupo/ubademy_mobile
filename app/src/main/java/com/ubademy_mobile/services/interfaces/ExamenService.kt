@@ -36,7 +36,7 @@ interface ExamenService {
 
     @GET("examenes/examenes_resueltos/curso/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    suspend fun obtenerExamenesResueltosDeCurso(@Path("curso_id") curso_id: String): Response<List<Examen>>
+    suspend fun obtenerExamenesResueltosDeCurso(@Path("curso_id") curso_id: String): Response<List<ExamenResuelto>>
 
     @POST("examenes/examenes_resueltos/corregir")
     @Headers("Accept:application/json", "Content-Type:application/json")

@@ -6,15 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ubademy_mobile.repositories.ExamenesRepository
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.data.examenes.Consigna
-import com.ubademy_mobile.services.data.examenes.Examen
-import com.ubademy_mobile.services.data.examenes.ExamenResuelto
-import com.ubademy_mobile.services.data.examenes.Respuesta
+import com.ubademy_mobile.services.data.examenes.*
 import com.ubademy_mobile.services.interfaces.CursoService
 import kotlinx.coroutines.launch
 
 class VerExamenesActivityViewModel: ViewModel() {
 
+    val examenes_resueltos = MutableLiveData<List<ExamenResuelto>>()
     val examen_resuelto = MutableLiveData<ExamenResuelto>()
     var isOwner: Boolean = false
     val baseUrl = "https://ubademy-back.herokuapp.com/"
@@ -25,6 +23,8 @@ class VerExamenesActivityViewModel: ViewModel() {
     val showProgressBar = MutableLiveData<Boolean>()
 
     val respuestas = HashMap<Examen,MutableList<Respuesta>>()
+    val correcciones = HashMap<String,Pair<Respuesta,Correccion>>()
+
 
     var examen_seleccionado = Examen()
     val repository = ExamenesRepository()
@@ -38,10 +38,6 @@ class VerExamenesActivityViewModel: ViewModel() {
 
     fun obtenerShowProgressbarObservable(): MutableLiveData<Boolean> {
         return showProgressBar
-    }
-
-    fun obtenerExamenSeleccionado(): Examen? {
-        return examen_seleccionado
     }
 
 
@@ -104,6 +100,13 @@ class VerExamenesActivityViewModel: ViewModel() {
                 " by course ${examen_seleccionado.id_curso}")
     }
 
+    fun seleccionarResuelto(resuelto: ExamenResuelto){
+
+        resuelto.respuestas.forEach{
+            correcciones[it.id_consigna.toString()] = Pair(it, Correccion())
+        }
+    }
+
     fun editarExamenSeleccionado(nombre: String, consignas: MutableList<Consigna>) {
 
         examen_seleccionado.nombre = nombre
@@ -127,22 +130,17 @@ class VerExamenesActivityViewModel: ViewModel() {
         val nueva_respuesta =
             Respuesta(
             id_consigna = id_consigna,
-            resolucion = respuesta
-            )
+            resolucion = respuesta )
 
-        respuestas.apply {
-            if(this.containsKey(examen_seleccionado)) {
-                this[examen_seleccionado]!!.forEach {
-
-                    if (it.id_consigna == id_consigna) it.resolucion = nueva_respuesta.resolucion
-                    else {
-                        this[examen_seleccionado]!!.add(nueva_respuesta)
-                    }
-                }
+        if(respuestas.containsKey(examen_seleccionado)) {
+            val existente = respuestas[examen_seleccionado]!!.find { it.id_consigna == id_consigna }
+            if (existente == null){
+                respuestas[examen_seleccionado]!!.add(nueva_respuesta)
             }else{
-                    this[examen_seleccionado] = MutableList(1) { nueva_respuesta }
+                existente.resolucion = nueva_respuesta.resolucion
             }
-
+        }else{
+            respuestas[examen_seleccionado] = MutableList(1) { nueva_respuesta }
         }
     }
 
@@ -182,6 +180,56 @@ class VerExamenesActivityViewModel: ViewModel() {
         }
 
     }
+
+    fun getExamenesResueltos() {
+
+        val id_examen = examen_seleccionado.id
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            examenes_resueltos.postValue(
+                repository.obtenerExamenesResueltosDeCurso(id_examen.toString(), idcurso)
+            )
+
+            showProgressBar.postValue(false)
+        }
+    }
+
+    fun calificarRespuesta(idxConsigna: Int, esCorrecta: Boolean) {
+
+        // Nunca debería ser nulo
+        val id_consigna = examen_seleccionado.consignas!![idxConsigna].id
+
+        correcciones[id_consigna]!!.second.id_respuesta = correcciones[id_consigna]!!.first.id
+        correcciones[id_consigna]!!.second.es_correcta = esCorrecta.toString()
+
+        Log.e("calificacion", "Se califica como `$esCorrecta` a la respuesta => ${correcciones[id_consigna]!!.first.resolucion}")
+    }
+
+    fun enviarCalificacion(id_resuelto : String){
+
+        val correccionRequest = CorreccionRequest(
+                                    id_examen_resuelto = id_resuelto,
+                                    corrector = iduser,
+                                    correcciones = correcciones.mapValues { it.value.second }.values.toList()
+                                )
+
+        showProgressBar.postValue(true)
+
+        // Handlea la llamada en paralelo a las apis
+        viewModelScope.launch {
+
+            examen_resuelto.postValue(
+                repository.corregirExamen(correccionRequest)
+            )
+
+            showProgressBar.postValue(false)
+        }
+    }
+
 /*
 
     fun eliminarExamen(examen_id: String) {
@@ -195,6 +243,14 @@ class VerExamenesActivityViewModel: ViewModel() {
             showProgressBar.postValue(false)
         }
     }
+
+
+          val correccionRequest =
+            CorreccionRequest(
+                id_examen_resuelto = null,
+                corrector = iduser,
+            )
+
 */
 
 }

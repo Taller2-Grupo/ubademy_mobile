@@ -12,7 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.MaterialElevationScale
@@ -32,7 +31,7 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
     private lateinit var appActivity: FragmentActivity
     //private lateinit var viewModel: VerExamenesActivityViewModel
     private lateinit var appContext: Context
-    private var param1: String? = null
+    private var id_examen_resuelto: String? = null
     private var param2: String? = null
 
     private lateinit var mode : ExamenMode
@@ -40,7 +39,7 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            id_examen_resuelto = it.getString("id_examen_resuelto")
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -94,7 +93,7 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
     private fun initRecyclerView(){
         recyclerRespuestas.apply {
             layoutManager = LinearLayoutManager(appContext)
-            respuestasAdapter = RespuestasAdapter(this@ExamenFragment, appContext)
+            respuestasAdapter = RespuestasAdapter(this@ExamenFragment, appContext,viewModel.isOwner)
             adapter = respuestasAdapter
         }}
 
@@ -122,6 +121,8 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
                             consigna.estadoUser = respuesta.estado
                     }
                 }
+                id_examen_resuelto = it.id
+                Log.e("Resuelto encontrado", "ID: ${it.id}")
 
             } else {
                 viewModel.examen_seleccionado.consignas?.forEach { consigna ->
@@ -148,7 +149,10 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
         //val extras = FragmentNavigatorExtras(view to name)
         //val direction = ExamenFragmentDirections.actionExamenToConsigna()
 
-        val bundle = bundleOf("idx_consigna" to idx.toString())
+        val bundle = bundleOf(
+            "idx_consigna" to idx.toString(),
+            "id_examen_resuelto" to id_examen_resuelto)
+
         findNavController().navigate(R.id.actionExamenToConsigna,bundle)
 
     }

@@ -101,7 +101,13 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
 
         Log.d("VerExamenesActivity", examen.nombre.toString())
         viewModel.selectExamen(examen.id.toString())
-        Navigation.findNavController(requireView()).navigate(R.id.SelectExamen)
+
+        if(viewModel.isOwner){
+            Navigation.findNavController(requireView()).navigate(R.id.action_verExamenesFragment_to_evaluadosFragment)
+        }else{
+            Navigation.findNavController(requireView()).navigate(R.id.SelectExamen)
+        }
+
     }
 
     override fun setImgStatus(examen: Examen, imageView: ImageView?) {

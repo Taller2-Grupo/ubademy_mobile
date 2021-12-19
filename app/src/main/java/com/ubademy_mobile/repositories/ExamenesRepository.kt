@@ -1,6 +1,7 @@
 package com.ubademy_mobile.repositories
 
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.examenes.CorreccionRequest
 import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.services.data.examenes.ExamenResuelto
 import com.ubademy_mobile.services.interfaces.ExamenService
@@ -62,6 +63,28 @@ class ExamenesRepository {
                 }
             }
             result
+        }
+    }
+
+    suspend fun obtenerExamenesResueltosDeCurso(id_examen: String, id_curso: String): List<ExamenResuelto> {
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.obtenerExamenesResueltosDeCurso(id_curso)
+            val result = mutableListOf<ExamenResuelto>()
+            response.body()?.forEach{
+                if(it.id_examen == id_examen) {
+                    result.add(it)
+                }
+            }
+            result
+        }
+    }
+
+    suspend fun corregirExamen(correccionRequest: CorreccionRequest): ExamenResuelto? {
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.corregirExamenResuelto(correccionRequest)
+            response.body()
         }
     }
 

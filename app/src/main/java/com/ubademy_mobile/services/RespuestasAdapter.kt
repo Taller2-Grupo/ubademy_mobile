@@ -5,32 +5,25 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.ubademy_mobile.Fragments.ExamenMode
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.data.examenes.Consigna
-import com.ubademy_mobile.services.data.examenes.CorreccionRequest
-import kotlinx.android.synthetic.main.respuesta_item.*
 import kotlinx.android.synthetic.main.respuesta_item.view.*
 
 class RespuestasAdapter(
-    val clickListener: RespuestasAdapter.OnItemClickListener,
-    val context: Context
+    val clickListener: OnItemClickListener,
+    val context: Context,
+    val owner: Boolean
 ) :
     RecyclerView.Adapter<RespuestasAdapter.ViewHolder>() {
 
     var consignas = mutableListOf<Consigna>()
-    val correcciones = mutableListOf<CorreccionRequest>()
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val TxTEnunciado = view.TxTEnunciado
         val TxTEstado = view.TxTEstado
         val ImgStatus = view.ImgStatus
-        //val txtInputRespuesta = view.txtInputRespuesta
-        //val correctorContainer = view.correctorContainer
-        //val corrector = view.corrector
-        //val calificacionContainer = view.calificacionContainer
         val TxtCalificacion = view.TXTcalificacion
         val TxtCalificacionMaxima = view.TXTcalificacionMaxima
     }
@@ -63,6 +56,19 @@ class RespuestasAdapter(
                 drawable = context.getDrawable(R.drawable.ic_wrong)
                 calificacion = "0"
             }
+        }
+
+        if (owner) {
+            // Oculto info para los alumnos
+            viewHolder.TxtCalificacion.visibility = View.INVISIBLE
+            viewHolder.TxTEstado.visibility = View.GONE
+            viewHolder.ImgStatus.visibility = View.GONE
+            viewHolder.TxTEnunciado.apply {
+                val constraints = this.layoutParams as ConstraintLayout.LayoutParams
+                constraints.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                constraints.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            }
+
         }
 
         // Get element from your dataset at this position and replace the

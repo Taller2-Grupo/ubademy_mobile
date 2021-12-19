@@ -10,7 +10,9 @@
         android:label="@string/Ubademy"
         android:roundIcon="@drawable/ubademy"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Ubademy_mobile">
+        android:theme="@style/Theme.Ubademy_mobile"
+        android:usesCleartextTraffic="true"
+        >
 
         <activity
             android:name=".activities.ExamenesActivity"
