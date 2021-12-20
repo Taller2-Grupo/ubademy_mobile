@@ -15,6 +15,7 @@ class VerExamenesActivityViewModel: ViewModel() {
     val examenes_resueltos = MutableLiveData<List<ExamenResuelto>>()
     val examen_resuelto = MutableLiveData<ExamenResuelto>()
     var isOwner: Boolean = false
+    var isAdmin: Boolean = false
     val baseUrl = "https://ubademy-back.herokuapp.com/"
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
 
@@ -49,7 +50,7 @@ class VerExamenesActivityViewModel: ViewModel() {
         viewModelScope.launch {
 
             var allExamenes = repository.examenesDeCurso(curso_id)
-            if(isOwner) examenes.postValue(allExamenes)
+            if(isOwner || isAdmin) examenes.postValue(allExamenes)
             else examenes.postValue(filtrarNoPublicados(allExamenes))
 
             showProgressBar.postValue(false)
@@ -163,7 +164,7 @@ class VerExamenesActivityViewModel: ViewModel() {
         }
     }
 
-    fun getExamenResueltoPorUsuario() {
+    fun getExamenResueltoPorUsuario(username_resuelto: String? = null) {
 
         val id_examen = examen_seleccionado.id
 
@@ -173,7 +174,7 @@ class VerExamenesActivityViewModel: ViewModel() {
         viewModelScope.launch {
 
             examen_resuelto.postValue(
-                repository.obtenerExamenDeCursoResueltoPor(id_examen.toString(), idcurso, iduser)
+                repository.obtenerExamenDeCursoResueltoPor(id_examen.toString(), idcurso, username_resuelto ?: iduser)
             )
 
             showProgressBar.postValue(false)

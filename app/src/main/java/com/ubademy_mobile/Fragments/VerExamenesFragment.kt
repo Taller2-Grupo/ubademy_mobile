@@ -102,7 +102,7 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
         Log.d("VerExamenesActivity", examen.nombre.toString())
         viewModel.selectExamen(examen.id.toString())
 
-        if(viewModel.isOwner){
+        if(viewModel.isOwner || viewModel.isAdmin){
             Navigation.findNavController(requireView()).navigate(R.id.action_verExamenesFragment_to_evaluadosFragment)
         }else{
             Navigation.findNavController(requireView()).navigate(R.id.SelectExamen)
@@ -112,14 +112,18 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
 
     override fun setImgStatus(examen: Examen, imageView: ImageView?) {
 
-        if (!viewModel.isOwner) return
+        if (!viewModel.isOwner && !viewModel.isAdmin) return
 
         imageView!!.visibility = View.VISIBLE
 
         if (examen.estado == "creado"){
+
             imageView.setImageResource(R.drawable.ic_private)
-            imageView.setOnClickListener {
-                publicarExamen(examen.id.toString())
+
+            if (!viewModel.isAdmin){
+                imageView.setOnClickListener {
+                    publicarExamen(examen.id.toString())
+                }
             }
         }
     }

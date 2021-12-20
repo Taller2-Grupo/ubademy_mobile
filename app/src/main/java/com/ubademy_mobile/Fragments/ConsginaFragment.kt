@@ -30,7 +30,6 @@ class ConsginaFragment : Fragment() {
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
     //val args: ConsignaFragmentArgs by navArgs()
 
-    private lateinit var inscriptosAdapter : InscriptosRecyclerViewAdapter
     private var idx_consigna : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,10 +86,9 @@ class ConsginaFragment : Fragment() {
             }else{
                 viewModel.getExamenResueltoPorUsuario()
             }
-
         }
 
-        if(viewModel.isOwner){
+        if(viewModel.isOwner || viewModel.isAdmin){
             txtInputRespuesta.editText!!.isEnabled = false
             setBotoneraAdmin()
         }else{

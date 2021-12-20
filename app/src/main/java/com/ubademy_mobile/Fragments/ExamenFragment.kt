@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.respuesta_item.*
 
 class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
 
+    private var username_resuelto: String? = null
     private lateinit var respuestasAdapter : RespuestasAdapter
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
 
@@ -40,7 +41,7 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
         super.onCreate(savedInstanceState)
         arguments?.let {
             id_examen_resuelto = it.getString("id_examen_resuelto")
-            param2 = it.getString(ARG_PARAM2)
+            username_resuelto = it.getString("username_resuelto")
         }
     }
 
@@ -88,12 +89,12 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getExamenResueltoPorUsuario()
+        viewModel.getExamenResueltoPorUsuario(username_resuelto)
     }
     private fun initRecyclerView(){
         recyclerRespuestas.apply {
             layoutManager = LinearLayoutManager(appContext)
-            respuestasAdapter = RespuestasAdapter(this@ExamenFragment, appContext,viewModel.isOwner)
+            respuestasAdapter = RespuestasAdapter(this@ExamenFragment, appContext,viewModel.isOwner || viewModel.isAdmin)
             adapter = respuestasAdapter
         }}
 

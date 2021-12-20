@@ -2,6 +2,7 @@ package com.ubademy_mobile.Fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +69,8 @@ class EvaluadosFragment : Fragment(), EvaluadosAdapter.OnItemClickListener {
         // Navegar al siguiente fragmento
         val bundle = bundleOf(
             "idx_consigna" to 0,
-            "id_examen_resuelto" to resuelto.id)
+            "id_examen_resuelto" to resuelto.id,
+            "username_resuelto" to resuelto.cursada?.username)
 
         findNavController().navigate(R.id.action_evaluadosFragment_to_NaVexamenFragment,bundle)
     }
