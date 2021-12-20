@@ -113,10 +113,19 @@ class ConsginaFragment : Fragment() {
 
     private fun setRespuesta() {
         txtInputRespuesta.editText!!.apply {
-            viewModel.examen_resuelto.value?.respuestas?.forEach{
-                if (it.id_consigna == viewModel.examen_seleccionado.consignas?.get(idx_consigna)?.id)
-                    this.setText(it.resolucion.toString())
-                    this.isEnabled = false
+
+            // Si el examen todavía no fue enviado
+            if (viewModel.examen_resuelto.value?.id == null){
+                val respuesta = viewModel.getRespuestaBorrador(idx_consigna)
+                this.setText(respuesta)
+
+            // Si el examen ya fue enviado
+            }else{
+                viewModel.examen_resuelto.value?.respuestas?.forEach{
+                    if (it.id_consigna == viewModel.examen_seleccionado.consignas?.get(idx_consigna)?.id)
+                        this.setText(it.resolucion.toString())
+                        this.isEnabled = false
+                }
             }
         }
     }

@@ -239,6 +239,15 @@ class VerExamenesActivityViewModel: ViewModel() {
         }
     }
 
+    fun getRespuestaBorrador(idxConsigna: Int): String? {
+
+        val id_consigna = examen_seleccionado.consignas!![idxConsigna].id
+
+        return respuestas[examen_seleccionado]?.firstOrNull {  resp ->
+            resp.id_consigna ==id_consigna
+        }?.resolucion
+    }
+
 /*
 
     fun eliminarExamen(examen_id: String) {

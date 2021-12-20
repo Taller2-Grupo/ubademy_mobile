@@ -135,6 +135,8 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
                 // Si es admin y todavia no corrigio el examen
                 if((viewModel.isOwner || viewModel.isAdmin ) && it.corrector == null  ) {
                     btnEnd.visibility = View.VISIBLE
+                }else{
+                    btnEnd.visibility = View.GONE
                 }
 
             } else {
