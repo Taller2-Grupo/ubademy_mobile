@@ -122,10 +122,10 @@ class VerExamenesActivityViewModel: ViewModel() {
         }
     }
 
-    fun agregarRespuesta(idx_Consigna: Int, respuesta: String) {
+    fun agregarRespuesta(idx_Consigna: Int, respuesta: String, consigna: String? = null) {
 
         // Nunca debería ser nulo
-        val id_consigna = examen_seleccionado.consignas!![idx_Consigna].id
+        val id_consigna = consigna ?: examen_seleccionado.consignas!![idx_Consigna].id
 
         val nueva_respuesta =
             Respuesta(
@@ -145,6 +145,14 @@ class VerExamenesActivityViewModel: ViewModel() {
     }
 
     fun resolverExamen() {
+        examen_seleccionado.consignas?.forEach {
+            val respuesta = respuestas[examen_seleccionado]?.firstOrNull{ rta ->
+                rta.id_consigna == it.id
+            }
+
+            if (respuesta == null) agregarRespuesta(-1, "", it.id)
+        }
+
 
         val examen_resuelto = ExamenResuelto(
             id_examen = examen_seleccionado.id,

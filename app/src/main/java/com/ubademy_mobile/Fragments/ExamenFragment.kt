@@ -78,9 +78,16 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
         respuestasAdapter.consignas.addAll(viewModel.examen_seleccionado.consignas!!)
 
         if (viewModel.isOwner){
-            FABEditarExamen.visibility = View.VISIBLE
-            FABEditarExamen.setOnClickListener {
-                Navigation.findNavController(requireView()).navigate(R.id.ActionEditarExamen)
+            btnEnd.text = "Enviar Correccion"
+            btnEnd.setOnClickListener {
+                viewModel.enviarCalificacion(id_examen_resuelto.toString())
+
+            }
+        }
+        else {
+            btnEnd.text = "Enviar Examen"
+            btnEnd.setOnClickListener {
+                viewModel.resolverExamen()
             }
         }
     }
@@ -123,11 +130,12 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
                 }
                 id_examen_resuelto = it.id
                 Log.e("Resuelto encontrado", "ID: ${it.id}")
-
+                btnEnd.visibility = View.GONE
             } else {
                 viewModel.examen_seleccionado.consignas?.forEach { consigna ->
                     consigna.estadoUser = "Pendiente"
                 }
+                btnEnd.visibility = View.VISIBLE
             }
             respuestasAdapter.consignas =
                 (viewModel.examen_seleccionado.consignas!!).toMutableList()

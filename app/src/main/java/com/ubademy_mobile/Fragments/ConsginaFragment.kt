@@ -97,6 +97,8 @@ class ConsginaFragment : Fragment() {
             setBotoneraUser()
         }
 
+        // viewModel.resolverExamen()
+
         setConsigna()
         setRespuesta()
     }
@@ -148,7 +150,7 @@ class ConsginaFragment : Fragment() {
             BtnSiguiente.text = "Enviar corrección"
             BtnSiguiente.setBackgroundColor("#4CBA4C".toColorInt())
             BtnSiguiente.setOnClickListener {
-                viewModel.enviarCalificacion(id_examen_resuelto!!)
+                //viewModel.enviarCalificacion(id_examen_resuelto!!)
                 finalizarExamen()
             }
         }
@@ -160,7 +162,7 @@ class ConsginaFragment : Fragment() {
 
         if(last_consigna){
 
-            BtnSiguiente.text = "Finalizar"
+            //BtnSiguiente.text = "Finalizar"
             BtnSiguiente.setBackgroundColor("#4CBA4C".toColorInt())
             BtnSiguiente.setOnClickListener {
 
@@ -169,7 +171,7 @@ class ConsginaFragment : Fragment() {
                         idx_consigna,
                         txtInputRespuesta.editText?.text.toString()
                     )
-                    viewModel.resolverExamen()
+                    //viewModel.resolverExamen()
                 }
 
                 finalizarExamen()
