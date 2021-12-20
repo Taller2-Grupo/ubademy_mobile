@@ -78,11 +78,11 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
         initRecyclerView()
         respuestasAdapter.consignas.addAll(viewModel.examen_seleccionado.consignas!!)
 
-        if (viewModel.isOwner){
+        if (viewModel.isOwner || viewModel.isAdmin){
             btnEnd.text = "Enviar Correccion"
             btnEnd.setOnClickListener {
-                viewModel.enviarCalificacion(id_examen_resuelto.toString())
 
+                viewModel.enviarCalificacion(id_examen_resuelto.toString())
             }
         }
         else {
@@ -131,7 +131,12 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
                 }
                 id_examen_resuelto = it.id
                 Log.e("Resuelto encontrado", "ID: ${it.id}")
-                btnEnd.visibility = View.GONE
+
+                // Si es admin y todavia no corrigio el examen
+                if((viewModel.isOwner || viewModel.isAdmin ) && it.corrector == null  ) {
+                    btnEnd.visibility = View.VISIBLE
+                }
+
             } else {
                 viewModel.examen_seleccionado.consignas?.forEach { consigna ->
                     consigna.estadoUser = "Pendiente"
@@ -141,7 +146,6 @@ class ExamenFragment : Fragment(), RespuestasAdapter.OnItemClickListener {
             respuestasAdapter.consignas =
                 (viewModel.examen_seleccionado.consignas!!).toMutableList()
             respuestasAdapter.notifyDataSetChanged()
-
         }
     }
 

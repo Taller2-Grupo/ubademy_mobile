@@ -145,7 +145,7 @@ class ConsginaFragment : Fragment() {
 
         if(last_consigna){
 
-            BtnSiguiente.text = "Enviar corrección"
+            BtnSiguiente.text = "Finalizar"
             BtnSiguiente.setBackgroundColor("#4CBA4C".toColorInt())
             BtnSiguiente.setOnClickListener {
                 //viewModel.enviarCalificacion(id_examen_resuelto!!)
@@ -160,7 +160,7 @@ class ConsginaFragment : Fragment() {
 
         if(last_consigna){
 
-            //BtnSiguiente.text = "Finalizar"
+            BtnSiguiente.text = "Finalizar"
             BtnSiguiente.setBackgroundColor("#4CBA4C".toColorInt())
             BtnSiguiente.setOnClickListener {
 
