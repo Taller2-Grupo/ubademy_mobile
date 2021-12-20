@@ -20,7 +20,8 @@
     <string-array name="suscripcion">
         <item>Todos</item>
         <item>Gratuito</item>
-        <item>Pago</item>
+        <item>Premium</item>
+        <item>Vip</item>
     </string-array>
 
     <string-array name="categorias">
