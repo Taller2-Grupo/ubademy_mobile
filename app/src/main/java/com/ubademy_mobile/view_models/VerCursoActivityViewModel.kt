@@ -76,7 +76,7 @@ class VerCursoActivityViewModel: ViewModel() {
         call.enqueue(object: Callback<List<String>> {
             override fun onFailure(call: Call<List<String>>, t: Throwable){
                 progressBar.postValue(false)
-                inscriptos.postValue(null)
+                inscriptos.postValue(emptyList())
                 logFailure("obtenerInscriptos" , t)
             }
 
@@ -87,7 +87,7 @@ class VerCursoActivityViewModel: ViewModel() {
                 if(response.isSuccessful){
                     inscriptos.postValue(response.body())
                 } else{
-                    inscriptos.postValue(null)
+                    inscriptos.postValue(emptyList())
                 }
             }
         })

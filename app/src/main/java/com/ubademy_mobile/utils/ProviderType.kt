@@ -1,2 +1,6 @@
-package com.ubademy_mobile.activities 
+package com.ubademy_mobile.utils
 
+enum class ProviderType{
+    BASIC,
+    GOOGLE
+}
