@@ -1,9 +1,11 @@
 package com.ubademy_mobile.activities.tools
 
 enum class Themes {
-    CURSOS_POPULARES,
     CURSOS_INSCRIPTOS,
+    MIS_CURSOS,
+    CURSOS_RECOMENDADOS,
     CURSOS_FAVORITOS,
-    CURSOS_RECOMENDADOS
+    COLABORACIONES,
+    CURSOS_POPULARES,
 }
 

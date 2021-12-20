@@ -299,7 +299,7 @@ class ListadoCursosActivity:
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-        searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().lowercase()
+        searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().toLowerCase()
         //viewModel.filtrarCursos(searchPreferences)
 
         Log.d("Busqueda filtrada", searchPreferences.toString())

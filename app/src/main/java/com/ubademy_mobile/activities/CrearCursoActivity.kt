@@ -119,8 +119,8 @@ class CrearCursoActivity : AppCompatActivity(), View.OnClickListener  {
             id_creador = prefs.getString("email", null),
             titulo = titulo,
             descripcion = descripcion,
-            tipo = DropdownCategorias.editText!!.text.toString().lowercase(),
-            suscripcion = DropdownSuscripcion.editText!!.text.toString().lowercase())
+            tipo = DropdownCategorias.editText!!.text.toString().toLowerCase(),
+            suscripcion = DropdownSuscripcion.editText!!.text.toString().toLowerCase())
 
         Log.d("Creating a curso", " titutlo ${curso.titulo}\ndesc ${curso.descripcion} \ncategoria ${curso.tipo}\nsuscripcion ${curso.suscripcion} " )
 
