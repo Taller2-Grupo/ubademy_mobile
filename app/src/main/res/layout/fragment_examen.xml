@@ -67,27 +67,5 @@
 
     </com.google.android.material.card.MaterialCardView>
 -->
-    <!--androidx.coordinatorlayout.widget.CoordinatorLayout
-
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-70dp">
-
-        <!- Main content -->
-
-        <!--com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/FABEditarExamen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:contentDescription="FloatingActionButton"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_edit_button"
-            tools:visibility="visible" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

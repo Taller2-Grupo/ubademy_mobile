@@ -19,12 +19,23 @@ import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.fragment_ver_examenes.*
 import android.content.DialogInterface
-
-
+import android.content.res.ColorStateList
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.core.graphics.toColorInt
 
 
 class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickListener {
 
+    private var avisoSalidaAnim: Animation? = null
+    private var avisoEntradaAnim: Animation? = null
+    private var fabDescOpenAnim: Animation? = null
+    private var fabDescCloseAnim: Animation? = null
+    private var fabCloseAnim: Animation? = null
+    private var fabOpenAnim: Animation? = null
+    private var isFabOpen: Boolean = true
+    private var fabOriginalColor: ColorStateList? = null
+    private var selectingToEdit: Boolean = false
     private lateinit var appContext: Context
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
     private lateinit var examenesAdapter: ExamenesRecyclerViewAdapter
@@ -66,11 +77,59 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
         viewModel.obtenerExamenes(viewModel.idcurso)
         viewModel.selectExamen("")
 
+        fabOpenAnim = AnimationUtils.loadAnimation(appContext,R.anim.fab_open)
+        fabCloseAnim = AnimationUtils.loadAnimation(appContext,R.anim.fab_close)
+        fabDescOpenAnim = AnimationUtils.loadAnimation(appContext,R.anim.fab_desc_open)
+        fabDescCloseAnim = AnimationUtils.loadAnimation(appContext,R.anim.fab_desc_close)
+        avisoEntradaAnim = AnimationUtils.loadAnimation(appContext,R.anim.in_topwards)
+        avisoSalidaAnim = AnimationUtils.loadAnimation(appContext,R.anim.out_downwards)
+
         if(viewModel.isOwner) {
-            FabNuevoExamen.visibility = View.VISIBLE
-            FabNuevoExamen.setOnClickListener {
-                Navigation.findNavController(requireView()).navigate(R.id.ActionCreateExamen)
+            FabOpen.visibility = View.VISIBLE
+            FabOpen.setOnClickListener {
+                toggleFloatingActionButton()
             }
+
+            FabAddExamen.setOnClickListener {
+                Navigation.findNavController(requireView()).navigate(R.id.Action_FromVerExamenToCrearExamen)
+                toggleFloatingActionButton()
+            }
+
+            fabOriginalColor = FABEditarExamen.backgroundTintList
+            FABEditarExamen.setOnClickListener {
+                selectingToEdit = !selectingToEdit
+                if(selectingToEdit){
+                    FABEditarExamen.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
+                    TxtAvisoEdicion.visibility = View.VISIBLE
+                    TxtAvisoEdicion.startAnimation(avisoEntradaAnim)
+                }else{
+                    FABEditarExamen.backgroundTintList = fabOriginalColor
+                    TxtAvisoEdicion.startAnimation(avisoSalidaAnim)
+
+                }
+                toggleFloatingActionButton()
+            }
+            // Esconde los botones inicialmente
+            toggleFloatingActionButton()
+        }
+    }
+
+    private fun toggleFloatingActionButton() {
+
+        if(isFabOpen){
+            FABEditarExamen.startAnimation(fabCloseAnim)
+            FabAddExamen.startAnimation(fabCloseAnim)
+            TextViewEditar.startAnimation(fabDescCloseAnim)
+            TextViewCrear.startAnimation(fabDescCloseAnim)
+            FabOpen.setImageResource(R.drawable.ic_baseline_add_24)
+            isFabOpen = false
+        }else{
+            FABEditarExamen.startAnimation(fabOpenAnim)
+            FabAddExamen.startAnimation(fabOpenAnim)
+            TextViewEditar.startAnimation(fabDescOpenAnim)
+            TextViewCrear.startAnimation(fabDescOpenAnim)
+            FabOpen.setImageResource(R.drawable.ic_dots)
+            isFabOpen = true
         }
     }
 
@@ -118,7 +177,13 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
         viewModel.selectExamen(examen.id.toString())
 
         if(viewModel.isOwner || viewModel.isAdmin){
-            Navigation.findNavController(requireView()).navigate(R.id.action_verExamenesFragment_to_evaluadosFragment)
+            if(selectingToEdit){
+                // Crear examen con examen seleccionado lo edita
+                Navigation.findNavController(requireView()).navigate(R.id.Action_FromVerExamenToCrearExamen)
+                selectingToEdit = false
+            }else{
+                Navigation.findNavController(requireView()).navigate(R.id.action_verExamenesFragment_to_evaluadosFragment)
+            }
         }else{
             Navigation.findNavController(requireView()).navigate(R.id.SelectExamen)
         }

@@ -13,9 +13,6 @@
         tools:layout="@layout/fragment_examen">
 
         <action
-            android:id="@+id/ActionEditarExamen"
-            app:destination="@id/crearExamenFragment" />
-        <action
             android:id="@+id/actionExamenToConsigna"
             app:destination="@id/consginaFragment" >
 
@@ -33,7 +30,7 @@
             android:id="@+id/SelectExamen"
             app:destination="@id/NaVexamenFragment" />
         <action
-            android:id="@+id/ActionCreateExamen"
+            android:id="@+id/Action_FromVerExamenToCrearExamen"
             app:destination="@id/crearExamenFragment" />
         <action
             android:id="@+id/action_verExamenesFragment_to_evaluadosFragment"
@@ -46,9 +43,6 @@
         <action
             android:id="@+id/ActionNewExamenDone"
             app:destination="@id/verExamenesFragment" />
-        <action
-            android:id="@+id/ActionEditExamenDone"
-            app:destination="@id/NaVexamenFragment" />
     </fragment>
     <fragment
         android:id="@+id/consginaFragment"
