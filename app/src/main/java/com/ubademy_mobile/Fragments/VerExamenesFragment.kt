@@ -205,6 +205,11 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
                     publicarExamen(examen.id.toString())
                 }
             }
+        }else{
+            imageView.setImageResource(R.drawable.ic_public)
+            imageView.setOnClickListener {
+
+            }
         }
     }
 

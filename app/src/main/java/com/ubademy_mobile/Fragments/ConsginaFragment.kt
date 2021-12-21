@@ -1,6 +1,7 @@
 package com.ubademy_mobile.Fragments
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -22,12 +23,14 @@ import kotlinx.android.synthetic.main.fragment_consgina.*
 
 class ConsginaFragment : Fragment() {
 
+    private var originalBackgroundTint: ColorStateList? = null
     private var examenResuelto: ExamenResuelto? = null
     private var id_examen_resuelto: String? = null
     private var userTarget: String = ""
     private var last_consigna: Boolean = false
     private lateinit var appContext: Context
     val viewModel: VerExamenesActivityViewModel by activityViewModels()
+
     //val args: ConsignaFragmentArgs by navArgs()
 
     private var idx_consigna : Int = 0
@@ -78,6 +81,13 @@ class ConsginaFragment : Fragment() {
 
         initViewModel()
 
+        if(viewModel.isOwner || viewModel.isAdmin){
+            txtInputRespuesta.editText!!.isEnabled = false
+            setBotoneraAdmin()
+        }else{
+            setBotoneraUser()
+        }
+
         if(!id_examen_resuelto.isNullOrEmpty()) {
             examenResuelto =
                 viewModel.examenes_resueltos.value?.first { it.id == id_examen_resuelto }
@@ -88,12 +98,6 @@ class ConsginaFragment : Fragment() {
             }
         }
 
-        if(viewModel.isOwner || viewModel.isAdmin){
-            txtInputRespuesta.editText!!.isEnabled = false
-            setBotoneraAdmin()
-        }else{
-            setBotoneraUser()
-        }
 
         // viewModel.resolverExamen()
 
@@ -137,17 +141,20 @@ class ConsginaFragment : Fragment() {
     fun setBotoneraAdmin(){
 
         botoneraAdmin.visibility = View.VISIBLE
+        originalBackgroundTint = BtnDesaprobar.backgroundTintList
 
         BtnDesaprobar.setOnClickListener {
 
             viewModel.calificarRespuesta(idx_consigna, false)
-            BtnAprobar.isEnabled = false
+            BtnDesaprobar.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
+            BtnAprobar.backgroundTintList = originalBackgroundTint
         }
 
         BtnAprobar.setOnClickListener {
 
             viewModel.calificarRespuesta(idx_consigna, true)
-            BtnDesaprobar.isEnabled = false
+            BtnDesaprobar.backgroundTintList = originalBackgroundTint
+            BtnAprobar.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
         }
 
         BtnSiguiente.setOnClickListener { siguienteConsigna()}
@@ -230,11 +237,21 @@ class ConsginaFragment : Fragment() {
                 calificacion.text = viewModel.examen_seleccionado.consignas
                     ?.get(idx_consigna)
                     ?.puntaje.toString()
-                BtnDesaprobar.isEnabled = true
+                BtnDesaprobar.isEnabled = false
+                BtnAprobar.isEnabled = false
+                BtnAprobar.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
             }
             "incorrecta" -> {
                 calificacion.text = "0"
                 BtnAprobar.isEnabled = false
+                BtnDesaprobar.isEnabled = false
+                BtnDesaprobar.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
+            }
+            else -> {
+                when(viewModel.getCalificacionBorrador(idx_consigna)){
+                    "true" -> BtnAprobar.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
+                    "false" -> BtnDesaprobar.backgroundTintList = ColorStateList.valueOf("#FFDB58".toColorInt())
+                }
             }
         }
     }

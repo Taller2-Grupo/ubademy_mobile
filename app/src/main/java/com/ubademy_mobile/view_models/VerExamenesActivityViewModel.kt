@@ -216,7 +216,7 @@ class VerExamenesActivityViewModel: ViewModel() {
         correcciones[id_consigna]!!.second.id_respuesta = correcciones[id_consigna]!!.first.id
         correcciones[id_consigna]!!.second.es_correcta = esCorrecta.toString()
 
-        Log.e("calificacion", "Se califica como `$esCorrecta` a la respuesta => ${correcciones[id_consigna]!!.first.resolucion}")
+        Log.d("calificacion", "Se califica como `$esCorrecta` a la respuesta => ${correcciones[id_consigna]!!.first.resolucion}")
     }
 
     fun enviarCalificacion(id_resuelto : String){
@@ -249,6 +249,13 @@ class VerExamenesActivityViewModel: ViewModel() {
         }?.resolucion
     }
 
+    fun getCalificacionBorrador(idxConsigna: Int): String? {
+
+        val id_consigna = examen_seleccionado.consignas!![idxConsigna].id
+
+        return correcciones[id_consigna]?.second?.es_correcta
+    }
+
 /*
 
     fun eliminarExamen(examen_id: String) {
@@ -269,7 +276,6 @@ class VerExamenesActivityViewModel: ViewModel() {
                 id_examen_resuelto = null,
                 corrector = iduser,
             )
-
 */
 
 }
