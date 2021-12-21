@@ -1,16 +1,11 @@
 package com.ubademy_mobile.services.interfaces
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.provider.Settings.Global.getString
-import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.data.Cursada
 import com.ubademy_mobile.services.data.Examen
+import com.ubademy_mobile.services.data.FavearRequest
 import com.ubademy_mobile.services.data.InscripcionRequest
-import com.ubademy_mobile.utils.Constants
-import okhttp3.internal.addHeaderLenient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -71,5 +66,20 @@ interface CursoService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun obtenerExamenes(@Path("curso_id") curso_id: String): Call<List<Examen>>
 
+    @GET("cursos/favoritos/{username}/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerfavoritos(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("cursos/favoritos/{username}/{curso_id}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun obtenerEsFavorito(@Path("username") username: String, @Path("curso_id") curso_id: String): Call<Boolean>
+
+    @POST("cursos/favoritos/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun favear(@Body fav: FavearRequest): Call<FavearRequest>
+
+    @DELETE("cursos/favoritos/{username}/{curso_id}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun desfavear(@Path("username") username: String, @Path("curso_id") curso_id: String): Call<Boolean>
 
 }

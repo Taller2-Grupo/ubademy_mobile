@@ -22,9 +22,13 @@ class CursosRepository {
 
     suspend fun cursos() : List<Curso>{
 
-        return withContext(Dispatchers.IO) {
-            val response = retroInstance.obtenerCursos()
-            response.body() ?: emptyList()
+        return try{
+            withContext(Dispatchers.IO) {
+                val response = retroInstance.obtenerCursos()
+                response.body() ?: emptyList()
+            }
+        }catch (e: Throwable) {
+            emptyList()
         }
     }
 
@@ -33,11 +37,14 @@ class CursosRepository {
     }
 
     suspend fun favoritosDe(email : String) : List<Curso>{
-        return emptyList()
-        /*return withContext(Dispatchers.IO) {
-            val response = retroInstance.()
-            response.body() ?: emptyList()
-        }*/
+        return try{
+            withContext(Dispatchers.IO) {
+                val response = retroInstance.obtenerfavoritos(email)
+                response.body() ?: emptyList()
+            }
+        }catch (e: Throwable) {
+            emptyList()
+        }
     }
 
     fun propiosDe(email: String) : List<Curso>{
@@ -45,9 +52,13 @@ class CursosRepository {
     }
 
     suspend fun inscriptosDe(email: String): List<Curso> {
-        return withContext(Dispatchers.IO) {
-            val response = retroInstance.historicos(email)
-            response.body() ?: emptyList()
+        return try{
+            withContext(Dispatchers.IO) {
+                val response = retroInstance.historicos(email)
+                response.body() ?: emptyList()
+            }
+        }catch (e: Throwable) {
+            emptyList()
         }
     }
 
@@ -64,15 +75,23 @@ class CursosRepository {
 
     suspend fun recomendados(email: String): List<Curso> {
         val response = retroInstance.obtenerRecomendados(email)
-        return withContext(Dispatchers.IO) {
-            response.body() ?: emptyList()
+        return try{
+            withContext(Dispatchers.IO) {
+                response.body() ?: emptyList()
+            }
+        }catch (e: Throwable) {
+            emptyList()
         }
     }
 
     suspend fun mis_cursos(email: String) : List<Curso>{
-        return withContext(Dispatchers.IO) {
-            val response = retroInstance.misCursos(email)
-            response.body() ?: emptyList()
+        return try {
+            withContext(Dispatchers.IO) {
+                val response = retroInstance.misCursos(email)
+                response.body() ?: emptyList()
+            }
+        }catch (e: Throwable) {
+            emptyList()
         }
     }
 
