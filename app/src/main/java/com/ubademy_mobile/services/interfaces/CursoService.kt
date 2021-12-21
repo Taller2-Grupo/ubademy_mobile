@@ -3,6 +3,7 @@ package com.ubademy_mobile.services.interfaces
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.data.Cursada
+import com.ubademy_mobile.services.data.FavearRequest
 import com.ubademy_mobile.services.data.Favorito
 import com.ubademy_mobile.services.data.InscripcionRequest
 import retrofit2.Call
@@ -56,5 +57,9 @@ interface CursoService {
     @GET("cursos/colaboraciones/{username}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun obtenercolaboraciones(@Path("username") username: String): Response<List<Curso>>
+
+    @POST("cursos/favoritos")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun favear(@Body fav: FavearRequest): Call<FavearRequest>
 
 }

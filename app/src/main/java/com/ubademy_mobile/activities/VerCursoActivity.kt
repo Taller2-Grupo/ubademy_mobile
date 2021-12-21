@@ -96,6 +96,7 @@ class VerCursoActivity: AppCompatActivity() {
         observarCursada()
         observarCurso()
         observarInscriptos()
+        observarFavs()
         observarProgressBar()
 
         var titulo = intent.getStringExtra("titulo").toString()
@@ -124,8 +125,21 @@ class VerCursoActivity: AppCompatActivity() {
 
         }
 
+        setBotonDeFavear()
+
         setBotonDeInscripcion()
 
+    }
+
+    private fun observarFavs() {
+        viewModel.fav.observe(this, {
+
+            if(it == null){
+                setBotonDeFavear()
+            }else{
+                setBotonDeDesfavear()
+            }
+        })
     }
 
     private fun setBotonDeVerAlumnos(curso: Curso){
@@ -167,6 +181,19 @@ class VerCursoActivity: AppCompatActivity() {
         }
     }
 
+    private fun setBotonDeDesfavear() {
+
+        val usuario = intent.getStringExtra("usuario").toString()
+
+        Log.d("set Desfaveo","Curso a desfavear: ${idCurso}")
+
+        BtnFavear.text = "Eliminar de favoritos"
+        BtnFavear.setBackgroundColor(0xbc0000)
+        BtnFavear.setOnClickListener {
+            viewModel.desfavear(usuario, idCurso)
+        }
+    }
+
     @SuppressLint("ResourceAsColor")
     private fun setBotonDeInscripcion() {
 
@@ -177,6 +204,19 @@ class VerCursoActivity: AppCompatActivity() {
         BtnInscribirse.setBackgroundColor(R.color.color_primary)
         BtnInscribirse.setOnClickListener {
             viewModel.inscribirse(usuario)
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun setBotonDeFavear() {
+
+        val usuario = intent.getStringExtra("usuario").toString()
+        Log.d("set Favear","Curso a favear: ${idCurso}")
+
+        BtnFavear.text = "Añadir como favorito"
+        BtnFavear.setBackgroundColor(R.color.color_primary)
+        BtnFavear.setOnClickListener {
+            viewModel.favear(usuario, idCurso)
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Cursada
+import com.ubademy_mobile.services.data.FavearRequest
 import com.ubademy_mobile.services.data.InscripcionRequest
 import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.view_models.tools.logFailure
@@ -19,6 +20,7 @@ class VerCursoActivityViewModel: ViewModel() {
     var baseUrl = "https://ubademy-back.herokuapp.com/"
     var curso = MutableLiveData<Curso?>()
     var cursada = MutableLiveData<Cursada?>()
+    var fav = MutableLiveData<FavearRequest?>()
     var inscriptos = MutableLiveData<List<String>>()
     var progressBar = MutableLiveData<Boolean>()
 
@@ -123,6 +125,67 @@ class VerCursoActivityViewModel: ViewModel() {
     }
 
     fun desinscribirse(usuario: String) {
+
+        progressBar.postValue(true)
+
+        val call = retroInstance.desinscribirUsuario(curso.value?.id.toString(),InscripcionRequest(usuario))
+
+        Log.d("Desinscripcion","Se desinscribe a ${usuario} de ${curso.value?.id.toString()}")
+
+        call.enqueue(object: Callback<Cursada> {
+            override fun onFailure(call: Call<Cursada>, t: Throwable){
+
+                progressBar.postValue(false)
+                cursada.postValue(null)
+                logFailure("Desinscripcion" , t)
+            }
+
+            override fun onResponse(call: Call<Cursada>, response: Response<Cursada>){
+
+                progressBar.postValue(false)
+
+                logResponse("Desinscripcion", response)
+
+                if(response.isSuccessful){
+                    cursada.postValue(response.body())
+                } else{
+                    cursada.postValue(null)
+                }
+            }
+        })
+
+    }
+
+    fun favear(usuario: String, curso_id: String) {
+
+        var req = FavearRequest(usuario, curso_id)
+
+        val call = retroInstance.favear(req)
+
+        call.enqueue(object: Callback<FavearRequest> {
+            override fun onFailure(call: Call<FavearRequest>, t: Throwable){
+
+                progressBar.postValue(false)
+                fav.postValue(null)
+                logFailure("Fav" , t)
+            }
+
+            override fun onResponse(call: Call<FavearRequest>, response: Response<FavearRequest>){
+
+                progressBar.postValue(false)
+
+                logResponse("Fav", response)
+
+                if(response.isSuccessful){
+                    fav.postValue(response.body())
+                } else{
+                    fav.postValue(null)
+                }
+            }
+        })
+    }
+
+    fun desfavear(usuario: String, curso_id: String) {
 
         progressBar.postValue(true)
 
