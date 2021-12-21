@@ -61,7 +61,7 @@ class SuscripcionActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val usuario = response.body()?.data!!
 
-                    suscripcion_actual.text = "Actualmente suscripto al plan: " + usuario.tipo_suscripcion
+                    suscripcion_actual.text = usuario.tipo_suscripcion!!.uppercase()
 
                     if (usuario.tipo_suscripcion == "gratuita") {
                         btnSuscripcionPremium.visibility = View.VISIBLE

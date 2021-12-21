@@ -11,27 +11,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Suscripción"
-        android:textSize="24dp"
+        android:text="Mi suscripción"
+        android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/subtitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Suscripción actual:"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titulo" />
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/suscripcion_actual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="Actualmente suscripto al plan: "
+        android:layout_marginTop="48dp"
+        android:text="-"
         android:textSize="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/titulo"
-        tools:layout_editor_absoluteX="40dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitulo" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSuscripcionPremium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="16dp"
         android:text="Suscribirse a premium"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:theme="@style/Theme.MaterialComponents"
@@ -45,6 +57,7 @@
         android:id="@+id/btnSuscripcionVip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="Suscribirse a vip"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         android:theme="@style/Theme.MaterialComponents"

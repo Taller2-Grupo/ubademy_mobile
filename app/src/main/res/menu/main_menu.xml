@@ -46,7 +46,7 @@
         <menu>
             <item
                 android:id="@+id/suscribirse_menu"
-                android:icon="@drawable/ic_baseline_add_24"
+                android:icon="@drawable/ic_baseline_attach_money_24"
                 android:title="Suscribirse">
             </item>
         </menu>
