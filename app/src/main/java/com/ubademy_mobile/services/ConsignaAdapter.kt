@@ -11,9 +11,7 @@ import com.ubademy_mobile.services.data.examenes.Consigna
 import kotlinx.android.synthetic.main.consigna_item.view.*
 
 class ConsignaAdapter(
-    val clickListener: OnItemClickListener,
-    val idCreador: String,
-    val idUsuario: String) :
+    val clickListener: OnItemClickListener) :
     RecyclerView.Adapter<ConsignaAdapter.ViewHolder>() {
 
     var consignas = mutableListOf<Consigna>()

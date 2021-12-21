@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.datatransport.cct.internal.LogEvent
 import com.google.android.material.textfield.TextInputLayout
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.ConsignaAdapter
@@ -24,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_crear_examen.*
 
 class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
 
+    private var waitingResponse: Boolean = false
     private var editMode: Boolean = false
     private lateinit var appContext: Context
     private lateinit var consignaAdapter: ConsignaAdapter
@@ -64,12 +67,14 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
             nuevaConsigna()
         }
 
-        initRecyclerView("owner","user")
+        initRecyclerView()
         initViewModel()
     }
 
     private fun initViewModel() {
-        viewModel.nuevo_examen.observe(viewLifecycleOwner,{
+        viewModel.nuevo_examen.observe(viewLifecycleOwner, Observer<Examen>{
+
+            if (!waitingResponse) return@Observer
 
             if (it?.id != null){
                 Log.e("examen","${it.consignas} - ${it.nombre}")
@@ -79,6 +84,7 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
             }else{
                 Toast.makeText(appContext,"Error en la creacion",Toast.LENGTH_LONG).show()
             }
+            waitingResponse = false
         })
         viewModel.examen_seleccionado.apply {
             if(this.id != null){
@@ -88,10 +94,10 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
         }
     }
 
-    private fun initRecyclerView(owner : String, user:String){
+    private fun initRecyclerView(){
         RecyclerConsignas.apply {
             layoutManager = LinearLayoutManager(appContext)
-            consignaAdapter = ConsignaAdapter(this@CrearExamenFragment,owner,user)
+            consignaAdapter = ConsignaAdapter(this@CrearExamenFragment)
             adapter = consignaAdapter
         }}
 
@@ -105,6 +111,8 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
 
         if(validar_formulario()){
 
+            waitingResponse = true
+
             val new_Examen = Examen(
                 nombre = TxTNombreExamen.editText!!.text.toString(),
                 id_curso = viewModel.idcurso,
@@ -116,6 +124,8 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
 
     private fun editarExamen(){
         if(validar_formulario()){
+
+            waitingResponse = true
 
             viewModel.editarExamenSeleccionado(
                 nombre = TxTNombreExamen.editText!!.text.toString(),
@@ -136,6 +146,31 @@ class CrearExamenFragment : Fragment(), ConsignaAdapter.OnItemClickListener {
             TxTNombreExamen.isErrorEnabled = false
         }
 
+        if (consignaAdapter.consignas.size == 0){
+            Toast.makeText(appContext,"Debe incluir por lo menos una consigna.",Toast.LENGTH_LONG).show()
+            return false
+        }else{
+            var suma = 0
+            consignaAdapter.consignas.forEach {
+
+                if(it.enunciado.isNullOrEmpty()){
+                    Toast.makeText(appContext,"Falta ingresar enunciados",Toast.LENGTH_LONG).show()
+                    return false
+                }
+
+                if(it.puntaje.isNullOrEmpty()){
+                    Toast.makeText(appContext,"Falta ingresar puntajes",Toast.LENGTH_LONG).show()
+                    return false
+                }
+
+                suma += it.puntaje!!.toInt()
+            }
+
+            if(suma != 10){
+                Toast.makeText(appContext,"La suma de puntajes debe dar 10.",Toast.LENGTH_LONG).show()
+                return false
+            }
+        }
         return result
     }
 
