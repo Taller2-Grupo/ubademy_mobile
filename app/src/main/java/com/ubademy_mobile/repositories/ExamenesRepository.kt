@@ -29,7 +29,7 @@ class ExamenesRepository {
         }
     }
 
-    suspend fun publicarExamen(id_examen: String){
+    suspend fun publicarExamen(id_examen: String) : Examen? {
 
         return withContext(Dispatchers.IO) {
             val response = retroInstance.publicarExamen(id_examen)

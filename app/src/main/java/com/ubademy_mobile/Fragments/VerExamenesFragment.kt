@@ -81,10 +81,24 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
     private fun observarExamenes(){
         viewModel.obtenerExamenesObservable().observe(viewLifecycleOwner,{
             if(it == null || it.isEmpty()) {
-                Toast.makeText(appContext, "No hay consignas disponibles...", Toast.LENGTH_LONG).show()
+                Toast.makeText(appContext, "No hay examenes disponibles...", Toast.LENGTH_LONG).show()
             } else{
+                Log.e("Oberver","Nuevos examenes cargados")
                 examenesAdapter.examenes = it.toMutableList()
                 examenesAdapter.notifyDataSetChanged()
+            }
+        })
+
+        viewModel.examen_publicado.observe(viewLifecycleOwner,{
+
+            if(it != null){
+
+                val to_edit = examenesAdapter.examenes.first{ examen -> examen.id == it.id }
+                to_edit.estado = it.estado
+                examenesAdapter.notifyItemChanged(examenesAdapter.examenes.indexOf(to_edit))
+
+            }else{
+                Toast.makeText(appContext, "Error en la publicación", Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -94,7 +108,8 @@ class VerExamenesFragment : Fragment(), ExamenesRecyclerViewAdapter.OnItemClickL
             layoutManager = LinearLayoutManager(appContext)
             examenesAdapter = ExamenesRecyclerViewAdapter(this@VerExamenesFragment,owner,user)
             adapter = examenesAdapter
-        }}
+        }
+    }
 
 
     override fun onItemClick(examen: Examen) {

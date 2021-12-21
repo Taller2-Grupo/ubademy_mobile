@@ -26,6 +26,7 @@ class VerExamenesActivityViewModel: ViewModel() {
     val respuestas = HashMap<Examen,MutableList<Respuesta>>()
     val correcciones = HashMap<String,Pair<Respuesta,Correccion>>()
 
+    val examen_publicado = MutableLiveData<Examen>()
 
     var examen_seleccionado = Examen()
     val repository = ExamenesRepository()
@@ -85,7 +86,7 @@ class VerExamenesActivityViewModel: ViewModel() {
         // Handlea la llamada en paralelo a las apis
         viewModelScope.launch {
 
-            repository.publicarExamen(examen_id)
+            examen_publicado.postValue(repository.publicarExamen(examen_id))
             showProgressBar.postValue(false)
         }
     }
