@@ -54,4 +54,8 @@ interface UsuarioService {
     @POST("usuarios/notify")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun notificar(@Body notificacion: Notificacion): Call<Notificacion>
+
+    @POST("usuarios/{username}/suscripcion/{suscripcion}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun suscribirse(@Path("username") username: String, @Path("suscripcion") suscripcion: String): Call<UsuarioResponse>
 }

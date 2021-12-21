@@ -10,5 +10,6 @@ data class Usuario(
     val fechaCreacion: String? = null,
     val fechaActualizacion: String? = null,
     val latitud: Double? = null,
-    val longitud: Double? = null
+    val longitud: Double? = null,
+    val tipo_suscripcion: String? = null
 )
