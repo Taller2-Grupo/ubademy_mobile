@@ -104,7 +104,8 @@ class SuscripcionActivity : AppCompatActivity() {
                     logResponse("Suscripcion", response)
 
                     if (response.isSuccessful) {
-                        cargarPantalla()
+                        finish()
+                        startActivity(intent)
                     } else {
                         Log.e("Error suscripcion", response.errorBody().toString())
                         Toast.makeText(this@SuscripcionActivity, "Error al intentar suscribir.", Toast.LENGTH_LONG).show()
@@ -137,9 +138,10 @@ class SuscripcionActivity : AppCompatActivity() {
                     logResponse("Suscripcion", response)
 
                     if (response.isSuccessful) {
-                        cargarPantalla()
+                        finish()
+                        startActivity(intent)
                     } else {
-                        Log.e("Error suscripcion", response.errorBody().toString())
+                        Log.e("Error suscripcion", "Error:" + response.body()?.error!!)
                         Toast.makeText(this@SuscripcionActivity, "Error al intentar suscribir.", Toast.LENGTH_LONG).show()
                         finish()
                     }
