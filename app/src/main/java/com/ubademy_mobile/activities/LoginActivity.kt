@@ -242,11 +242,10 @@ class LoginActivity : AppCompatActivity() {
                                                         showHome(TxtEmail.editText!!.text.toString(),
                                                             ProviderType.BASIC)
                                                         clearTextFields()
+                                                        initSession(account.email!!.toString(), ProviderType.GOOGLE.toString())
                                                     }
                                                 }
                                             })
-
-                                        initSession(account.email!!.toString(), ProviderType.GOOGLE.toString())
 
                                     } else {
                                         // Handle error -> task.getException();
@@ -353,8 +352,6 @@ class LoginActivity : AppCompatActivity() {
             })
 
         })
-
-
     }
 
     private fun clearSession() {
