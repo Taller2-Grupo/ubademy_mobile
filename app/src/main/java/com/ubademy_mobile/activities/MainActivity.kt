@@ -14,8 +14,6 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.compose.ui.text.toLowerCase
-
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.tasks.OnCompleteListener
@@ -72,6 +70,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
                 headerLayout.name_user_menu.text = it.nombre
             }
         })
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        finish()
+        startActivity(intent)
     }
 
     private fun setup() {
