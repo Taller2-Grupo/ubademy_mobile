@@ -146,5 +146,10 @@ class EditarPerfilActivity : AppCompatActivity(), OnDataPass {
                 add<MapsFragment>(R.id.mapContainerView, args = bundle)
             }
         }
+        else {
+            supportFragmentManager.commit {
+                add<MapsFragment>(R.id.mapContainerView)
+            }
+        }
     }
 }
