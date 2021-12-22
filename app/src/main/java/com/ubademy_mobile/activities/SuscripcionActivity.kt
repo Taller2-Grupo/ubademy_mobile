@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.compose.ui.text.toUpperCase
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.Usuario
@@ -61,7 +62,7 @@ class SuscripcionActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val usuario = response.body()?.data!!
 
-                    suscripcion_actual.text = usuario.tipo_suscripcion!!.uppercase()
+                    suscripcion_actual.text = usuario.tipo_suscripcion!!.toUpperCase()
 
                     if (usuario.tipo_suscripcion == "gratuita") {
                         btnSuscripcionPremium.visibility = View.VISIBLE

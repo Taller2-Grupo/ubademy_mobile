@@ -22,6 +22,7 @@ import com.ubademy_mobile.activities.tools.Themes
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RecyclerViewAdapter
 import com.ubademy_mobile.view_models.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_suscripcion.*
 import kotlinx.android.synthetic.main.fragment_listado_cursos.*
 
 class ListadoCursosFragment : Fragment(),
@@ -128,6 +129,8 @@ class ListadoCursosFragment : Fragment(),
         intent.putExtra("curso_id", curso.id)
         intent.putExtra("descripcion", curso.descripcion)
         intent.putExtra("titulo", curso.titulo)
+        intent.putExtra("id_creador",curso.id_creador)
+        intent.putExtra("suscripcion",curso.suscripcion)
         intent.putExtra("usuario", loggedUserEmail)
         //usuarios
         startActivity(intent)
@@ -140,6 +143,4 @@ class ListadoCursosFragment : Fragment(),
         Log.e("Log de prueba","Pasa por aca")
         super.onActivityResult(requestCode, resultCode, data)
     }
-
-
 }

@@ -5,10 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.data.Cursada
-import com.ubademy_mobile.services.data.FavearRequest
-import com.ubademy_mobile.services.data.InscripcionRequest
+import com.ubademy_mobile.services.data.*
 import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
@@ -23,6 +22,8 @@ class VerCursoActivityViewModel: ViewModel() {
     var cursada = MutableLiveData<Cursada?>()
     var fav = MutableLiveData<FavearRequest?>()
     var inscriptos = MutableLiveData<List<String>>()
+    var usuario = MutableLiveData<Usuario?>()
+    var owner = MutableLiveData<Usuario?>()
     var progressBar = MutableLiveData<Boolean>()
 
     val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
@@ -198,6 +199,57 @@ class VerCursoActivityViewModel: ViewModel() {
             }
         })
 
+    }
+
+    fun obtenerPerfilDeUsuario(email : String) {
+
+        val usuarioRetroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL).create(UsuarioService::class.java)
+        val call = usuarioRetroInstance.obtenerUsuario(email)
+
+        call.enqueue(object: Callback<UsuarioResponse> {
+            override fun onFailure(call: Call<UsuarioResponse>, t: Throwable){
+                usuario.postValue(null)
+                logFailure("Obtener curso" , t)
+                progressBar.postValue(false)
+            }
+
+            override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>){
+
+                logResponse("Obtener curso", response)
+                progressBar.postValue(false)
+                if(response.isSuccessful){
+                    usuario.postValue(response.body()?.data)
+                } else{
+                    usuario.postValue(null)
+                }
+            }
+        })
+
+    }
+
+    fun obtenerPerfilDeOwner(idOwner: String) {
+
+        val usuarioRetroInstance = RetroInstance.getRetroInstance(Constants.API_USUARIOS_URL).create(UsuarioService::class.java)
+        val call = usuarioRetroInstance.obtenerUsuario(idOwner)
+
+        call.enqueue(object: Callback<UsuarioResponse> {
+            override fun onFailure(call: Call<UsuarioResponse>, t: Throwable){
+                owner.postValue(null)
+                logFailure("Obtener curso" , t)
+                progressBar.postValue(false)
+            }
+
+            override fun onResponse(call: Call<UsuarioResponse>, response: Response<UsuarioResponse>){
+
+                logResponse("Obtener curso", response)
+                progressBar.postValue(false)
+                if(response.isSuccessful){
+                    owner.postValue(response.body()?.data)
+                } else{
+                    owner.postValue(null)
+                }
+            }
+        })
     }
 
 }

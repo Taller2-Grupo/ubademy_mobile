@@ -7,18 +7,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
+import com.ubademy_mobile.activities.tools.Suscripcion
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.Usuario
 import com.ubademy_mobile.services.interfaces.CursoService
 import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.VerCursoActivityViewModel
-import com.ubademy_mobile.view_models.tools.logFailure
-import com.ubademy_mobile.view_models.tools.logResponse
 import kotlinx.android.synthetic.main.activity_ver_curso.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,17 +30,22 @@ class VerCursoActivity: AppCompatActivity() {
 
     lateinit var idCurso: String
     lateinit var viewModel: VerCursoActivityViewModel
+    lateinit var userEmail: String
+    var inscripcionHabilitada : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ver_curso)
 
         idCurso = intent.getStringExtra("curso_id").toString()
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        userEmail = prefs.getString("email", null).toString()
 
         initViewModel()
         setup()
 
         viewModel.getCurso(idCurso)
+        viewModel.obtenerPerfilDeUsuario(userEmail)
         viewModel.obtenerInscriptos(idCurso)
         establecerBotonFav()
     }
@@ -84,6 +91,29 @@ class VerCursoActivity: AppCompatActivity() {
 
     private fun initViewModel(){
         viewModel = ViewModelProvider(this).get(VerCursoActivityViewModel::class.java)
+
+        viewModel.usuario.observe(this,{
+            if(it?.id != null){
+                val curso = viewModel.curso.value
+                if (curso?.id != null){
+                    Log.d("UsuarioObserver","Seteando boton de inscripcion")
+                    setBotonDeInscripcion(it,curso)
+                }else{
+                    Log.d("UsuarioObserver","Todavia no se obtuvo el curso para " +
+                            "setear el boton de inscripcion. Esperando..")
+                }
+            }else{
+                Log.e("UsuarioObserver","Error en el fetch de usuario")
+            }
+        })
+
+        viewModel.owner.observe(this,{
+
+            if (it?.id != null){
+                LblOwner.text = "${it.nombre?.capitalize()} ${it.apellido?.capitalize()}"
+                LblOwner.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in))
+            }
+        })
     }
 
     private fun observarCurso(){
@@ -96,12 +126,49 @@ class VerCursoActivity: AppCompatActivity() {
 
             LblNombreCursoView.setText(it.titulo)
             LblDescripcionCursoView.setText(it.descripcion)
+            setLabelSuscripcion(it)
             // Actualizar otros campos ...
 
             setBotonDeEdicion(it)
             setBotonDeVerAlumnos(it)
             setBotonDeVerExamenes(it)
+            viewModel.obtenerPerfilDeOwner(it.id_creador.toString())
+
+            val usuario = viewModel.usuario.value
+            if(usuario?.id != null){
+                Log.d("CursoObserver","Seteando boton de inscripcion")
+                setBotonDeInscripcion(usuario,it)
+            }else{
+                Log.d("CursoObserver","Todavia no se obtuvo el usuario para " +
+                        "setear el boton de inscripcion. Esperando..")
+            }
         })
+    }
+
+    private fun setBotonDeInscripcion(usuario: Usuario, curso: Curso) {
+
+        if(usuario.id == curso.id_creador){
+            BtnInscribirse.visibility = View.GONE
+        }else{
+
+            val suscripcionUser = Suscripcion.valueOf(usuario.tipo_suscripcion.toString().toUpperCase())
+            val suscripcionCurso = Suscripcion.valueOf(curso.suscripcion.toString().toUpperCase())
+
+            if (suscripcionUser < suscripcionCurso){
+
+                BtnInscribirse.text = "Comprar suscripción"
+                BtnInscribirse.setOnClickListener {
+                    startActivity(Intent(this@VerCursoActivity, SuscripcionActivity::class.java))
+                }
+                BtnInscribirse.isEnabled = true
+                inscripcionHabilitada = false
+                TxtAvisoComprarSuscripcion.startAnimation(AnimationUtils.loadAnimation(this@VerCursoActivity,R.anim.in_topwards))
+
+            }else{
+                inscripcionHabilitada = true
+                BtnInscribirse.isEnabled = true
+            }
+        }
     }
 
     private fun setBotonDeVerExamenes(curso: Curso) {
@@ -125,10 +192,19 @@ class VerCursoActivity: AppCompatActivity() {
 
         viewModel.getCursadaObservable().observe(this, {
 
+            //if(!inscripcionHabilitada) return@observe
+
             if(it == null || it.estado == "desinscripto"){
+
                 setBotonDeInscripcion()
+                BtnVerAlumnos.visibility = View.GONE
+                BtnExamenes.visibility = View.GONE
+                BtnVerImagenes.visibility = View.GONE
             }else{
                 setBotonDeDesinscripcion()
+                BtnVerAlumnos.visibility = View.VISIBLE
+                BtnExamenes.visibility = View.VISIBLE
+                BtnVerImagenes.visibility = View.VISIBLE
             }
         })
     }
@@ -151,8 +227,14 @@ class VerCursoActivity: AppCompatActivity() {
 
             if(it == null || !it.contains(usuario)){
                 setBotonDeInscripcion()
+                BtnVerAlumnos.visibility = View.GONE
+                BtnExamenes.visibility = View.GONE
+                BtnVerImagenes.visibility = View.GONE
             }else{
                 setBotonDeDesinscripcion()
+                BtnVerAlumnos.visibility = View.VISIBLE
+                BtnExamenes.visibility = View.VISIBLE
+                BtnVerImagenes.visibility = View.VISIBLE
             }
         })
     }
@@ -192,7 +274,20 @@ class VerCursoActivity: AppCompatActivity() {
 
         setBotonDeInscripcion()
 
+    }
 
+    private fun setLabelSuscripcion(curso: Curso) {
+
+        when(curso.suscripcion){
+            "premium" -> {
+                LblSuscripcion.text = curso.suscripcion.toUpperCase()
+                ImgSuscripcion.setImageResource(R.drawable.ic_premium)
+            }
+            "vip" -> {
+                LblSuscripcion.text = curso.suscripcion.toUpperCase()
+                ImgSuscripcion.setImageResource(R.drawable.ic_vip_colored)
+            }
+        }
     }
 
     private fun setBotonDeVerAlumnos(curso: Curso){
@@ -204,7 +299,6 @@ class VerCursoActivity: AppCompatActivity() {
         BtnVerAlumnos.setOnClickListener {
             startActivity(inscriptosIntent)
         }
-
     }
 
     private fun setBotonDeEdicion(curso: Curso) {
