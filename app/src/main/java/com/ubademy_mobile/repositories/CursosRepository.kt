@@ -5,7 +5,10 @@ import android.util.Log
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.data.Usuario
+import com.ubademy_mobile.services.data.UsuarioResponse
 import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
@@ -71,6 +74,40 @@ class CursosRepository {
         } catch (e: Throwable) {
             emptyList()
         }
+    }
+
+    suspend fun recomendacionUbicacion(email: String): List<Curso> {
+        val baseUrlUsuarios = Constants.API_USUARIOS_URL
+        val retroInstanceUsuarios = RetroInstance.getRetroInstance(baseUrlUsuarios).create(UsuarioService::class.java)
+
+        val call = retroInstanceUsuarios.obtenerUsuario2(email)
+
+        Log.e("call", call.body().toString())
+
+        val latitud = call.body()!!.data!!.latitud
+        val longitud = call.body()!!.data!!.longitud
+
+        if ( latitud != null && longitud != null ) {
+            val responseCursos = retroInstance.obtenerRecomendadosUbicacion(email, latitud, longitud)
+            Log.e("ubicacion", responseCursos.body().toString())
+            return try{
+                withContext(Dispatchers.IO) {
+                    responseCursos.body() ?: emptyList()
+                }
+            }catch (e: Throwable) {
+                Log.e("lista vacia ubic", "aaaaa")
+                emptyList()
+            }
+        }
+        Log.e("lat y long null", "aaa")
+        return emptyList()
+    }
+
+    suspend fun getRecomendados(email: String): List<Curso> {
+        val recomendadosInteres = recomendados(email)
+        val recomendadosUbicacion = recomendacionUbicacion(email)
+
+        return recomendadosInteres + recomendadosUbicacion
     }
 
     suspend fun recomendados(email: String): List<Curso> {

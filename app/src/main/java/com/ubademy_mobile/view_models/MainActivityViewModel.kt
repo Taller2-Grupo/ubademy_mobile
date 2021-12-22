@@ -97,7 +97,7 @@ class MainActivityViewModel : ViewModel() {
                     Themes.MIS_CURSOS -> new_cursos = repository.mis_cursos(email)
                    Themes.CURSOS_POPULARES -> new_cursos = repository.cursos()
                    Themes.CURSOS_FAVORITOS -> new_cursos = repository.favoritosDe(email)
-                   Themes.CURSOS_RECOMENDADOS -> new_cursos = repository.recomendados(email)
+                   Themes.CURSOS_RECOMENDADOS -> new_cursos = repository.getRecomendados(email)
                     Themes.COLABORACIONES -> new_cursos = repository.colaboraciones(email)
                    else -> new_cursos = emptyList()
                 }

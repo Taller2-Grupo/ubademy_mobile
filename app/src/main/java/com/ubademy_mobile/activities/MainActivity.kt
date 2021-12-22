@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.compose.ui.text.toLowerCase
 
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -194,7 +195,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
                 }
 
                 override fun onResponse(call: Call<Device>, response: Response<Device>){
-
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    intent.putExtra("EXIT", true)
+                    startActivity(intent)
                 }
             })
         })
@@ -252,7 +256,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-        searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().lowercase()
+        searchPreferences.suscripcion = parent?.getItemAtPosition(position).toString().toLowerCase()
         viewModel.filtrarCursos(searchPreferences)
 
         Log.d("Busqueda filtrada", searchPreferences.toString())
@@ -272,7 +276,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
 
-        val newView = FragmentContainerView(this@MainActivity,)
+        val newView = FragmentContainerView(this@MainActivity)
         themesContainer.addView(newView)
         newView.id = View.generateViewId()
         val newFragment = GaleriaDeCursosFragment.newInstance(email.toString(), theme.toString())

@@ -2,9 +2,14 @@ package com.ubademy_mobile.services.interfaces
 
 import com.ubademy_mobile.services.data.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface UsuarioService {
+
+    @GET("usuarios/{usuario_id}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerUsuario2(@Path("usuario_id") usuario_id: String): Response<UsuarioResponse>
 
     @GET("usuarios")
     @Headers("Accept:application/json", "Content-Type:application/json", "Authorization: Bearer ")

@@ -40,6 +40,10 @@ interface CursoService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun obtenerRecomendados(@Path("username") username: String): Response<List<Curso>>
 
+    @GET("recomendaciones/ubicacion/{username}/{latitud}/{longitud}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerRecomendadosUbicacion(@Path("username") username: String, @Path("latitud") latitud: Double, @Path("longitud") longitud: Double): Response<List<Curso>>
+
     @GET("{creador}/cursos")
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun misCursos(@Path("creador") creador: String): Response<List<Curso>>
