@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
         transaction.commit()
     }
 
-    fun goToMiPerfil(){
+    private fun goToMiPerfil(){
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
         val intent = Intent(this@MainActivity, PerfilActivity::class.java)
@@ -163,6 +163,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
                 R.id.mis_cursos_menu -> Toast.makeText(applicationContext, "Mis Cursos Clickeado", Toast.LENGTH_LONG).show()
                 R.id.crear_curso_menu -> startActivity(Intent(this@MainActivity, CrearCursoActivity::class.java))
                 R.id.chat_menu -> startActivity(Intent(this@MainActivity, Chat2Activity::class.java))
+                R.id.suscribirse_menu -> startActivity(Intent(this@MainActivity, SuscripcionActivity::class.java))
                 R.id.logout_menu -> logout()
             }
             true
