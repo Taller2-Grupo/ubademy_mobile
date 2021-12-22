@@ -30,7 +30,7 @@ class MainActivityViewModel : ViewModel() {
     private var i = 0
     val baseUrl = "https://ubademy-back.herokuapp.com/"
 
-    val loggedUser = MutableLiveData<Usuario>()
+    val loggedUser = MutableLiveData<Usuario?>()
 
     val cursosByTheme = HashMap<Themes, MutableLiveData<List<Curso>>>()
 

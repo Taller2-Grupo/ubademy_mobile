@@ -1,16 +1,10 @@
 package com.ubademy_mobile.services.interfaces
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.provider.Settings.Global.getString
-import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.data.Cursada
-import com.ubademy_mobile.services.data.Examen
+import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.services.data.InscripcionRequest
-import com.ubademy_mobile.utils.Constants
-import okhttp3.internal.addHeaderLenient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*

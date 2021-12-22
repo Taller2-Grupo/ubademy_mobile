@@ -16,7 +16,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
-import com.ubademy_mobile.Adapter.UserAdapter
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.RetroInstance
 import com.ubademy_mobile.services.data.*
@@ -24,6 +23,7 @@ import com.ubademy_mobile.view_models.LoginActivityViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.Constants
+import com.ubademy_mobile.utils.ProviderType
 import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -102,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
                 } else{
                     it.access_token?.run{
                         okMessage!!.show()
-                        showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
+                        showHome(TxtEmail.editText!!.text.toString(), ProviderType.BASIC)
                         clearTextFields()
                     }
                 }
@@ -173,9 +173,9 @@ class LoginActivity : AppCompatActivity() {
                         prefs.apply()
 
                         okMessage!!.show()
-                        showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
+                        showHome(TxtEmail.editText!!.text.toString(), ProviderType.BASIC)
                         clearTextFields()
-                        initSession(credenciales.username,ProviderType.BASIC.toString())
+                        initSession(credenciales.username, ProviderType.BASIC.toString())
                     }
                 }
             })
@@ -239,7 +239,8 @@ class LoginActivity : AppCompatActivity() {
                                                         prefs.apply()
                                                         Constants.TOKEN = res.access_token
                                                         okMessage!!.show()
-                                                        showHome(TxtEmail.editText!!.text.toString(),ProviderType.BASIC)
+                                                        showHome(TxtEmail.editText!!.text.toString(),
+                                                            ProviderType.BASIC)
                                                         clearTextFields()
                                                     }
                                                 }

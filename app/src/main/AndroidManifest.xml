@@ -17,7 +17,9 @@
         android:label="@string/Ubademy"
         android:roundIcon="@drawable/ubademy"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Ubademy_mobile">
+        android:theme="@style/Theme.Ubademy_mobile"
+        android:usesCleartextTraffic="true"
+        >
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -34,11 +36,10 @@
         <activity
             android:name=".activities.ExamenesActivity"
             android:exported="false" />
-        <activity android:name=".activities.VerExamenActivity" />
-        <!--
- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more.
-        -->
+
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ubademy" />
@@ -55,9 +56,6 @@
             android:exported="false" />
         <activity
             android:name=".activities.MessagingActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.VerExamenesActivity"
             android:exported="true" />
         <activity
             android:name=".activities.VerInscriptosActivity"
@@ -97,9 +95,6 @@
             android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.HomeActivity"
             android:exported="true" />
         <activity
             android:name=".activities.VerCursoActivity"

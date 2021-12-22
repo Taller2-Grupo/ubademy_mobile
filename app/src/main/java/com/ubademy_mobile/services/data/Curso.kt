@@ -1,6 +1,6 @@
 package com.ubademy_mobile.services
 
-import java.util.*
+import com.ubademy_mobile.services.data.Colaborador
 
 data class Curso(val id: String? = null ,
                  val id_creador: String?  = null ,
@@ -13,4 +13,5 @@ data class Curso(val id: String? = null ,
                  val suscripcion: String? = "gratuito",
                  val hashtags: String? = "#prueba",
                  val examenes: String = "2",
-                 val ubicacion: String = "Argentina")
+                 val ubicacion: String = "Argentina",
+                 val colaboradores : List<Colaborador> = emptyList())

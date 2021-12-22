@@ -16,14 +16,14 @@ class RegisterActivityViewModel {
 
     val baseUrl = Constants.API_GATEWAY
 
-    var usuarioLiveData = MutableLiveData<Usuario>()
+    var usuarioLiveData = MutableLiveData<Usuario?>()
     var progressBar = MutableLiveData<Boolean>()
 
     fun getStatusBarObservable(): MutableLiveData<Boolean> {
         return progressBar
     }
 
-    fun getUsuarioObservable(): MutableLiveData<Usuario>{
+    fun getUsuarioObservable(): MutableLiveData<Usuario?>{
         return usuarioLiveData
     }
 
