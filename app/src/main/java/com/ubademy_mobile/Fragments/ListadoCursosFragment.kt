@@ -68,10 +68,12 @@ class ListadoCursosFragment : Fragment(),
         viewModel.getCursos(loggedUserEmail!!,theme)
 
         when(theme){
+            Themes.CURSOS_INSCRIPTOS -> TxTTitulo.text = "Mis Inscripciones"
+            Themes.MIS_CURSOS -> TxTTitulo.text = "Mis Cursos Creados"
             Themes.CURSOS_POPULARES -> TxTTitulo.text = "Cursos populares"
             Themes.CURSOS_FAVORITOS -> TxTTitulo.text = "Mis Favoritos"
-            Themes.CURSOS_INSCRIPTOS -> TxTTitulo.text = "Cursos inscriptos"
             Themes.CURSOS_RECOMENDADOS -> TxTTitulo.text = "Recomenadados"
+            Themes.COLABORACIONES -> TxTTitulo.text = "Mis Colaboraciones"
             else -> TxTTitulo.text = "Otros cursos"
         }
 

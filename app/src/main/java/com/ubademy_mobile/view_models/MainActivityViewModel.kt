@@ -30,7 +30,7 @@ class MainActivityViewModel : ViewModel() {
     private var i = 0
     val baseUrl = "https://ubademy-back.herokuapp.com/"
 
-    val loggedUser = MutableLiveData<Usuario>()
+    val loggedUser = MutableLiveData<Usuario?>()
 
     val cursosByTheme = HashMap<Themes, MutableLiveData<List<Curso>>>()
 
@@ -65,7 +65,7 @@ class MainActivityViewModel : ViewModel() {
                 logResponse("PerfilUsuario", response)
 
                 if (response.isSuccessful) {
-                    loggedUser.postValue(response.body()!!.data)
+                    loggedUser.postValue(response.body()!!.data!!)
                 }
             }
         })
@@ -93,10 +93,12 @@ class MainActivityViewModel : ViewModel() {
             }else{
                 var new_cursos : List<Curso>
                 when(theme){
+                    Themes.CURSOS_INSCRIPTOS -> new_cursos = repository.inscriptosDe(email)
+                    Themes.MIS_CURSOS -> new_cursos = repository.mis_cursos(email)
                    Themes.CURSOS_POPULARES -> new_cursos = repository.cursos()
                    Themes.CURSOS_FAVORITOS -> new_cursos = repository.favoritosDe(email)
-                   Themes.CURSOS_INSCRIPTOS -> new_cursos = repository.inscriptosDe(email)
                    Themes.CURSOS_RECOMENDADOS -> new_cursos = repository.recomendados(email)
+                    Themes.COLABORACIONES -> new_cursos = repository.colaboraciones(email)
                    else -> new_cursos = emptyList()
                 }
                 cursosByTheme[theme]!!.postValue(new_cursos)

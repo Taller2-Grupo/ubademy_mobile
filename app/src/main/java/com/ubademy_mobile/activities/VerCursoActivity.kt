@@ -58,12 +58,18 @@ class VerCursoActivity: AppCompatActivity() {
 
     private fun setBotonDeVerExamenes(curso: Curso) {
 
-        val inscriptosIntent = Intent(this@VerCursoActivity, ExamenesActivity::class.java)
-        inscriptosIntent.putExtra("cursoId", idCurso)
-        inscriptosIntent.putExtra("ownerId", curso.id_creador.toString())
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val user = prefs.getString("email", "").toString()
+
+        var userIsAdmin = curso.colaboradores.firstOrNull { it.username == user }?.username == user
+
+        val examenesIntent = Intent(this@VerCursoActivity, ExamenesActivity::class.java)
+        examenesIntent.putExtra("cursoId", idCurso)
+        examenesIntent.putExtra("ownerId", curso.id_creador.toString())
+        examenesIntent.putExtra("isAdmin", userIsAdmin.toString())
 
         BtnExamenes.setOnClickListener {
-            startActivity(inscriptosIntent)
+            startActivity(examenesIntent)
         }
     }
 

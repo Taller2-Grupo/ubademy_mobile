@@ -1,16 +1,10 @@
 package com.ubademy_mobile.services.interfaces
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.provider.Settings.Global.getString
-import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.data.Cursada
-import com.ubademy_mobile.services.data.Examen
+import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.services.data.InscripcionRequest
-import com.ubademy_mobile.utils.Constants
-import okhttp3.internal.addHeaderLenient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -32,6 +26,22 @@ interface CursoService {
     @PUT("cursos/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun actualizarCurso(@Path("curso_id") curso_id: String, @Body params: EditarCurso): Call<Curso>
+
+    @GET("cursos/historicos/{username}/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun historicos(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("cursos/colaboraciones/{username}/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun colaboraciones(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("recomendaciones/intereses/{username}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerRecomendados(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("{creador}/cursos")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun misCursos(@Path("creador") creador: String): Response<List<Curso>>
 
     @DELETE("cursos/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")

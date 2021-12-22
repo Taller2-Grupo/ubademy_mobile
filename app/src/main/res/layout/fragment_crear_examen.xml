@@ -81,7 +81,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Nueva consigna"/>
+                    android:text="Nueva consigna"
+                    android:paddingHorizontal="30dp"/>
 
                 <Button
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -91,6 +92,7 @@
                     android:background="@drawable/ic_info"
                     android:backgroundTint="@color/black_200"
                     android:layout_marginHorizontal="10dp"
+                    android:visibility="gone"
                     />
 
             </LinearLayout>
