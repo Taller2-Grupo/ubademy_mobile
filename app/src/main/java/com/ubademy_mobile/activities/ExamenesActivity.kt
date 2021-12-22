@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
-import com.ubademy_mobile.services.data.Examen
 import com.ubademy_mobile.view_models.VerExamenesActivityViewModel
 import kotlinx.android.synthetic.main.activity_examenes.*
 
@@ -20,6 +19,7 @@ class ExamenesActivity : AppCompatActivity() {
 
         val idCurso = intent.getStringExtra("cursoId").toString()
         val idOwner = intent.getStringExtra("ownerId").toString()
+        var userIsAdmin = intent.getStringExtra("isAdmin").toBoolean()
 
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val user = prefs.getString("email", "").toString()
@@ -32,6 +32,7 @@ class ExamenesActivity : AppCompatActivity() {
         viewModel.idcurso = idCurso
         viewModel.iduser = user
         viewModel.isOwner = user == idOwner
+        viewModel.isAdmin = userIsAdmin
 
         BtnBack.setOnClickListener {
             onBackPressed()

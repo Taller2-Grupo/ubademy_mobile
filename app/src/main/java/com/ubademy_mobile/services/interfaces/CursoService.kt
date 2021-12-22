@@ -3,7 +3,7 @@ package com.ubademy_mobile.services.interfaces
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.data.Cursada
-import com.ubademy_mobile.services.data.Examen
+import com.ubademy_mobile.services.data.examenes.Examen
 import com.ubademy_mobile.services.data.FavearRequest
 import com.ubademy_mobile.services.data.InscripcionRequest
 import retrofit2.Call

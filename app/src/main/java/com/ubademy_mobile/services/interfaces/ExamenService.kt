@@ -1,8 +1,8 @@
 package com.ubademy_mobile.services.interfaces
 
-import com.ubademy_mobile.services.data.CorreccionRequest
-import com.ubademy_mobile.services.data.Examen
-import com.ubademy_mobile.services.data.ExamenResuelto
+import com.ubademy_mobile.services.data.examenes.CorreccionRequest
+import com.ubademy_mobile.services.data.examenes.Examen
+import com.ubademy_mobile.services.data.examenes.ExamenResuelto
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -36,9 +36,15 @@ interface ExamenService {
 
     @GET("examenes/examenes_resueltos/curso/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
-    suspend fun obtenerExamenesResueltosDeCurso(@Path("curso_id") curso_id: String): Response<List<Examen>>
+    suspend fun obtenerExamenesResueltosDeCurso(@Path("curso_id") curso_id: String): Response<List<ExamenResuelto>>
 
     @POST("examenes/examenes_resueltos/corregir")
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun corregirExamenResuelto(@Body correccionRequest: CorreccionRequest): Response<ExamenResuelto>
+
+    @GET("/examenes/examenes_resueltos/curso/{curso_id}/{username}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerExamenResueltoDeCursoPorUsuario(
+        @Path("curso_id") idcurso: String,
+        @Path("username") username: String      ): Response<List<ExamenResuelto>>
 }

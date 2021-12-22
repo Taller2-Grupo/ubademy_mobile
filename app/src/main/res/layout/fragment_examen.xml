@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:text="Nombre de examen"
         android:textSize="20sp"
-        android:textColor="@color/black_700"
 
         android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="32dp"
@@ -40,30 +39,33 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerRespuestas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        android:layout_height="0dp"
         android:layout_margin="32dp"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        app:layout_constraintBottom_toTopOf="@id/btnEnd"/>
 
+    <Button
+        android:id="@+id/btnEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/button_rounded"
+        android:text="Enviar Correccion"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible"/>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <!--<com.google.android.material.card.MaterialCardView
+        android:id="@+id/Card"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/coordinatorLayout"
+        app:layout_constraintTop_toBottomOf="@+id/divider2">
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- Main content -->
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/FABEditarExamen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:contentDescription="FloatingActionButton"
-            app:srcCompat="@drawable/ic_edit_button"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.google.android.material.card.MaterialCardView>
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

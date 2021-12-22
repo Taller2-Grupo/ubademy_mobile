@@ -18,14 +18,14 @@ class LoginActivityViewModel {
 
     val baseUrl = Constants.API_GATEWAY
 
-    var tokenMutableLiveData = MutableLiveData<UbademyToken>()
+    var tokenMutableLiveData = MutableLiveData<UbademyToken?>()
     var progressBar = MutableLiveData<Boolean>()
 
     fun getStatusBarObservable(): MutableLiveData<Boolean> {
         return progressBar
     }
 
-    fun getTokenObservable(): MutableLiveData<UbademyToken>{
+    fun getTokenObservable(): MutableLiveData<UbademyToken?>{
         return tokenMutableLiveData
     }
 

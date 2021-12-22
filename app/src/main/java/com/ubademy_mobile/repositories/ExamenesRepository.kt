@@ -1,9 +1,9 @@
 package com.ubademy_mobile.repositories
 
-import androidx.lifecycle.MutableLiveData
 import com.ubademy_mobile.services.RetroInstance
-import com.ubademy_mobile.services.data.Examen
-import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.services.data.examenes.CorreccionRequest
+import com.ubademy_mobile.services.data.examenes.Examen
+import com.ubademy_mobile.services.data.examenes.ExamenResuelto
 import com.ubademy_mobile.services.interfaces.ExamenService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,7 +29,7 @@ class ExamenesRepository {
         }
     }
 
-    suspend fun publicarExamen(id_examen: String){
+    suspend fun publicarExamen(id_examen: String) : Examen? {
 
         return withContext(Dispatchers.IO) {
             val response = retroInstance.publicarExamen(id_examen)
@@ -40,6 +40,50 @@ class ExamenesRepository {
     suspend fun editarExamen(examen: Examen) : Examen? {
         return withContext(Dispatchers.IO) {
             val response = retroInstance.editarExamen(examen)
+            response.body()
+        }
+    }
+
+    suspend fun resolverExamen(examenResuelto: ExamenResuelto): ExamenResuelto? {
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.crearExamenResuelto(examenResuelto)
+            response.body()
+        }
+    }
+
+    suspend fun obtenerExamenDeCursoResueltoPor(id_examen: String, idcurso: String, iduser: String): ExamenResuelto? {
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.obtenerExamenResueltoDeCursoPorUsuario(idcurso,iduser)
+            var result : ExamenResuelto? = null
+            response.body()?.forEach{
+                if(it.id_examen == id_examen) {
+                    result = it
+                    return@forEach
+                }
+            }
+            result
+        }
+    }
+
+    suspend fun obtenerExamenesResueltosDeCurso(id_examen: String, id_curso: String): List<ExamenResuelto> {
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.obtenerExamenesResueltosDeCurso(id_curso)
+            val result = mutableListOf<ExamenResuelto>()
+            response.body()?.forEach{
+                if(it.id_examen == id_examen) {
+                    result.add(it)
+                }
+            }
+            result
+        }
+    }
+
+    suspend fun corregirExamen(correccionRequest: CorreccionRequest): ExamenResuelto? {
+
+        return withContext(Dispatchers.IO) {
+            val response = retroInstance.corregirExamenResuelto(correccionRequest)
             response.body()
         }
     }
