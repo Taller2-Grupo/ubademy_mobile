@@ -12,7 +12,7 @@ import retrofit2.http.*
 
 interface CursoService {
 
-    @GET("cursos")
+    @GET("cursos?estado=activo")
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun obtenerCursos(): Response<List<Curso>>
 
