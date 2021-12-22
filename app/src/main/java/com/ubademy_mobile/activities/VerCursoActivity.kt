@@ -13,8 +13,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.Curso
+import com.ubademy_mobile.services.RetroInstance
+import com.ubademy_mobile.services.interfaces.CursoService
+import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.VerCursoActivityViewModel
+import com.ubademy_mobile.view_models.tools.logFailure
+import com.ubademy_mobile.view_models.tools.logResponse
 import kotlinx.android.synthetic.main.activity_ver_curso.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class VerCursoActivity: AppCompatActivity() {
 
@@ -32,6 +40,46 @@ class VerCursoActivity: AppCompatActivity() {
 
         viewModel.getCurso(idCurso)
         viewModel.obtenerInscriptos(idCurso)
+        establecerBotonFav()
+    }
+
+    private fun establecerBotonFav() {
+        val retroInstance = RetroInstance.getRetroInstance(Constants.API_CURSOS_URL).create(CursoService::class.java)
+        val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+        val call = retroInstance.obtenerEsFavorito(email.toString(), idCurso)
+
+        call.enqueue(object: Callback<Boolean> {
+            override fun onFailure(call: Call<Boolean>, t: Throwable){
+            }
+
+            @SuppressLint("ResourceAsColor")
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>){
+                Log.e("body", response.body().toString())
+                if (response.body() == true){
+                    Log.e("esta faveado", "xd")
+                    BtnFavear.text = "Eliminar de favoritos"
+                    //BtnFavear.setBackgroundColor(0xbc0000)
+                    BtnFavear.setOnClickListener{
+                        val usuario = intent.getStringExtra("usuario").toString()
+                        viewModel.desfavear(usuario, idCurso)
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+                else{
+                    Log.e("no esta faveado", "xd")
+                    BtnFavear.text = "Añadir como favorito"
+                    //BtnFavear.setBackgroundColor(R.color.color_primary)
+                    BtnFavear.setOnClickListener{
+                        val usuario = intent.getStringExtra("usuario").toString()
+                        viewModel.favear(usuario, idCurso)
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+            }
+        })
     }
 
     private fun initViewModel(){
