@@ -27,6 +27,22 @@ interface CursoService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun actualizarCurso(@Path("curso_id") curso_id: String, @Body params: EditarCurso): Call<Curso>
 
+    @GET("cursos/historicos/{username}/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun historicos(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("cursos/colaboraciones/{username}/")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun colaboraciones(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("recomendaciones/intereses/{username}")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun obtenerRecomendados(@Path("username") username: String): Response<List<Curso>>
+
+    @GET("{creador}/cursos")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    suspend fun misCursos(@Path("creador") creador: String): Response<List<Curso>>
+
     @DELETE("cursos/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun borrarCurso(@Path("curso_id") curso_id: String): Call<Curso>
