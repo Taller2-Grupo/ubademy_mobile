@@ -286,6 +286,7 @@ class VerCursoActivity: AppCompatActivity() {
             "premium" -> {
                 LblSuscripcion.text = curso.suscripcion.toUpperCase()
                 ImgSuscripcion.setImageResource(R.drawable.ic_premium)
+                ImgSuscripcion.setBackgroundResource(R.drawable.button_rounded)
             }
             "vip" -> {
                 LblSuscripcion.text = curso.suscripcion.toUpperCase()

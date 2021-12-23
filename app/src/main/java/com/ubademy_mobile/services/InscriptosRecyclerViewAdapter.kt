@@ -48,22 +48,37 @@ class InscriptosRecyclerViewAdapter(
 
         if(inscriptos[position].username == idCreador){
             viewHolder.ImgView.visibility = View.VISIBLE
+            viewHolder.ImgView.background = null
         }else{
 
             if(idCreador == idUsuario){
                 if(colaboradores.contains(inscriptos[position].username)){
                     viewHolder.ImgView.visibility = View.VISIBLE
                     viewHolder.ImgView.setImageResource(R.drawable.ic_baseline_person_add_disabled_24)
+                    viewHolder.ImgView.background = null
                     viewHolder.ImgView.setOnClickListener{
                         clickListener.eliminarColaborador(inscriptos[position])
                     }
                 }else{
                     viewHolder.ImgView.visibility = View.VISIBLE
                     viewHolder.ImgView.setImageResource(R.drawable.ic_baseline_person_add_24)
+                    viewHolder.ImgView.background = null
                     viewHolder.ImgView.setOnClickListener{
                         clickListener.agregarColaborador(inscriptos[position])
                     }
                 }
+            }else{
+                if(colaboradores.contains(inscriptos[position].username)){
+
+                    viewHolder.ImgView.visibility = View.VISIBLE
+                    viewHolder.ImgView.setImageResource(R.drawable.ico_colaboradores)
+                    viewHolder.ImgView.setBackgroundResource(R.drawable.button_rounded)
+                    viewHolder.ImgView.setOnClickListener{ }
+                }else{
+                    viewHolder.ImgView.visibility = View.GONE
+                    viewHolder.ImgView.setOnClickListener{ }
+                }
+
             }
         }
 
