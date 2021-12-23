@@ -6,22 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".activities.VerInscriptosActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
     <TextView
         android:id="@+id/TxTTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Alumnos Inscriptos"
+        android:text="Integrantes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,22 +21,6 @@
         android:textSize="25sp"
         />
 
-
-
-    <TextView
-        android:id="@+id/TxtOwner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Alumnos Inscriptos"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="25dp"
-
-        android:textSize="25sp"
-        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RVColaboradores"
@@ -79,5 +52,15 @@
         app:layout_constraintTop_toBottomOf="@id/TxTTitulo"
         />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
