@@ -11,9 +11,9 @@ interface UsuarioService {
     @Headers("Accept:application/json", "Content-Type:application/json")
     suspend fun obtenerUsuario2(@Path("usuario_id") usuario_id: String): Response<UsuarioResponse>
 
-    @GET("usuarios")
+    @GET("usuarios?estado=activo")
     @Headers("Accept:application/json", "Content-Type:application/json", "Authorization: Bearer ")
-    fun obtenerUsuarios(): Call<GetUsersResponse>
+    fun obtenerUsuarios(@Query("nombre") nombre: String? = null, @Query("apellido") apellido: String? = null): Call<GetUsersResponse>
 
     @GET("usuarios/{usuario_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")

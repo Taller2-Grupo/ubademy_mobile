@@ -48,19 +48,26 @@ class UsersFragment(var userid: String, var userFullName: String) : Fragment() {
 
         //getUsuarios()
         view.search.setOnClickListener {
-            getUsuarios()
+            getUsuarios(view)
         }
 
         return view
     }
 
-    fun getUsuarios(){
+    fun getUsuarios(view: View){
         val baseUrl = Constants.API_USUARIOS_URL
 
-        nombre.text
+
 
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
-        val call = retroInstance.obtenerUsuarios()
+
+        val apellido: String? = if(view.apellido.text.toString().equals("")) null
+        else view.apellido.text.toString()
+
+        val nombre: String? = if(view.nombre.text.toString().equals("")) null
+        else view.nombre.text.toString()
+
+        val call = retroInstance.obtenerUsuarios(nombre, apellido)
         call.enqueue(object: Callback<GetUsersResponse> {
             override fun onFailure(call: Call<GetUsersResponse>, t: Throwable){
                 Log.d("onFailure", t.localizedMessage)
