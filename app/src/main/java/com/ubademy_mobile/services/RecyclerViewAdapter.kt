@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ubademy_mobile.R
+import com.ubademy_mobile.activities.tools.DownloadImageTask
 import kotlinx.android.synthetic.main.course_item.view.*
 
 class RecyclerViewAdapter(val clickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
@@ -20,6 +21,9 @@ class RecyclerViewAdapter(val clickListener: OnItemClickListener): RecyclerView.
         holder.itemView.setOnClickListener {
             clickListener.onItemEditClick(cursos[position])
         }
+
+        if(cursos[position].hashtags != "#prueba")
+        DownloadImageTask(holder.ImgBanner).execute(cursos[position].hashtags)
     }
 
     override fun getItemCount(): Int {
@@ -28,6 +32,7 @@ class RecyclerViewAdapter(val clickListener: OnItemClickListener): RecyclerView.
 
     class MyViewHolder(view: View): RecyclerView.ViewHolder(view){
         val TxtViewTitulo = view.titulo
+        val ImgBanner = view.ImgBanner
 
         fun bind(data: Curso){
             TxtViewTitulo.text = data.titulo

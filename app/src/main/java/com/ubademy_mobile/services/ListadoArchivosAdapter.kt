@@ -24,6 +24,7 @@ class ListadoArchivosAdapter(val clickListener: fileListener): RecyclerView.Adap
         val url: String? = null
     )
 
+    var actual_banner: String? = null
     var files = mutableListOf<File>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context).inflate(R.layout.file_item, parent, false)
@@ -40,6 +41,16 @@ class ListadoArchivosAdapter(val clickListener: fileListener): RecyclerView.Adap
             files.removeAt(position)
             notifyDataSetChanged()
         }
+
+        holder.ImgView.setOnClickListener{
+            clickListener.onImgClick(files[position],holder.itemView)
+        }
+
+        if(files[position].url == actual_banner){
+            holder.ImgView.setImageResource(android.R.drawable.btn_star_big_on)
+        }else{
+            holder.ImgView.setImageResource(android.R.drawable.btn_star_big_off)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -49,6 +60,7 @@ class ListadoArchivosAdapter(val clickListener: fileListener): RecyclerView.Adap
     class MyViewHolder(view: View): RecyclerView.ViewHolder(view){
         val btn_delete = view.btn_delete
         val TxtViewFileName = view.fileName
+        val ImgView = view.imageView
 
         fun bind(data: File){
             TxtViewFileName.text = data.name
@@ -58,6 +70,7 @@ class ListadoArchivosAdapter(val clickListener: fileListener): RecyclerView.Adap
     interface fileListener{
         fun onItemEditClick(file: File)
         fun onItemDelete(file: File)
+        fun onImgClick(file: File, itemView: View)
     }
 
 }

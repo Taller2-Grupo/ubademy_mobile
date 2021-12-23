@@ -1,10 +1,13 @@
 package com.ubademy_mobile.activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.Task
@@ -14,12 +17,18 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.ListadoArchivosAdapter
+import com.ubademy_mobile.services.VisualizacionArchivosAdapter
+import com.ubademy_mobile.view_models.CrearCursoActivityViewModel
 import kotlinx.android.synthetic.main.activity_subir_archivos.*
 import java.util.*
 
 class SubirArchivosActivity : AppCompatActivity(), ListadoArchivosAdapter.fileListener {
 
+    private lateinit var actual_banner: String
+    private lateinit var viewModel: CrearCursoActivityViewModel
+    private lateinit var id_curso: String
     private val fileResult = 1
 
     private val database = Firebase.database
@@ -41,6 +50,7 @@ class SubirArchivosActivity : AppCompatActivity(), ListadoArchivosAdapter.fileLi
             val decoration = DividerItemDecoration(this@SubirArchivosActivity, DividerItemDecoration.VERTICAL)
             addItemDecoration(decoration)
             recyclerViewAdapter = ListadoArchivosAdapter(this@SubirArchivosActivity)
+            recyclerViewAdapter.actual_banner = actual_banner
             adapter = recyclerViewAdapter
         }
 
@@ -64,6 +74,11 @@ class SubirArchivosActivity : AppCompatActivity(), ListadoArchivosAdapter.fileLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subir_archivos)
 
+        id_curso = intent.getStringExtra("CursoId").toString()
+        actual_banner = intent.getStringExtra("actual_banner").toString()
+
+        initViewModel()
+
         uploadImageView.setOnClickListener {
             fileManager()
         }
@@ -73,6 +88,19 @@ class SubirArchivosActivity : AppCompatActivity(), ListadoArchivosAdapter.fileLi
         }
 
         initRecyclerView()
+    }
+
+
+    private fun initViewModel(){
+        viewModel = ViewModelProvider(this).get(CrearCursoActivityViewModel::class.java)
+        viewModel.crearNuevoCursoLiveData.observe(this,
+            {
+                if(it?.id != null){
+                    actual_banner = it.hashtags.toString()
+                    recyclerViewAdapter.actual_banner = it.hashtags.toString()
+                    recyclerViewAdapter.notifyDataSetChanged()
+                }
+            })
     }
 
     private fun fileManager() {
@@ -149,6 +177,26 @@ class SubirArchivosActivity : AppCompatActivity(), ListadoArchivosAdapter.fileLi
         }.addOnFailureListener {
             Log.e("delete failed", file.name + " not deleted")
         }
+    }
+
+
+    override fun onImgClick(file: ListadoArchivosAdapter.File, itemView: View) {
+
+        val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+        alert.setTitle("Añadir a banner")
+        alert.setMessage("¿Usar este recurso como banner del curso?")
+        alert.setPositiveButton("Sí") { dialog, which ->
+
+            val update = EditarCurso(nuevos_hashtags = file.url)
+            viewModel.actualizarCurso(id_curso,update)
+
+            dialog.dismiss()
+        }
+
+        alert.setNegativeButton("No", { dialog, which -> dialog.dismiss() })
+
+        alert.show()
+
     }
 
 }

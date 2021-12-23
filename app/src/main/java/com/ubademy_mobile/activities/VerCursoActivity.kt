@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModelProvider
 import com.ubademy_mobile.R
+import com.ubademy_mobile.activities.tools.DownloadImageTask
 import com.ubademy_mobile.activities.tools.Suscripcion
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.RetroInstance
@@ -126,12 +127,14 @@ class VerCursoActivity: AppCompatActivity() {
             LblNombreCursoView.setText(it.titulo)
             LblDescripcionCursoView.setText(it.descripcion)
             setLabelSuscripcion(it)
+            setBanner(it)
             // Actualizar otros campos ...
 
             setBotonDeEdicion(it)
             setBotonDeVerAlumnos(it)
             setBotonDeVerExamenes(it)
             viewModel.obtenerPerfilDeOwner(it.id_creador.toString())
+
 
             val usuario = viewModel.usuario.value
             if(usuario?.id != null){
@@ -142,6 +145,11 @@ class VerCursoActivity: AppCompatActivity() {
                         "setear el boton de inscripcion. Esperando..")
             }
         })
+    }
+
+    private fun setBanner(curso: Curso) {
+        if(curso.hashtags != "#prueba")
+            DownloadImageTask(ImgCurso).execute(curso.hashtags)
     }
 
     private fun setBotonDeInscripcion(usuario: Usuario, curso: Curso) {
@@ -266,15 +274,7 @@ class VerCursoActivity: AppCompatActivity() {
             Toast.makeText(this,"No se pudo recuperar el curso",Toast.LENGTH_LONG).show()
         }
 
-        var editIntent = Intent(this@VerCursoActivity, EditarCursoActivity::class.java)
-        editIntent.putExtra("cursoId", idCurso)
-        editIntent.putExtra("titulo", titulo)
-        editIntent.putExtra("descripcion", descripcion)
 
-        BtnEditarCurso.setOnClickListener {
-            startActivity(editIntent)
-
-        }
 
         setBotonDeInscripcion()
 
@@ -315,7 +315,17 @@ class VerCursoActivity: AppCompatActivity() {
         if(email == null) Log.e("VerCursos","Usuario no logueado")
         else{
             if(email == curso.id_creador) {
+
+                val editIntent = Intent(this@VerCursoActivity, EditarCursoActivity::class.java)
+                editIntent.putExtra("cursoId", idCurso)
+                editIntent.putExtra("titulo", curso.titulo)
+                editIntent.putExtra("descripcion", curso.descripcion)
+                editIntent.putExtra("actual_banner", curso.hashtags)
+
                 BtnEditarCurso.visibility = View.VISIBLE
+                BtnEditarCurso.setOnClickListener {
+                    startActivity(editIntent)
+                }
             }
         }
     }
