@@ -2,10 +2,9 @@ package com.ubademy_mobile.services.interfaces
 
 import com.ubademy_mobile.services.Curso
 import com.ubademy_mobile.services.EditarCurso
-import com.ubademy_mobile.services.data.Cursada
+import com.ubademy_mobile.services.data.*
 import com.ubademy_mobile.services.data.examenes.Examen
-import com.ubademy_mobile.services.data.FavearRequest
-import com.ubademy_mobile.services.data.InscripcionRequest
+import okhttp3.internal.http.hasBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -47,6 +46,15 @@ interface CursoService {
     @DELETE("cursos/{curso_id}")
     @Headers("Accept:application/json", "Content-Type:application/json")
     fun borrarCurso(@Path("curso_id") curso_id: String): Call<Curso>
+
+
+    @POST("cursos/colaborador")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun agregarColaborador(@Body colaboradorRequest: ColaboradorRequest): Call<Colaborador>
+
+    @DELETE("cursos/colaborador/delete")
+    @Headers("Accept:application/json", "Content-Type:application/json")
+    fun eliminarColaborador(@Body colaboradorRequest: ColaboradorRequest): Call<String>
 
     /* inscripciones */
 

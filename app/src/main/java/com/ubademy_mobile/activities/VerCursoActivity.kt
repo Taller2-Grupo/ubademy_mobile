@@ -146,8 +146,12 @@ class VerCursoActivity: AppCompatActivity() {
 
     private fun setBotonDeInscripcion(usuario: Usuario, curso: Curso) {
 
-        if(usuario.id == curso.id_creador){
+        if(usuario.username == curso.id_creador){
             BtnInscribirse.visibility = View.GONE
+            BtnVerImagenes.visibility = View.VISIBLE
+            BtnVerAlumnos.visibility = View.VISIBLE
+            BtnExamenes.visibility = View.VISIBLE
+
         }else{
 
             val suscripcionUser = Suscripcion.valueOf(usuario.tipo_suscripcion.toString().toUpperCase())
@@ -292,10 +296,12 @@ class VerCursoActivity: AppCompatActivity() {
 
     private fun setBotonDeVerAlumnos(curso: Curso){
 
+        val colaboradores = ArrayList<String>(curso.colaboradores.map { it.username.toString()})
+
         val inscriptosIntent = Intent(this@VerCursoActivity, VerInscriptosActivity::class.java)
         inscriptosIntent.putExtra("cursoId", idCurso)
         inscriptosIntent.putExtra("ownerId", curso.id_creador.toString())
-
+        inscriptosIntent.putStringArrayListExtra("colaboradores", colaboradores)
         BtnVerAlumnos.setOnClickListener {
             startActivity(inscriptosIntent)
         }
