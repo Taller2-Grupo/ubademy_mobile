@@ -84,4 +84,13 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mapContainerView"
+        android:layout_width="362dp"
+        android:layout_height="343dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditFiles"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagDescripcion" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,4 +14,6 @@ data class Curso(val id: String? = null ,
                  val hashtags: String? = "#prueba",
                  val examenes: String = "2",
                  val ubicacion: String = "Argentina",
-                 val colaboradores : List<Colaborador> = emptyList())
+                 val colaboradores : List<Colaborador> = emptyList(),
+                 val latitud: Double? = null,
+                 val longitud: Double? = null)

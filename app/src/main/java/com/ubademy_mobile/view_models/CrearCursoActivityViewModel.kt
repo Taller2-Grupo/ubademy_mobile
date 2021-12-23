@@ -78,7 +78,7 @@ class CrearCursoActivityViewModel: ViewModel() {
     }
 
     fun getCursoData(curso_id: String?){
-        val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(CursoService::class.java)
+        val retroInstance = RetroInstance.getRetroInstance(Constants.API_CURSOS_URL).create(CursoService::class.java)
         val call = retroInstance.obtenerCurso(curso_id!!)
         call.enqueue(object: Callback<Curso?> {
             override fun onFailure(call: Call<Curso?>, t: Throwable){

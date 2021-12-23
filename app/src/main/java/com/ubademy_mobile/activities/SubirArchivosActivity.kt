@@ -19,7 +19,6 @@ import com.google.firebase.storage.StorageReference
 import com.ubademy_mobile.R
 import com.ubademy_mobile.services.EditarCurso
 import com.ubademy_mobile.services.ListadoArchivosAdapter
-import com.ubademy_mobile.services.VisualizacionArchivosAdapter
 import com.ubademy_mobile.view_models.CrearCursoActivityViewModel
 import kotlinx.android.synthetic.main.activity_subir_archivos.*
 import java.util.*
