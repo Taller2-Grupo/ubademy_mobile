@@ -57,8 +57,6 @@ class UsersFragment(var userid: String, var userFullName: String) : Fragment() {
     fun getUsuarios(view: View){
         val baseUrl = Constants.API_USUARIOS_URL
 
-
-
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
 
         val apellido: String? = if(view.apellido.text.toString().equals("")) null
@@ -77,6 +75,7 @@ class UsersFragment(var userid: String, var userFullName: String) : Fragment() {
             override fun onResponse(call: Call<GetUsersResponse>, response: Response<GetUsersResponse>){
                 logResponse("obtenerInscriptos", response)
                 if(response.isSuccessful){
+                    usuarios.clear()
                     response.body()?.data?.forEach {
                         usuarios.add(it)
                     }
