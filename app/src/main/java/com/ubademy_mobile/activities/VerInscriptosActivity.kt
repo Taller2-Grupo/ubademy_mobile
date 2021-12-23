@@ -122,7 +122,7 @@ class VerInscriptosActivity : AppCompatActivity(), InscriptosRecyclerViewAdapter
     }
 
     override fun eliminarColaborador(usuario: Usuario) {
-        viewModel.eliminarColaborador(usuario,idCurso)
+        //viewModel.eliminarColaborador(usuario,idCurso)
     }
 
     override fun agregarColaborador(usuario: Usuario) {
