@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ubademy_mobile.R
+import com.ubademy_mobile.services.data.Usuario
 import kotlinx.android.synthetic.main.recycler_inscriptos_list.view.*
 
 class InscriptosRecyclerViewAdapter(
@@ -14,7 +15,8 @@ class InscriptosRecyclerViewAdapter(
     val idUsuario: String) :
     RecyclerView.Adapter<InscriptosRecyclerViewAdapter.ViewHolder>() {
 
-    var inscriptos = mutableListOf<String>()
+    var inscriptos = mutableListOf<Usuario>()
+    var colaboradores = mutableListOf<String>()
 
     /**
      * Provide a reference to the type of views that you are using
@@ -23,7 +25,7 @@ class InscriptosRecyclerViewAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val TxtInscripto = view.TxtViewNombre
             get() = field
-        val ImgOwner = view.ImgOwner
+        val ImgView = view.ImgView
             get() = field
     }
 
@@ -42,13 +44,46 @@ class InscriptosRecyclerViewAdapter(
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         Log.e("Logger","${inscriptos[position]} vs ( ${idCreador} and ${idUsuario} )")
-        var name = inscriptos[position]
+        var name = inscriptos[position].nombre?.capitalize() + " " + inscriptos[position].apellido?.capitalize()
 
-        if(inscriptos[position] == idCreador){
-            viewHolder.ImgOwner.visibility = View.VISIBLE
+        if(inscriptos[position].username == idCreador){
+            viewHolder.ImgView.visibility = View.VISIBLE
+            viewHolder.ImgView.background = null
+        }else{
+
+            if(idCreador == idUsuario){
+                if(colaboradores.contains(inscriptos[position].username)){
+                    viewHolder.ImgView.visibility = View.VISIBLE
+                    viewHolder.ImgView.setImageResource(R.drawable.ic_baseline_person_add_disabled_24)
+                    viewHolder.ImgView.background = null
+                    viewHolder.ImgView.setOnClickListener{
+                        clickListener.eliminarColaborador(inscriptos[position])
+                    }
+                }else{
+                    viewHolder.ImgView.visibility = View.VISIBLE
+                    viewHolder.ImgView.setImageResource(R.drawable.ic_baseline_person_add_24)
+                    viewHolder.ImgView.background = null
+                    viewHolder.ImgView.setOnClickListener{
+                        clickListener.agregarColaborador(inscriptos[position])
+                    }
+                }
+            }else{
+                if(colaboradores.contains(inscriptos[position].username)){
+
+                    viewHolder.ImgView.visibility = View.VISIBLE
+                    viewHolder.ImgView.setImageResource(R.drawable.ico_colaboradores)
+                    viewHolder.ImgView.setBackgroundResource(R.drawable.button_rounded)
+                    viewHolder.ImgView.setOnClickListener{ }
+                }else{
+                    viewHolder.ImgView.visibility = View.GONE
+                    viewHolder.ImgView.setOnClickListener{ }
+                }
+
+            }
         }
 
-        if (inscriptos[position] == idUsuario){
+
+        if (inscriptos[position].username == idUsuario){
             name += " (tú)"
         }
 
@@ -63,6 +98,8 @@ class InscriptosRecyclerViewAdapter(
     override fun getItemCount() = inscriptos.size
 
     interface OnItemClickListener{
-        fun onItemClick(inscripto: String)
+        fun onItemClick(inscripto: Usuario)
+        fun eliminarColaborador(usuario: Usuario)
+        fun agregarColaborador(usuario: Usuario)
     }
 }

@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_ver_curso.BtnEditarCurso
 
 class EditarCursoActivity : AppCompatActivity() {
 
+    private  var actual_banner: String? = null
     lateinit var viewModel: CrearCursoActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +25,12 @@ class EditarCursoActivity : AppCompatActivity() {
 
         initViewModel()
 
+        actual_banner = intent.getStringExtra("actual_banner").toString()
+
         btnEditFiles.setOnClickListener {
             var imagesIntent = Intent(this@EditarCursoActivity, SubirArchivosActivity::class.java)
             val curso_id = intent.getStringExtra("cursoId")
+            imagesIntent.putExtra("actual_banner",actual_banner)
             imagesIntent.putExtra("CursoId", curso_id)
             startActivity(imagesIntent)
         }
