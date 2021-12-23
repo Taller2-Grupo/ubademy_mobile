@@ -19,6 +19,8 @@ import com.ubademy_mobile.services.interfaces.UsuarioService
 import com.ubademy_mobile.utils.Constants
 import com.ubademy_mobile.view_models.tools.logFailure
 import com.ubademy_mobile.view_models.tools.logResponse
+import kotlinx.android.synthetic.main.fragment_users.*
+import kotlinx.android.synthetic.main.fragment_users.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,13 +46,19 @@ class UsersFragment(var userid: String, var userFullName: String) : Fragment() {
 
         usuarios = ArrayList()
 
-        getUsuarios()
+        //getUsuarios()
+        view.search.setOnClickListener {
+            getUsuarios()
+        }
 
         return view
     }
 
     fun getUsuarios(){
         val baseUrl = Constants.API_USUARIOS_URL
+
+        nombre.text
+
         val retroInstance = RetroInstance.getRetroInstance(baseUrl).create(UsuarioService::class.java)
         val call = retroInstance.obtenerUsuarios()
         call.enqueue(object: Callback<GetUsersResponse> {

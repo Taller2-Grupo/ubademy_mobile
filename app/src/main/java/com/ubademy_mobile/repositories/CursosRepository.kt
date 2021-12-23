@@ -84,6 +84,8 @@ class CursosRepository {
 
         Log.e("call", call.body().toString())
 
+        if(call.body() == null) return emptyList()
+
         val latitud = call.body()!!.data!!.latitud
         val longitud = call.body()!!.data!!.longitud
 
