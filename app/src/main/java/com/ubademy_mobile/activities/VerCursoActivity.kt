@@ -46,7 +46,6 @@ class VerCursoActivity: AppCompatActivity() {
 
         viewModel.getCurso(idCurso)
         viewModel.obtenerPerfilDeUsuario(userEmail)
-        viewModel.obtenerInscriptos(idCurso)
         establecerBotonFav()
     }
 
@@ -165,6 +164,7 @@ class VerCursoActivity: AppCompatActivity() {
                 TxtAvisoComprarSuscripcion.startAnimation(AnimationUtils.loadAnimation(this@VerCursoActivity,R.anim.in_topwards))
 
             }else{
+                viewModel.obtenerInscriptos(idCurso)
                 inscripcionHabilitada = true
                 BtnInscribirse.isEnabled = true
             }
