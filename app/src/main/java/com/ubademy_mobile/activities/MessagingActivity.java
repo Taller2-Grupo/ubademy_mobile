@@ -92,7 +92,7 @@ public class MessagingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String mensaje = text_send.getText().toString();
-                if (mensaje != "") {
+                if (!mensaje.equals("")) {
                     enviarMensaje(userid, otherUser, mensaje);
                 }
                 else{
